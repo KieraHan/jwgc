@@ -78,7 +78,7 @@
                                 `).join('')}
                             </div>
                         </div>
-                        <div class="announcement-section" ${ '{{ username }}' !== '한선욱' ? 'style="display: none;"' : ''}>
+                        <div class="announcement-section" ${ '{{ username }}' !== '' ? 'style="display: none;"' : ''}>
                             <div class="grid">
                                 ${Array.from({ length: 15 }, (_, index) => `
                                     <textarea id="input-${slotId}-${index}" class="announcement-input" rows="1" cols="20"></textarea>
