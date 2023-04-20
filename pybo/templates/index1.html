@@ -9,7 +9,6 @@
 </head>
 <body>
     <h1>강촌-전시대신청</h1>
-<!--    bp = Blueprint('main', __name__, url_prefix='/') 라인에 따라 'main'이라는 이름이 사용되므로 main.index라고 써야함.-->
     <form method="POST" action="{{ url_for('main.index') }}">
         <input type="text" name="username" placeholder="이름을 입력하세요">
         <button type="submit">확인</button>
