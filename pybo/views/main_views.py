@@ -9,6 +9,12 @@ bp = Blueprint('main', __name__, url_prefix='/')
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
+    users = ["한선욱","전재호","한성희","송현","권순자"]
+    for user in users:
+        u = User(name = user)
+        db.sessiom.ass(u)
+        db.session.commit()
+
     if request.method == 'POST':
         username = request.form['username']
         user_list = User.query.filter_by(name=username).first()
