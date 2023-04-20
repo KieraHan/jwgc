@@ -12,7 +12,7 @@ def index():
     users = ["한선욱","전재호","한성희","송현","권순자"]
     for user in users:
         u = User(name = user)
-        db.sessiom.ass(u)
+        db.sessiom.add(u)
         db.session.commit()
 
     if request.method == 'POST':
