@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>전시대 날짜별 신청(모든요일 신청취소가능,달력날짜변경시 전체 신청자업데이트 가능)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-datepicker.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap-datepicker.js') }}"></script>
+   <script>
+            <!--today:-월-일-요일-->
+           function formatDate(date) {
+                const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+                const dayNames = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+                const day = date.getDate();
+                const monthIndex = date.getMonth();
+                const year = date.getFullYear();
+                const dayOfWeekIndex = date.getDay();
+
+                return `today: ${monthNames[monthIndex]}${day}일 ${dayNames[dayOfWeekIndex]}`;
+           }
+       <!--    날짜를 클릭하면 업데이트보드 함수가 실행되고 업데이트보드함수에서는 겟데이오브윅함수를 실행하여 클릭한날짜의 요일을 불러온다 -->
+           function getDayOfWeek(date) {
+                const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+                const dayOfWeekIndex = date.getDay();
+                return dayNames[dayOfWeekIndex];
+            }
+          <!--  게시판생성-->
+            function createBoard(dayOfWeek) {
+                const board = `
+                    <div class="${dayOfWeek}-board">
+                        <h3>${dayOfWeek}요일</h3>
+                        <div class="row">
+                            ${createSlots(dayOfWeek)}
+                        </div>
+                    </div>
+                `;
+
+                return board;
+            }
+
+            function createSlots(dayOfWeek) {
+                const slotNames = {
+                    "화": ["10~12시", "12~2시", "2~4시", "7~9시"],
+                    "목": ["12~2시", "2~4시", "7~9시"],
+                    "토": ["10~12시(웨돔)","10~12시(마두)","12~2시(마두)", "2~4시(마두)"],
+                    "일": ["1:30~3:30"]
+                };
+
+                let slots = '';
+                for (let i = 0; i < slotNames[dayOfWeek].length; i++) {
+                    slots += createSlot(slotNames[dayOfWeek][i],dayOfWeek);
+                }
+
+                return slots;
+            }
+            function createSlot(slotName, dayOfWeek) {
+                const slotId = dayOfWeek.slice(0, 1).toLowerCase() + slotName.replace('~', '').replace('시', '').replace(/ /g, ''); // 예: 화1012
+                console.log(slotId);
+                const slot = `
+                    <div class="slot-container">
+                        <div class="slot-checkbox" ${ '{{ username }}' !== '한선욱' ? 'style="display: none;"' : ''}>
+                            <input type="checkbox" class="slot-toggle" id="${slotId}-checkbox" data-slot-id="${slotId}">
+                            <label for="${slotId}-checkbox">슬롯 비활성화</label>
+                        </div>
+                        <br><br>
+                        <div class="slot" data-slot="${slotId}">
+                            <div class="slot-title">${slotName}</div>
+                            <br><br><br><br><br><br><br><br>
+                            <!--신청자이름 나오는공간-->
+                            <div class="applicants" id="${slotId}-applicants"></div>
+                            <br><br><br><br><br><br><br><br>
+                            <div class="slot-button"><button type="button" class="btn btn-primary">신청</button></div>
+                            <br><br>
+                        </div>
+                        <div class="announcement-label">
+                            <div class="grid_label">
+                                ${Array.from({ length: 15 }, (_, index) => `
+                                    <label id="label-${slotId}-${index}" class="announcement-label-item"></label>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="announcement-section" ${ '{{ username }}' !== '한선욱' ? 'style="display: none;"' : ''}>
+                            <div class="grid">
+                                ${Array.from({ length: 15 }, (_, index) => `
+                                    <textarea id="input-${slotId}-${index}" class="announcement-input" rows="1" cols="20"></textarea>
+                                `).join('')}
+                            </div>
+                            <br><br><br><br>
+                            <button type="button" class="btn btn-secondary announce-btn">공지하기</button><br><br><br><br>
+                        </div>
+
+
+
+                    </div>
+                `;
+                return slot;
+            }
+
+            function updateBoard(date) {
+                const selectedDate = new Date(date);
+                const dayOfWeek = getDayOfWeek(selectedDate);
+
+                if (dayOfWeek === "화" || dayOfWeek === "목" || dayOfWeek === "토" || dayOfWeek === "일") {
+                    const board = createBoard(dayOfWeek);
+                    $('#board-container').html(board);
+                } else {
+                    $('#board-container').html(`<div style="text-align: center;"><p>${dayOfWeek}요일</p><p>전시대 계획이 없습니다.</p></div>`);
+                }
+            }
+
+
+
+
+            $(document).ready(function () {
+                let currentDay = null;
+                const today = new Date();
+                const todayText = formatDate(today);
+                $('#date-title').text(todayText);
+
+                $('#datepicker').datepicker({
+                    startDate: 'd',
+                    endDate: '+6d',
+                    format: 'yyyy-mm-dd',
+                    autoclose: false,
+                    inline: true
+                }).on('changeDate', function (e) {
+                    const selectedDate = e.format('yyyy-mm-dd');
+                    const day = new Date(selectedDate).getDay();
+                    const dayNames = ['일', '월', '화', '수', '목', '금', '토']
+                    currentDay = dayNames[day];
+
+                    let slotIds = [];
+
+                    if (currentDay === '화') {
+                        slotIds = ['화1012', '화122', '화24', '화79'];
+                    } else if (currentDay === '목') {
+                        slotIds = ['목1012', '목122', '목24'];
+                    } else if (currentDay === '토') {
+                        slotIds = ['토1012(웨돔)','토1012(마두)', '토122(마두)', '토24(마두)'];
+                    }else if (currentDay === '일') {
+                        slotIds = ['일1:303:30'];
+                    }
+                    $.ajax({
+                        url: '/update',
+                        method: 'POST',
+                        data: {
+                            username: '{{ username }}',
+                            day: currentDay,
+                        },
+                        <!--성공하면 신청완료안내와 함께 해당 요일의 전체신청자명단을 받아옴.-->
+                        success: function (response) {
+                             <!--신청자 목록 업데이트-->
+                            for (let i = 0; i < slotIds.length; i++) {
+                                const names = response[`names${i + 1}`];
+                                console.log('names:', names);
+                                const namesStr = names.join(',  ');
+                                console.log('namesStr:', namesStr);
+                                $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
+                            }
+
+                        }
+                    });
+
+
+                    updateBoard(selectedDate);
+
+                    <!--비활성화된 슬롯 정보 가져오기-->
+                    $.ajax({
+                        url: '/get_disabled_slots',
+                        method: 'GET'
+                    }).done(function(response) {
+                        const disabledSlotIds = response.disabled_slot_ids;
+                        for (const slotId of disabledSlotIds) {
+                            const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
+                            $slotContainer.addClass('disabled');
+                            $slotContainer.find('.slot-toggle').prop('checked', true);
+                        }
+                    }).fail(function(error) {
+                        console.log(error);
+                    });
+
+
+                });
+
+                $('body').on('change', '.slot-toggle', function() {
+                    const slotId = $(this).data('slot-id');
+                    const $slotContainer = $(this).closest('.slot-container');
+                    const isChecked = $(this).is(':checked');
+                    if (isChecked) {
+                        $slotContainer.addClass('disabled');
+                    } else {
+                        $slotContainer.removeClass('disabled');
+                    }
+                    <!--서버에 비활성화상태 업데이트요청-->
+                    $.ajax({
+                        url: '/update_disabled_slot',
+                        method: 'POST',
+                        data: {
+                            slot_id: slotId,
+                            is_disabled: isChecked
+                        }
+                    }).done(function(response) {
+                        console.log(response.message);
+                    }).fail(function(error) {
+                        console.log(error);
+                    });
+                });
+
+                <!--공지하기버튼클릭이벤트-->
+                $('body').on('click', '.announce-btn', function () {
+                    const $slotContainer = $(this).closest('.slot-container');
+                    const $slot = $slotContainer.find('.slot');
+                    const slotId = $slot.data('slot');
+                    const contents = [];
+                    console.log('slotId:', slotId);
+
+                    for (let i = 0; i < 15; i++) {
+                        const content = $(`#input-${slotId}-${i}`).val();
+                        contents.push(content);
+                    }
+                    console.log('Sending data:', { 'contents[]': contents, slot: slotId }); // Add this line
+
+                    $.post('/notice', { 'contents[]': contents, slot: slotId }, function (response) {
+                        if (response.message === '공지가 등록되었습니다.') {
+                            for (let i = 0; i < 15; i++) {
+                                $(`#label-${slotId}-${i}`).text(contents[i]);
+                            }
+                        }
+                    });
+                });
+
+
+
+
+
+
+                $('body').on('click', '.btn-primary', function () {
+                    const $slot = $(this).closest('.slot');
+                    const slot = $slot.find('.slot-title').text(); // 슬롯 이름 가져오기
+
+                    const selectedDay = currentDay;
+
+                    let slotIds = [];
+
+                    if (currentDay === '화') {
+                        slotIds = ['화1012', '화122', '화24', '화79'];
+                    } else if (currentDay === '목') {
+                        slotIds = ['목1012', '목122', '목24'];
+                    } else if (currentDay === '토') {
+                        slotIds = ['토1012(웨돔)','토1012(마두)', '토122(마두)', '토24(마두)'];
+                    }else if (currentDay === '일') {
+                        slotIds = ['일1:303:30'];
+                    }
+                    <!--서버에 신청요청넣기-->
+                    $.ajax({
+                        url: '/apply',
+                        method: 'POST',
+                        data: {
+                            username: '{{ username }}',
+                            slot: slot,
+                            day: selectedDay,
+                            slot_name: slot
+                        },
+                        <!--성공하면 신청완료안내와 함께 해당 요일의 전체신청자명단을 받아옴.-->
+                        success: function (response) {
+                            alert(response.message);
+                             <!--신청자 목록 업데이트-->
+
+
+                            for (let i = 0; i < slotIds.length; i++) {
+                                const names = response[`names${i + 1}`];
+                                console.log('names:', names);
+                                const namesStr = names.join(', ');
+                                console.log('namesStr:', namesStr);
+                                $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
+                            }
+
+                        },
+                        <!--에러가 뜰 경우 해당시간대에 이미신청했다는 에러라면, 취소여부 물어보기.-->
+                        error: function (xhr, status, error) {
+                            if (xhr.status === 400 && JSON.parse(xhr.responseText).error === "이미 해당 시간대에 신청하셨습니다.") { // 수정된 부분
+                                if (confirm("이미 신청된 이름입니다. 취소하시겠습니까?")) {
+                                        <!--삭제 요청-->
+                                        $.ajax({
+                                            url: '/cancel',
+                                            method: 'POST',
+                                            data: {
+                                                username: '{{ username }}',
+                                                slot_name: slot,
+                                                day: selectedDay,
+                                            },
+
+                                            success: function (response) {
+                                                alert(response.message);
+                                                // 신청자 목록 업데이트
+
+                                                for (let i = 0; i < slotIds.length; i++) {
+                                                    const names = response[`names${i + 1}`];
+                                                    console.log('names:', names);
+                                                    const namesStr = names.join(', ');
+                                                    console.log('namesStr:', namesStr);
+                                                    $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
+                                                }
+                                            },
+                                            error: function () {
+                                                alert("취소에 실패했습니다. 다시 시도해주세요.");
+                                            }
+                                        });
+                                } else {
+                                    // 팝업 닫기
+                                    alert("취소되지 않았습니다.");
+                                }
+                            } else {
+                                alert("신청에 실패했습니다. 다시 시도해주세요.");
+                            }
+                        }
+                    });
+                });
+
+
+        });
+
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <div >
+            <h2 class ="container s2" id="date-title"></h2>
+            <h3 class="container s3"> 달력에서 신청할 날짜를 선택하세요 </h3>
+            <div id="datepicker" class="container"></div>
+            <div class ="board-con" id="board-container">
+                <!-- 여기에 게시판이 표시됩니다. -->
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
