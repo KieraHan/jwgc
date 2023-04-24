@@ -2,16 +2,38 @@ from flask import Blueprint
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 import json
 from pybo import db
-from pybo.models import User, TueBoard,ThuBoard,SatBoard,SunBoard,DisabledSlot,Notice
+from pybo.models import User,Overseer,TueBoard,ThuBoard,SatBoard,SunBoard,DisabledSlot,Notice
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-    users = ["한선욱","전재호","한성희","송현","권순자"]
+    alluser = User.query.all()
+    alloverseer = Overseer.query.all()
+    for user in alluser:
+        db.session.delete(user)
+    db.session.commit()
+    for overseer in alloverseer:
+        db.session.delete(overseer)
+    db.session.commit()
+
+    users = ['김형민','김진부','강민성','김내오','김지오','김진숙','남선영','박봉임','박영수','서정현','성윤영','이은미','전재호','전지은','한주연',
+             '김경호','김진명','김귀덕','김미경','이예빛나','이윤남','이해안','이현숙','전봉순','정우숙','차복순','최순남','최혜경','최혜선','홍성정','한미지',
+             '박정현','심지훈','권순자','김민교','나래','모모코','박덕희','박홍렬','박홍숙','송현','이수림','전은희','한선욱','한성희',
+             '현승우','김경준','김연례','김재심','김진윤','김희숙','박원숙','박정숙','이성재','이효선','최예진','하혜자','함성희','허수봉','허숙자',
+             '김동석','김서현','김수석','김영식','김은주','김원숙','김지현','김진형','노경임','이영주','임애경','정병호','조경옥','최병선',
+             '김양호','안승현','김재희','박말호','박종서','박혜인','양현미','이혜경','임응진','장명희','장영숙','전상옥','정은실','조미선','최미례']
+
     for user in users:
         u = User(name = user)
+        db.session.add(u)
+        db.session.commit()
+
+    overseers =['김형민','전재호','김경호','김진명','박정현','심지훈','한성희','현승우','김경준','김진윤','이성재','김동석','정병호','김양호','안승현','박말호']
+
+    for overseer in overseers:
+        u = Overseer(name = overseer)
         db.session.add(u)
         db.session.commit()
 
@@ -288,11 +310,19 @@ def get_notices():
     notice_contents = [notice.content for notice in notices]
     return jsonify({"notice_contents": notice_contents})
 
+@bp.route('/get_overseer_list', methods=['GET'])
+def get_overseer_list():
+    overseer_list = Overseer.query.all()
+    overseer_names = [overseer.name for overseer in overseer_list]
+    print(overseer_names)
+    return jsonify({"overseer_list": overseer_names})
+
+
 #데이터베이스에 있는 회원명단출력
 @bp.route('/us')
 def us():
     #데이터를 불러와서 저장
     user_list = User.query
-    tue = TueBoard.query.filter(TueBoard.slot == "10~12시").all()
+    overseer_list = Overseer.query
     #저장된 데이터를 전달
-    return render_template('users/user_list.html', user_list=user_list,tue=tue)
+    return render_template('users/user_list.html', user_list=user_list,overseer_list=overseer_list)
