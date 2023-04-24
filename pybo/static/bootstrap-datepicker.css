@@ -9,11 +9,10 @@
 
 }
 .grid_label {
-    display: center;
-    width: 100%;
-/*    width: 350px;  *//*label width * 4 + gap * 3*//*
-    row-gap: 2px;
-    column-gap: 2px;*/
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 1px;
 }
 .announcement-label-item {
     display: inline-block;
@@ -28,11 +27,18 @@
 
 /*공지텍스트칸*/
 textarea.announcement-input {
-    width: 106px; /* 원하는 가로 길이로 변경 */
+    width: 90%;
+    resize: none;
 }
 .announcement-section{
     width: 100%;
-    display: center;
+}
+.grid {
+    margin-left: 4px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 1px;
 }
 .slot-container.disabled .slot-button {
     pointer-events: none;
