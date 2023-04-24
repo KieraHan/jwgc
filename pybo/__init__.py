@@ -50,10 +50,6 @@ def create_app():
     scheduler.add_job(lambda: clear_sun_board(app), 'cron', day_of_week='sun', hour=23)
     scheduler.start()
 
-    if __name__ == '__main__':
-        initialize_users_and_overseers()
-        app.run(debug=True)
-
     return app
 
 def initialize_users_and_overseers():
@@ -84,3 +80,9 @@ def initialize_users_and_overseers():
         u = Overseer(name = overseer)
         db.session.add(u)
         db.session.commit()
+
+        
+if __name__ == '__main__':
+    app = create_app()
+    initialize_users_and_overseers()
+    app.run(debug=True)
