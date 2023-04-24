@@ -20,7 +20,7 @@ def index():
     return render_template('index1.html')
 @bp.route('/<username>')
 def show(username):
-    return render_template('gygc_booking1.html', username=username)
+    return render_template('gygc_booking.html', username=username)
 
 @bp.route('/apply', methods=['POST'])
 def apply():
