@@ -1,14 +1,17 @@
 # models.py
-from pybo import db
+# from pybo import db
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
+
+db = SQLAlchemy()
 
 class User(db.Model):
     #데이터의 고유번호
     id = db.Column(db.Integer, primary_key=True)
     #회원이름
     name = db.Column(db.String(5), nullable=False)
-    
+
 class Overseer(db.Model):
     #데이터의 고유번호
     id = db.Column(db.Integer, primary_key=True)
