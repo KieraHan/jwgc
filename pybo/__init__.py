@@ -50,39 +50,39 @@ def create_app():
     scheduler.add_job(lambda: clear_sun_board(app), 'cron', day_of_week='sun', hour=23)
     scheduler.start()
 
+
+    initialize_users_and_overseers(app)
+
+
     return app
 
-def initialize_users_and_overseers():
-    alluser = User.query.all()
-    alloverseer = Overseer.query.all()
-    for user in alluser:
-        db.session.delete(user)
-    db.session.commit()
-    for overseer in alloverseer:
-        db.session.delete(overseer)
-    db.session.commit()
-
-    users = ['김형민','김진부','강민성','김내오','김지오','김진숙','남선영','박봉임','박영수','서정현','성윤영','이은미','전재호','전지은','한주연',
-             '김경호','김진명','김귀덕','김미경','이예빛나','이윤남','이해안','이현숙','전봉순','정우숙','차복순','최순남','최혜경','최혜선','홍성정','한미지',
-             '박정현','심지훈','권순자','김민교','나래','모모코','박덕희','박홍렬','박홍숙','송현','이수림','전은희','한선욱','한성희',
-             '현승우','김경준','김연례','김재심','김진윤','김희숙','박원숙','박정숙','이성재','이효선','최예진','하혜자','함성희','허수봉','허숙자',
-             '김동석','김서현','김수석','김영식','김은주','김원숙','김지현','김진형','노경임','이영주','임애경','정병호','조경옥','최병선',
-             '김양호','안승현','김재희','박말호','박종서','박혜인','양현미','이혜경','임응진','장명희','장영숙','전상옥','정은실','조미선','최미례']
-
-    for user in users:
-        u = User(name = user)
-        db.session.add(u)
+def initialize_users_and_overseers(app):
+    with app.app_context():
+        print("업로드중")
+        alluser = User.query.all()
+        alloverseer = Overseer.query.all()
+        for user in alluser:
+            db.session.delete(user)
+        db.session.commit()
+        for overseer in alloverseer:
+            db.session.delete(overseer)
         db.session.commit()
 
-    overseers =['김형민','전재호','김경호','김진명','박정현','심지훈','한성희','현승우','김경준','김진윤','이성재','김동석','정병호','김양호','안승현','박말호']
+        users = ['김형민','김진부','강민성','김내오','김지오','김진숙','남선영','박봉임','박영수','서정현','성윤영','이은미','전재호','전지은','한주연',
+                 '김경호','김진명','김귀덕','김미경','이예빛나','이윤남','이해안','이현숙','전봉순','정우숙','차복순','최순남','최혜경','최혜선','홍성정','한미지',
+                 '박정현','심지훈','권순자','김민교','나래','모모코','박덕희','박홍렬','박홍숙','송현','이수림','전은희','한선욱','한성희',
+                 '현승우','김경준','김연례','김재심','김진윤','김희숙','박원숙','박정숙','이성재','이효선','최예진','하혜자','함성희','허수봉','허숙자',
+                 '김동석','김서현','김수석','김영식','김은주','김원숙','김지현','김진형','노경임','이영주','임애경','정병호','조경옥','최병선',
+                 '김양호','안승현','김재희','박말호','박종서','박혜인','양현미','이혜경','임응진','장명희','장영숙','전상옥','정은실','조미선','최미례']
 
-    for overseer in overseers:
-        u = Overseer(name = overseer)
-        db.session.add(u)
-        db.session.commit()
+        for user in users:
+            u = User(name = user)
+            db.session.add(u)
+            db.session.commit()
 
-        
-if __name__ == '__main__':
-    app = create_app()
-    initialize_users_and_overseers()
-    app.run(debug=True)
+        overseers =['김형민','전재호','김경호','김진명','박정현','심지훈','한성희','현승우','김경준','김진윤','이성재','김동석','정병호','김양호','안승현','박말호']
+
+        for overseer in overseers:
+            u = Overseer(name = overseer)
+            db.session.add(u)
+            db.session.commit()
