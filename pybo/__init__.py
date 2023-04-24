@@ -27,6 +27,35 @@ def clear_sun_board(app):
         db.session.commit()
 
 
+# db = SQLAlchemy()
+
+
+def create_app():
+    app = Flask(__name__,static_url_path='/static')
+    app.config.from_object(config)
+
+    #ORM
+    db.init_app(app)
+    migrate.init_app(app, db)
+    from . import models
+
+    #블루프린트
+    from .views import main_views
+    app.register_blueprint(main_views.bp)
+
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(lambda: clear_tue_board(app), 'cron', day_of_week='tue', hour=23)
+    scheduler.add_job(lambda: clear_thu_board(app), 'cron', day_of_week='thu', hour=23)
+    scheduler.add_job(lambda: clear_sat_board(app), 'cron', day_of_week='sat', hour=23)
+    scheduler.add_job(lambda: clear_sun_board(app), 'cron', day_of_week='sun', hour=23)
+    scheduler.start()
+
+    if __name__ == '__main__':
+        initialize_users_and_overseers()
+        app.run(debug=True)
+
+    return app
+
 def initialize_users_and_overseers():
     alluser = User.query.all()
     alloverseer = Overseer.query.all()
@@ -55,30 +84,4 @@ def initialize_users_and_overseers():
         u = Overseer(name = overseer)
         db.session.add(u)
         db.session.commit()
-        
-        
-def create_app():
-    app = Flask(__name__,static_url_path='/static')
-    app.config.from_object(config)
 
-    #ORM
-    db.init_app(app)
-    migrate.init_app(app, db)
-    from . import models
-
-    #블루프린트
-    from .views import main_views
-    app.register_blueprint(main_views.bp)
-
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(lambda: clear_tue_board(app), 'cron', day_of_week='tue', hour=23)
-    scheduler.add_job(lambda: clear_thu_board(app), 'cron', day_of_week='thu', hour=23)
-    scheduler.add_job(lambda: clear_sat_board(app), 'cron', day_of_week='sat', hour=23)
-    scheduler.add_job(lambda: clear_sun_board(app), 'cron', day_of_week='sun', hour=23)
-    scheduler.start()
-
-    if __name__ == '__main__':
-        initialize_users_and_overseers()
-        app.run(debug=True)
-
-    return app
