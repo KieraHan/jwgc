@@ -12,12 +12,12 @@
 {% else %}
     <p>질문이 없습니다.</p>
 {% endif %}
-{% if tue %}
+{% if overseer_list %}
     <ul>
 <!--        question_list에 저장된 데이터를 하나씩 꺼내 question 객체에 대입한다. 파이썬의 for~in 문을 떠올리면 쉽게 이해할 수 있을 것이다.-->
-    {% for t in tue %}
+    {% for overseer in overseer_list %}
 <!--         바로 앞의 for 문에서 얻은 question 객체의 id를 출력한다. -->
-        <li>{{ t.user_name}}</a></li>
+        <li>{{ overseer.name}}</a></li>
     {% endfor %}
     </ul>
 {% else %}
