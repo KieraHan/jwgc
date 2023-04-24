@@ -6,6 +6,8 @@
 .applicants{
     font-size: 13px;
     display: center;
+    word-wrap: break-word;
+    line-height: 1.5;
 
 }
 .grid_label {
