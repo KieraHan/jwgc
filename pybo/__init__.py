@@ -1,13 +1,62 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
+from .models import db,User,Overseer,TueBoard,ThuBoard,SatBoard,SunBoard
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime, time
 import json
 import config
-
-db = SQLAlchemy()
 migrate = Migrate()
 
+def clear_tue_board(app):
+    with app.app_context():
+        TueBoard.query.delete()
+        db.session.commit()
 
+def clear_thu_board(app):
+    with app.app_context():
+        ThuBoard.query.delete()
+        db.session.commit()
+
+def clear_sat_board(app):
+    with app.app_context():
+        SatBoard.query.delete()
+        db.session.commit()
+def clear_sun_board(app):
+    with app.app_context():
+        SunBoard.query.delete()
+        db.session.commit()
+
+
+def initialize_users_and_overseers():
+    alluser = User.query.all()
+    alloverseer = Overseer.query.all()
+    for user in alluser:
+        db.session.delete(user)
+    db.session.commit()
+    for overseer in alloverseer:
+        db.session.delete(overseer)
+    db.session.commit()
+
+    users = ['김형민','김진부','강민성','김내오','김지오','김진숙','남선영','박봉임','박영수','서정현','성윤영','이은미','전재호','전지은','한주연',
+             '김경호','김진명','김귀덕','김미경','이예빛나','이윤남','이해안','이현숙','전봉순','정우숙','차복순','최순남','최혜경','최혜선','홍성정','한미지',
+             '박정현','심지훈','권순자','김민교','나래','모모코','박덕희','박홍렬','박홍숙','송현','이수림','전은희','한선욱','한성희',
+             '현승우','김경준','김연례','김재심','김진윤','김희숙','박원숙','박정숙','이성재','이효선','최예진','하혜자','함성희','허수봉','허숙자',
+             '김동석','김서현','김수석','김영식','김은주','김원숙','김지현','김진형','노경임','이영주','임애경','정병호','조경옥','최병선',
+             '김양호','안승현','김재희','박말호','박종서','박혜인','양현미','이혜경','임응진','장명희','장영숙','전상옥','정은실','조미선','최미례']
+
+    for user in users:
+        u = User(name = user)
+        db.session.add(u)
+        db.session.commit()
+
+    overseers =['김형민','전재호','김경호','김진명','박정현','심지훈','한성희','현승우','김경준','김진윤','이성재','김동석','정병호','김양호','안승현','박말호']
+
+    for overseer in overseers:
+        u = Overseer(name = overseer)
+        db.session.add(u)
+        db.session.commit()
+        
+        
 def create_app():
     app = Flask(__name__,static_url_path='/static')
     app.config.from_object(config)
@@ -21,126 +70,15 @@ def create_app():
     from .views import main_views
     app.register_blueprint(main_views.bp)
 
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(lambda: clear_tue_board(app), 'cron', day_of_week='tue', hour=23)
+    scheduler.add_job(lambda: clear_thu_board(app), 'cron', day_of_week='thu', hour=23)
+    scheduler.add_job(lambda: clear_sat_board(app), 'cron', day_of_week='sat', hour=23)
+    scheduler.add_job(lambda: clear_sun_board(app), 'cron', day_of_week='sun', hour=23)
+    scheduler.start()
+
     if __name__ == '__main__':
+        initialize_users_and_overseers()
         app.run(debug=True)
 
     return app
-
-
-
-
-    #
-    # # db.init_app(app)
-    # #
-    # # with app.app_context():
-    # #     db.create_all()
-    # #
-    # #     from . import models
-    # #
-    # #     table_data = {'10~12시': [], '12~2시': [], '2~4시': []}
-    # #     members = ['전재호', '한선욱', '권순자', '송현', '한성희']
-    # #
-    # #     for name in members:
-    # #         new_user = models.User(name=name)
-    # #         db.session.add(new_user)
-    # #     db.session.commit()
-    # #
-    # #     all_users = models.User.query.all()
-    # #     for user in all_users:
-    # #         print(f'User ID: {user.id}, Name: {user.name}')
-    #
-    #
-    # @app.route('/', methods=['GET', 'POST'])
-    # def index():
-    #     if request.method == 'POST':
-    #         username = request.form['username']
-    #         if username in members:
-    #             return redirect(url_for('calendar', username=username))
-    #         else:
-    #             return render_template('index.html', error="회원이 아닙니다.")
-    #     return render_template('index.html')
-    #
-    # # @app.route('/calendar/<username>')
-    # # def calendar(username):
-    # #     global table_data
-    # #     return render_template('calendar2.html', username=username)
-    #
-    #
-    # @app.route('/calendar/<username>')
-    # def calendar(username):
-    #     global table_data
-    #     return render_template('calendar2.html', username=username, table_data=table_data)
-    #
-    #
-    # @app.route('/booking/<username>')
-    # def booking(username):
-    #     global table_data
-    #     return render_template('booking8.html', username=username,table_data=table_data)
-    #
-    # @app.route('/apply', methods=['POST'])
-    # def apply():
-    #     #개인이 칸에 신청하는 경우
-    #     # global table_data
-    #     # cell_id = request.form['cell_id']
-    #     # username = request.form['username']
-    #     # action = request.form['action']
-    #     #
-    #     # if action == 'apply':
-    #     #     if cell_id in table_data and table_data[cell_id] is not None:
-    #     #         return jsonify(success=False, message="이미 신청된 셀입니다.")
-    #     #     table_data[cell_id] = username
-    #     # elif action == 'cancel':
-    #     #     table_data.pop(cell_id, None)
-    #     #
-    #     # return jsonify(success=True)
-    #     global table_data
-    #     board = request.form['board']
-    #     username = request.form['username']
-    #     action = request.form['action']
-    #
-    #     if action == 'apply':
-    #         if len(table_data[board]) >= 30:
-    #             return jsonify(success=False, message="이미 꽉 찬 게시판입니다.")
-    #         else:
-    #             table_data[board].append(username)
-    #     elif action == 'cancel':
-    #         table_data[board].remove(username)
-    #
-    #     return jsonify(success=True)
-    #
-    # @app.route('/get_table_data', methods=['GET'])
-    # def get_table_data():
-    #     return jsonify(table_data)
-    #
-    # @app.route('/reset', methods=['POST'])
-    # def reset():
-    #     global table_data
-    #     table_data = {
-    #         "10~12시": [],
-    #         "12~2시": [],
-    #         "2~4시": [],
-    #     }
-    #     return jsonify(success=True)
-    #
-    # @app.route('/board_data', methods=['GET'])
-    # def board_data():
-    #     board = request.args.get('board')
-    #     names = table_data[board]
-    #     return jsonify(names=names)
-    #
-    # @app.route('/notice', methods=['POST'])
-    # def post_notice():
-    #     board = request.form.get('board')
-    #     notice = request.form.get('notice')
-    #     if not notice:
-    #         return jsonify({'success': False, 'message': '게시판과 공지 내용을 모두 입력해주세요.'}), 400
-    #
-    #     # 공지를 저장하거나, 데이터베이스에 저장하는 등의 로직 수행
-    #
-    #     return jsonify({'success': True})
-    #
-
-    # if __name__ == '__main__':
-    #     app.run(debug=True)
-    #
-    # return app
