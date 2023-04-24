@@ -52,12 +52,15 @@
 
                 return slots;
             }
-            function createSlot(slotName, dayOfWeek) {
-                const slotId = dayOfWeek.slice(0, 1).toLowerCase() + slotName.replace('~', '').replace('시', '').replace(/ /g, '').replace('(', '_').replace(')', '_'); // 예: 화1012, 괄호를 언더스코어로 변경했습니다. // 예: 화1012
-                console.log(slotId);
+
+
+           function createSlot(slotName, dayOfWeek) {
+                const username = '{{ username }}';
+                const isOverseer = overseerList.includes(username);
+                const slotId = dayOfWeek.slice(0, 1).toLowerCase() + slotName.replace('~', '').replace('시', '').replace(/ /g, '').replace('(', '_').replace(')', '_');
                 const slot = `
                     <div class="slot-container">
-                        <div class="slot-checkbox" ${ '{{ username }}' !== '전재호' ? 'style="display: none;"' : ''}>
+                        <div class="slot-checkbox" ${ !isOverseer ? ' style="display: none;"' : ''}>
                             <input type="checkbox" class="slot-toggle" id="${slotId}-checkbox" data-slot-id="${slotId}">
                             <label for="${slotId}-checkbox">슬롯 비활성화</label>
                         </div>
@@ -78,7 +81,7 @@
                                 `).join('')}
                             </div>
                         </div>
-                        <div class="announcement-section" ${ '{{ username }}' !== '전재호' ? 'style="display: none;"' : ''}>
+                        <div class="announcement-section" ${ !isOverseer ? 'style="display: none;"' : ''}>
                             <div class="grid">
                                 ${Array.from({ length: 15 }, (_, index) => `
                                     <textarea id="input-${slotId}-${index}" class="announcement-input" rows="1" cols="20"></textarea>
@@ -110,8 +113,19 @@
                     $('#board-container').html(`<div style="text-align: center;"><p>${dayOfWeek}요일</p><p>전시대 계획이 없습니다.</p></div>`);
                 }
             }
-
+            let overseerList = [];
             $(document).ready(function () {
+
+
+                $.ajax({
+                  url: '/get_overseer_list',
+                  method: 'GET',
+                  success: function (data) {
+                    overseerList = data.overseer_list;
+                  }
+                });
+
+                console.log(overseerList)
                 let currentDay = null;
                 const today = new Date();
                 const todayText = formatDate(today);
@@ -156,9 +170,7 @@
                         success: function (response) {
                             for (let i = 0; i < slotIds.length; i++) {
                                 const names = response[`names${i + 1}`];
-                                console.log('names:', names);
                                 const namesStr = names.join(',  ');
-                                console.log('namesStr:', namesStr);
                                 $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
                             }
 
@@ -208,7 +220,6 @@
                     const $slot = $slotContainer.find('.slot');
                     const slotId = $slot.data('slot');
                     const contents = [];
-                    console.log('slotId:', slotId); <!--예)토1012(웨돔) 이런식으로 슬롯id를 가져옴-->
 
                     for (let i = 0; i < 15; i++) {
                         const content = $(`#input-${slotId}-${i}`).val();
