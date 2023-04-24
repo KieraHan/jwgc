@@ -52,7 +52,9 @@ def create_app():
 
     if not hasattr(app, 'initialized'):
         app.initialized = True
-        initialize_users_and_overseers(app)
+        with app.app_context():
+            db.create_all()
+            initialize_users_and_overseers(app)
 
     return app
 
