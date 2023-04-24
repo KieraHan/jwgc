@@ -40,9 +40,12 @@ def apply():
             return jsonify({"error": "이미 해당 시간대에 신청하셨습니다."}), 400
 
         day_slot =  ["10~12시", "12~2시", "2~4시", "7~9시"]
+
         board = TueBoard(slot=slot, user_id=user.id, user_name=user.name)
+        print(board)
         db.session.add(board)
         db.session.commit()
+
         applicants = TueBoard.query.filter_by(slot="10~12시").all()
         names1 = [applicant.user.name for applicant in applicants]
         applicants = TueBoard.query.filter_by(slot="12~2시").all()
@@ -103,12 +106,21 @@ def apply():
         names1 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "신청이 완료되었습니다.", "names1": names1}), 200
 
+
+# @bp.route('/get_applicants', methods=['POST'])
+# def get_applicants():능
+#     slot = request.form.get('slot')
+#     applicants = TueBoard.query.filter_by(slot=slot).all()
+#     names = [applicant.username for applicant in applicants]
+#     return jsonify({'names': names})
+
 @bp.route('/update', methods=['POST'])
 def update():
     username = request.form['username']
     day = request.form['day']
 
     if day == '화':
+        # 해당 요일의 모든 신청자 목록을 가져옵니다.
         applicants = TueBoard.query.filter_by(slot="10~12시").all()
         names1 = [applicant.user.name for applicant in applicants]
         applicants = TueBoard.query.filter_by(slot="12~2시").all()
@@ -151,6 +163,8 @@ def cancel():
     user = User.query.filter_by(name=username).first()
     if not user:
         return jsonify({"error": "회원이 아닙니다."}), 400
+
+    # 취소할 신청을 찾습니다.
     if day == "화":
         application_to_cancel = TueBoard.query.filter_by(user_id=user.id, slot=slot_name).first()
         if application_to_cancel:
@@ -218,6 +232,10 @@ def cancel():
             return jsonify({"error": "신청을 찾을 수 없습니다."}), 400
 
 
+
+
+
+#슬롯비활성화업데이트
 @bp.route('/update_disabled_slot', methods=['POST'])
 def update_disabled_slot():
     slot_id = request.form['slot_id']
@@ -239,15 +257,18 @@ def get_disabled_slots():
     disabled_slot_ids = [ds.slot_id for ds in disabled_slots]
     return jsonify({"disabled_slot_ids": disabled_slot_ids})
 
+#공지등록
 @bp.route('/notice', methods=['POST'])
 def create_notice():
     print('Received data:', request.form)
     contents = request.form.getlist('contents[]')
     slot = request.form['slot']
 
+    #같은슬롯이름의 데이터를 찾아서 전부 지움.
     Notice.query.filter_by(slot=slot).delete()
     db.session.commit()
 
+    #새로들어온 내용을 넣는다.
     for content in contents:
         notice = Notice(content=content.strip(), slot=slot)
         db.session.add(notice)
@@ -269,8 +290,12 @@ def get_overseer_list():
     print(overseer_names)
     return jsonify({"overseer_list": overseer_names})
 
+
+#데이터베이스에 있는 회원명단출력
 @bp.route('/us')
 def us():
+    #데이터를 불러와서 저장
     user_list = User.query
     overseer_list = Overseer.query
+    #저장된 데이터를 전달
     return render_template('users/user_list.html', user_list=user_list,overseer_list=overseer_list)
