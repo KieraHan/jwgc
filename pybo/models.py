@@ -8,6 +8,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     #회원이름
     name = db.Column(db.String(5), nullable=False)
+    
+class Overseer(db.Model):
+    #데이터의 고유번호
+    id = db.Column(db.Integer, primary_key=True)
+    #회원이름
+    name = db.Column(db.String(5), nullable=False)
 
 
 # 요일별신청자데이터
