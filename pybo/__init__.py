@@ -50,9 +50,9 @@ def create_app():
     scheduler.add_job(lambda: clear_sun_board(app), 'cron', day_of_week='sun', hour=23)
     scheduler.start()
 
-
-    initialize_users_and_overseers(app)
-
+    if not hasattr(app, 'initialized'):
+        app.initialized = True
+        initialize_users_and_overseers(app)
 
     return app
 
