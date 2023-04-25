@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>전시대 날짜별 신청</title>
+    <title>전시대 날짜별 신청(공지기능까지 완성!!!)</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-datepicker.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='bootstrap-datepicker.js') }}"></script>
@@ -28,6 +28,19 @@
                 const board = `
                     <div class="${dayOfWeek}-board">
                         <h3>${dayOfWeek}요일</h3>
+                        <br><br>
+                        <div class="comment-section">
+                            <div class ="lb_1">
+                                <label for="${dayOfWeek}-comment">공지:</label>
+                                <span id="${dayOfWeek}-notice"></span>
+                            </div>
+                            <br><br>
+                            <div class ="input_t">
+                                <input type="text" id="${dayOfWeek}-comment" name="${dayOfWeek}-comment" placeholder="간단한 요일 전체공지를 작성할 수 있습니다.">
+                                <button type="button" onclick="submitComment('${dayOfWeek}')">등록</button>
+                            </div>
+                        </div>
+                        <br><br><br><br>
                         <div class="row">
                             ${createSlots(dayOfWeek)}
                         </div>
@@ -102,6 +115,52 @@
                     }
                 });
             }
+            function submitComment(dayOfWeek) {
+                const commentInput = document.getElementById(`${dayOfWeek}-comment`);
+                const comment = commentInput.value;
+
+                if (comment === '') {
+                    alert('공지를 입력해주세요.');
+                    return;
+                }
+
+                // AJAX 요청을 사용하여 서버에 데이터를 전송하고, 응답을 받습니다.
+                $.ajax({
+                    url: '/save_notice',
+                    method: 'POST',
+                    data: {
+                        day_of_week: dayOfWeek,
+                        notice: comment
+                    },
+                    success: function (response) {
+                        alert(response.message);
+                        commentInput.value = '';
+                        fetchNotice(dayOfWeek);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert('공지 저장에 실패했습니다.');
+                    }
+                });
+            }
+
+            function fetchNotice(dayOfWeek) {
+                $.ajax({
+                    url: '/get_notice',
+                    method: 'GET',
+                    data: { day_of_week: dayOfWeek },
+                    success: function(response) {
+                        document.getElementById(`${dayOfWeek}-notice`).innerText = response.notice;
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        alert('공지를 불러오는 데 실패했습니다.');
+                    }
+                });
+            }
+
+
+
             function updateBoard(date) {
                 const selectedDate = new Date(date);
                 const dayOfWeek = getDayOfWeek(selectedDate);
@@ -125,6 +184,7 @@
                   }
                 });
 
+                console.log(overseerList)
                 let currentDay = null;
                 const today = new Date();
                 const todayText = formatDate(today);
@@ -141,6 +201,7 @@
                     const day = new Date(selectedDate).getDay();
                     const dayNames = ['일', '월', '화', '수', '목', '금', '토']
                     currentDay = dayNames[day];
+                    fetchNotice(currentDay)
 
                     let slotIds = [];
 
@@ -190,6 +251,12 @@
                         console.log(error);
                     });
                 });
+                document.querySelectorAll('button[type="button"]').forEach((button) => {
+                    button.addEventListener('click', (event) => {
+                        const dayOfWeek = event.target.parentElement.parentElement.parentElement.id;
+                        submitComment(dayOfWeek);
+                    });
+                });
 
                 $('body').on('change', '.slot-toggle', function() {
                     const slotId = $(this).data('slot-id');
@@ -213,6 +280,7 @@
                         console.log(error);
                     });
                 });
+
 
                 $('body').on('click', '.announce-btn', function () {
                     const $slotContainer = $(this).closest('.slot-container');
@@ -266,9 +334,7 @@
 
                             for (let i = 0; i < slotIds.length; i++) {
                                 const names = response[`names${i + 1}`];
-                                console.log('names:', names);
                                 const namesStr = names.join(', ');
-                                console.log('namesStr:', namesStr);
                                 $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
                             }
 
@@ -290,9 +356,7 @@
 
                                                 for (let i = 0; i < slotIds.length; i++) {
                                                     const names = response[`names${i + 1}`];
-                                                    console.log('names:', names);
                                                     const namesStr = names.join(', ');
-                                                    console.log('namesStr:', namesStr);
                                                     $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
                                                 }
                                             },
