@@ -5,7 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>강촌-전시대신청</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&display=swap">
-    <link rel="stylesheet" href="/static/style.css">
+    <style>
+                * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        /* body style */
+        body {
+          background-image: var(--bs-gradient);
+          background-color: #e0ffff;
+          font-family: 'Noto Sans KR', sans-serif;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+
+        /* header style */
+        h1 {
+          margin-top: 30px;
+          margin-bottom: 20px;
+          font-size: 28px;
+          color: black;
+          font-weight: 700;
+          text-align: center;
+        }
+
+        /* form style */
+        form {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+          width: 80%;
+          max-width: 300px;
+          height: 40px;
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          font-size: 16px;
+          line-height: 1.5;
+          background-color: #fff;
+          margin-bottom: 20px;
+        }
+        /*확인버튼*/
+        button[type="submit"] {
+          width: 80%;
+          max-width: 300px;
+          height: 40px;
+          border: none;
+          border-radius: 5px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 1.5;
+          background-color: ##E0FFFF;
+          color: black;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+          background-color: #20B2AA;
+          color: #fff;
+        }
+
+        /* error message style */
+        p {
+          font-size: 16px;
+          font-weight: 700;
+          color: black;
+          text-align: center;
+        }
+        table {
+          margin: 0 auto; /* 가운데 정렬 */
+          max-width: 100%; /* 최대 너비 설정 */
+          width: auto; /* 너비 자동 조정 */
+        }
+
+    
+    
+    </style>
+        
+    
 </head>
 <body>
     <h1>강촌-전시대신청</h1>
