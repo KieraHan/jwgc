@@ -17,6 +17,12 @@ class Overseer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     #회원이름
     name = db.Column(db.String(5), nullable=False)
+    
+class DayNotice(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    day_of_week = db.Column(db.String(15), nullable=False)
+    notice = db.Column(db.String(255), nullable=True)
+
 
 
 # 요일별신청자데이터
