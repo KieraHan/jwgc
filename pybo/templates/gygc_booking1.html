@@ -8,7 +8,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='bootstrap-datepicker.js') }}"></script>
    <script>
-            <!--today:-월-일-요일-->
            function formatDate(date) {
                 const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
                 const dayNames = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
@@ -19,13 +18,11 @@
 
                 return `today: ${monthNames[monthIndex]}${day}일 ${dayNames[dayOfWeekIndex]}`;
            }
-       <!--    날짜를 클릭하면 업데이트보드 함수가 실행되고 업데이트보드함수에서는 겟데이오브윅함수를 실행하여 클릭한날짜의 요일을 불러온다 -->
            function getDayOfWeek(date) {
                 const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
                 const dayOfWeekIndex = date.getDay();
                 return dayNames[dayOfWeekIndex];
             }
-          <!--  게시판생성-->
             function createBoard(dayOfWeek) {
                 const board = `
                     <div class="${dayOfWeek}-board">
@@ -67,7 +64,6 @@
                         <div class="slot" data-slot="${slotId}">
                             <div class="slot-title">${slotName}</div>
                             <br><br><br><br><br><br><br><br>
-                            <!--신청자이름 나오는공간-->
                             <div class="applicants" id="${slotId}-applicants"></div>
                             <br><br><br><br><br><br><br><br>
                             <div class="slot-button"><button type="button" class="btn btn-primary">신청</button></div>
@@ -89,9 +85,6 @@
                             <br><br><br><br>
                             <button type="button" class="btn btn-secondary announce-btn">공지하기</button><br><br><br><br>
                         </div>
-
-
-
                     </div>
                 `;
                 return slot;
@@ -116,10 +109,6 @@
                     $('#board-container').html(`<div style="text-align: center;"><p>${dayOfWeek}요일</p><p>전시대 계획이 없습니다.</p></div>`);
                 }
             }
-
-
-
-
             $(document).ready(function () {
                 let currentDay = null;
                 const today = new Date();
@@ -175,10 +164,7 @@
 
                         }
                     });
-
-                    <!--updateBoard(selectedDate);-->
-
-                    <!--비활성화된 슬롯 정보 가져오기-->
+       
                     $.ajax({
                         url: '/get_disabled_slots',
                         method: 'GET'
@@ -193,7 +179,6 @@
                         console.log(error);
                     });
 
-
                 });
 
                 $('body').on('change', '.slot-toggle', function() {
@@ -205,7 +190,7 @@
                     } else {
                         $slotContainer.removeClass('disabled');
                     }
-                    <!--서버에 비활성화상태 업데이트요청-->
+                    
                     $.ajax({
                         url: '/update_disabled_slot',
                         method: 'POST',
@@ -220,7 +205,7 @@
                     });
                 });
 
-                <!--공지하기버튼클릭이벤트-->
+                
                 $('body').on('click', '.announce-btn', function () {
                     const $slotContainer = $(this).closest('.slot-container');
                     const $slot = $slotContainer.find('.slot');
@@ -243,11 +228,6 @@
                     });
                 });
 
-
-
-
-
-
                 $('body').on('click', '.btn-primary', function () {
                     const $slot = $(this).closest('.slot');
                     const slot = $slot.find('.slot-title').text(); // 슬롯 이름 가져오기
@@ -265,7 +245,7 @@
                     }else if (currentDay === '일') {
                         slotIds = ['일1:303:30'];
                     }
-                    <!--서버에 신청요청넣기-->
+                    
                     $.ajax({
                         url: '/apply',
                         method: 'POST',
@@ -275,12 +255,10 @@
                             day: selectedDay,
                             slot_name: slot
                         },
-                        <!--성공하면 신청완료안내와 함께 해당 요일의 전체신청자명단을 받아옴.-->
+                       
                         success: function (response) {
                             alert(response.message);
-                             <!--신청자 목록 업데이트-->
-
-
+                         
                             for (let i = 0; i < slotIds.length; i++) {
                                 const names = response[`names${i + 1}`];
                                 console.log('names:', names);
@@ -290,11 +268,10 @@
                             }
 
                         },
-                        <!--에러가 뜰 경우 해당시간대에 이미신청했다는 에러라면, 취소여부 물어보기.-->
                         error: function (xhr, status, error) {
                             if (xhr.status === 400 && JSON.parse(xhr.responseText).error === "이미 해당 시간대에 신청하셨습니다.") { // 수정된 부분
                                 if (confirm("이미 신청된 이름입니다. 취소하시겠습니까?")) {
-                                        <!--삭제 요청-->
+                                      
                                         $.ajax({
                                             url: '/cancel',
                                             method: 'POST',
@@ -321,7 +298,7 @@
                                             }
                                         });
                                 } else {
-                                    // 팝업 닫기
+                                   
                                     alert("취소되지 않았습니다.");
                                 }
                             } else {
@@ -344,7 +321,7 @@
             <h3 class="container s3"> 달력에서 신청할 날짜를 선택하세요 </h3>
             <div id="datepicker" class="container"></div>
             <div class ="board-con" id="board-container">
-                <!-- 여기에 게시판이 표시됩니다. -->
+                
             </div>
         </div>
     </div>
