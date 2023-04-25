@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 import json
 from pybo import db
-from pybo.models import User,Overseer,TueBoard,ThuBoard,SatBoard,SunBoard,DisabledSlot,Notice
+from pybo.models import User,Overseer,TueBoard,ThuBoard,SatBoard,SunBoard,DisabledSlot,Notice,DayNotice
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
@@ -290,9 +290,43 @@ def get_overseer_list():
     overseer_names = [overseer.name for overseer in overseer_list]
     return jsonify({"overseer_list": overseer_names})
 
+#요일공지데이터베이스에저장
+@bp.route('/save_notice', methods=['POST'])
+def save_notice():
+    day_of_week = request.form['day_of_week']
+    notice = request.form['notice']
+
+    existing_notice = DayNotice.query.filter_by(day_of_week=day_of_week).first()
+
+    if existing_notice:
+        existing_notice.notice = notice
+    else:
+        day_notice = DayNotice(day_of_week=day_of_week, notice=notice)
+        db.session.add(day_notice)
+
+    db.session.commit()
+
+    return jsonify({"message": "공지가 저장되었습니다."}), 200
+
+#요일공지레이블창으로 보내기
+@bp.route('/get_notice', methods=['GET'])
+def get_notice():
+    day_of_week = request.args.get('day_of_week')
+    day_notice = DayNotice.query.filter_by(day_of_week=day_of_week).first()
+
+    if day_notice:
+        return jsonify({"notice": day_notice.notice}), 200
+    else:
+        return jsonify({"notice": ""}), 200
+
+
+
+
+
+
 
 #데이터베이스에 있는 회원명단출력
-@bp.route('/us')
+@bp.route('/userquanbu')
 def us():
     #데이터를 불러와서 저장
     user_list = User.query
