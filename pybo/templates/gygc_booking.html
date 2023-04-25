@@ -25,6 +25,8 @@
             }
 
             function createBoard(dayOfWeek) {
+                const username = '{{ username }}';
+                const isOverseer = overseerList.includes(username);
                 const board = `
                     <div class="${dayOfWeek}-board">
                         <h3>${dayOfWeek}요일</h3>
@@ -35,7 +37,7 @@
                                 <span id="${dayOfWeek}-notice"></span>
                             </div>
                             <br><br>
-                            <div class ="input_t">
+                            <div class ="input_t"{ !isOverseer ? 'style="display: none;"' : ''}>
                                 <input type="text" id="${dayOfWeek}-comment" name="${dayOfWeek}-comment" placeholder="간단한 요일 전체공지를 작성할 수 있습니다.">
                                 <button type="button" onclick="submitComment('${dayOfWeek}')">등록</button>
                             </div>
