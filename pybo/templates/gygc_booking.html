@@ -223,22 +223,25 @@
                     }else if (currentDay === '일') {
                         slotIds = ['일1:303:30'];
                     }
-                    $.ajax({
-                        url: '/update',
-                        method: 'POST',
-                        data: {
-                            username: '{{ username }}',
-                            day: currentDay,
-                        },
-                        success: function (response) {
-                            for (let i = 0; i < slotIds.length; i++) {
-                                const names = response[`names${i + 1}`];
-                                const namesStr = names.join(',  ');
-                                $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
-                            }
+                    if (slotIds.length > 0) {
+                        $.ajax({
+                            url: '/update',
+                            method: 'POST',
+                            data: {
+                                username: '{{ username }}',
+                                day: currentDay,
+                            },
+                            success: function (response) {
+                                for (let i = 0; i < slotIds.length; i++) {
+                                    const names = response[`names${i + 1}`];
+                                    const namesStr = names.join(',  ');
+                                    $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
+                                }
 
-                        }
-                    });
+                            }
+                        });
+                    }
+
 
                     $.ajax({
                         url: '/get_disabled_slots',
