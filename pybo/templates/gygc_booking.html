@@ -121,11 +121,6 @@
                 const commentInput = document.getElementById(`${dayOfWeek}-comment`);
                 const comment = commentInput.value;
 
-                if (comment === '') {
-                    alert('공지를 입력해주세요.');
-                    return;
-                }
-
                 
                 $.ajax({
                     url: '/save_notice',
