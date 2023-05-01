@@ -320,11 +320,6 @@ def get_notice():
         return jsonify({"notice": ""}), 200
 
 
-
-
-
-
-
 #데이터베이스에 있는 회원명단출력
 @bp.route('/userquanbu')
 def us():
