@@ -32,7 +32,7 @@ def clear_sun_board(app):
 
 def create_app():
     app = Flask(__name__,static_url_path='/static')
-    app.config.from_object(config)
+    app.config.from_object('APP_CONFIG_FILE')
 
     #ORM
     db.init_app(app)
