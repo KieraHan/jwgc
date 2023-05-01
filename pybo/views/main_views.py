@@ -320,11 +320,6 @@ def get_notice():
         return jsonify({"notice": ""}), 200
 
 
-
-
-
-
-
 #데이터베이스에 있는 회원명단출력
 @bp.route('/userquanbu')
 def us():
@@ -333,3 +328,29 @@ def us():
     overseer_list = Overseer.query
     #저장된 데이터를 전달
     return render_template('users/user_list.html', user_list=user_list,overseer_list=overseer_list)
+
+@bp.route('/delete_all/<model_name>', methods=['POST'])
+def delete_all(model_name):
+    if model_name == "user":
+        User.query.delete()
+    elif model_name == "tueboard":
+        TueBoard.query.delete()
+    elif model_name == "thuboard":
+        ThuBoard.query.delete()
+    elif model_name == "satboard":
+        SatBoard.query.delete()
+    elif model_name == "sunboard":
+        SunBoard.query.delete()
+    else:
+        print("Model not found.")
+        return redirect(url_for('index'))
+
+    db.session.commit()
+    print(f"All records deleted for {model_name}.")
+    return redirect(url_for('main.kongzhi'))
+@bp.route('/kongzhi')
+def kongzhi():
+    return render_template('users/kongzhi.html')
+
+
+
