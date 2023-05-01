@@ -153,7 +153,12 @@
                     method: 'GET',
                     data: { day_of_week: dayOfWeek },
                     success: function(response) {
-                        document.getElementById(`${dayOfWeek}-notice`).innerText = response.notice;
+                        const noticeElement = document.getElementById(`${dayOfWeek}-notice`);
+                        if (noticeElement) {
+                            noticeElement.innerText = response.notice || "공지사항이 없습니다.";
+                        } else {
+                            console.log('Element not found:', `${dayOfWeek}-notice`);
+                        }
                     },
                     error: function(error) {
                         console.log(error);
