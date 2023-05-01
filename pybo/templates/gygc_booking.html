@@ -155,7 +155,7 @@
                     success: function(response) {
                         const noticeElement = document.getElementById(`${dayOfWeek}-notice`);
                         if (noticeElement) {
-                            noticeElement.innerText = response.notice || "공지사항이 없습니다.";
+                            noticeElement.innerText = response.notice || " ";
                         } else {
                             console.log('Element not found:', `${dayOfWeek}-notice`);
                         }
