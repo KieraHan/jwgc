@@ -151,12 +151,9 @@
                         const noticeElement = document.getElementById(`${dayOfWeek}-notice`);
                         if (noticeElement) {
                             noticeElement.innerText = response.notice || " ";
-                        } else {
-                            console.log('Element not found:', `${dayOfWeek}-notice`);
-                        }
+                        } 
                     },
                     error: function(error) {
-                        console.log(error);
                         alert('공지를 불러오는 데 실패했습니다.');
                     }
                 });
@@ -187,7 +184,6 @@
                   }
                 });
 
-                console.log(overseerList)
                 let currentDay = null;
                 const today = new Date();
                 const todayText = formatDate(today);
