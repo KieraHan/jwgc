@@ -103,6 +103,10 @@
                                 `).join('')}
                             </div>
                             <br><br><br><br>
+                            <div class="slot-writer">
+                                <label id="label-${slotId}-writer">작성자:</label>
+                            </div>
+                            <br><br><br><br>
                             <button type="button" class="btn btn-secondary announce-btn">공지하기</button><br><br><br><br>
                         </div>
                     </div>
@@ -289,10 +293,14 @@
                     const $slot = $slotContainer.find('.slot');
                     const slotId = $slot.data('slot');
                     const contents = [];
+                    anyContentPresent = false;
 
                     for (let i = 0; i < 15; i++) {
                         const content = $(`#input-${slotId}-${i}`).val();
                         contents.push(content);
+                        if (content.trim() !== '') {
+                            anyContentPresent = true;
+                        }
                     }
                     console.log('Sending data:', { 'contents[]': contents, slot: slotId }); // Add this line
 
@@ -301,13 +309,19 @@
                             for (let i = 0; i < 15; i++) {
                                 $(`#label-${slotId}-${i}`).text(contents[i]);
                             }
+                            if (anyContentPresent) {
+                                $(`#label-${slotId}-writer`).text("작성자: "+ username);
+                            }
+                            else{
+                                $(`#label-${slotId}-writer`).text("작성자: ");
+                            }
                         }
                     });
                 });
 
                 $('body').on('click', '.btn-primary', function () {
                     const $slot = $(this).closest('.slot');
-                    const slot = $slot.find('.slot-title').text(); // 슬롯 이름 가져오기
+                    const slot = $slot.find('.slot-title').text(); 
 
                     const selectedDay = currentDay;
 
