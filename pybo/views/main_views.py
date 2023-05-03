@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 import json
 from pybo import db
-from pybo.models import User,Overseer,TueBoard,ThuBoard,SatBoard,SunBoard,DisabledSlot,Notice,DayNotice
+from pybo.models import User,Overseer,TueBoard,ThuBoard,SatBoard,SunBoard,DisabledSlot,Notice,DayNotice,Writer
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
