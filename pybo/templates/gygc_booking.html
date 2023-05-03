@@ -320,7 +320,7 @@
                         }
                     }
 
-                    $.post('/notice', { 'contents[]': contents, slot: slotId }, function (response) {
+                    $.post('/notice', { 'contents[]': contents, slot: slotId, writer: username}, function (response) {
                         if (response.message === '공지가 등록되었습니다.') {
                             for (let i = 0; i < 15; i++) {
                                 $(`#label-${slotId}-${i}`).text(contents[i]);
