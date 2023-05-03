@@ -96,15 +96,14 @@
                                 `).join('')}
                             </div>
                         </div>
+                        <div class="slot-writer">
+                            <label id="label-${slotId}-writer">작성자:</label>
+                        </div>
                         <div class="announcement-section" ${ !isOverseer ? 'style="display: none;"' : ''}>
                             <div class="grid">
                                 ${Array.from({ length: 15 }, (_, index) => `
                                     <textarea id="input-${slotId}-${index}" class="announcement-input" rows="1" cols="20"></textarea>
                                 `).join('')}
-                            </div>
-                            <br><br><br><br>
-                            <div class="slot-writer">
-                                <label id="label-${slotId}-writer">작성자:</label>
                             </div>
                             <br><br><br><br>
                             <button type="button" class="btn btn-secondary announce-btn">공지하기</button><br><br><br><br>
