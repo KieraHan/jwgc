@@ -108,13 +108,6 @@ def apply():
         return jsonify({"message": "신청이 완료되었습니다.", "names1": names1}), 200
 
 
-# @bp.route('/get_applicants', methods=['POST'])
-# def get_applicants():능
-#     slot = request.form.get('slot')
-#     applicants = TueBoard.query.filter_by(slot=slot).all()
-#     names = [applicant.username for applicant in applicants]
-#     return jsonify({'names': names})
-
 @bp.route('/update', methods=['POST'])
 def update():
     username = request.form['username']
@@ -264,17 +257,25 @@ def create_notice():
     print('Received data:', request.form)
     contents = request.form.getlist('contents[]')
     slot = request.form['slot']
+    writer = request.form['writer']
 
     #같은슬롯이름의 데이터를 찾아서 전부 지움.
     Notice.query.filter_by(slot=slot).delete()
+    db.session.commit()
+    #같은슬롯이름의 작성자를 지운다.
+    Writer.query.filter_by(slot=slot).delete()
     db.session.commit()
 
     #새로들어온 내용을 넣는다.
     for content in contents:
         notice = Notice(content=content.strip(), slot=slot)
         db.session.add(notice)
-
     db.session.commit()
+    #새로들어온 작성자이름을 넣는다.
+    new_writer = Writer(writer=writer, slot=slot)
+    db.session.add(new_writer)
+    db.session.commit()
+
     return jsonify({"message": "공지가 등록되었습니다."}), 200
 
 @bp.route('/get_notices', methods=['POST'])
@@ -283,6 +284,14 @@ def get_notices():
     notices = Notice.query.filter_by(slot=slot).all()
     notice_contents = [notice.content for notice in notices]
     return jsonify({"notice_contents": notice_contents})
+
+@bp.route('/get_writer', methods=['POST'])
+def get_writer():
+    slot = request.form['slot']
+    writers = Writer.query.filter_by(slot=slot).all()
+    writer_name = [w.writer for w in writers]
+    return jsonify({"writer": writer_name})
+
 
 @bp.route('/get_overseer_list', methods=['GET'])
 def get_overseer_list():
