@@ -117,9 +117,24 @@
             function loadNotices(slotId) {
                 $.post('/get_notices', { slot: slotId }, function (response) {
                     const notice_contents = response.notice_contents;
+                    let anyContentPresent = false;
+
                     for (let i = 0; i < notice_contents.length; i++) {
                         $(`#label-${slotId}-${i}`).text(notice_contents[i]);
+                        if (notice_contents[i]) {
+                            anyContentPresent = true;
+                        }
                     }
+
+                    $.post('/get_writer', { slot: slotId }, function (response) {
+                        const username = response.writer;
+
+                        if (anyContentPresent) {
+                            $(`#label-${slotId}-writer`).text("작성자: " + username);
+                        } else {
+                            $(`#label-${slotId}-writer`).text("작성자: ");
+                        }
+                    });
                 });
             }
             function submitComment(dayOfWeek) {
@@ -310,12 +325,7 @@
                             for (let i = 0; i < 15; i++) {
                                 $(`#label-${slotId}-${i}`).text(contents[i]);
                             }
-                            if (anyContentPresent) {
-                                $(`#label-${slotId}-writer`).text("작성자: "+ username);
-                            }
-                            else{
-                                $(`#label-${slotId}-writer`).text("작성자: ");
-                            }
+                            loadNotices(slotId)
                         }
                     });
                 });
