@@ -62,4 +62,9 @@ class Notice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
     slot = db.Column(db.String(20), nullable=False)
+#작성자
+class Writer(db.Model):
+id = db.Column(db.Integer, primary_key=True)
+writer = db.Column(db.Text, nullable=False)
+slot = db.Column(db.String(20), nullable=False)
 
