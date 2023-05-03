@@ -304,7 +304,6 @@
                             anyContentPresent = true;
                         }
                     }
-                    console.log('Sending data:', { 'contents[]': contents, slot: slotId }); // Add this line
 
                     $.post('/notice', { 'contents[]': contents, slot: slotId }, function (response) {
                         if (response.message === '공지가 등록되었습니다.') {
