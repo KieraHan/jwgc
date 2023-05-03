@@ -290,6 +290,7 @@
 
 
                 $('body').on('click', '.announce-btn', function () {
+                    const username = '{{ username }}';
                     const $slotContainer = $(this).closest('.slot-container');
                     const $slot = $slotContainer.find('.slot');
                     const slotId = $slot.data('slot');
