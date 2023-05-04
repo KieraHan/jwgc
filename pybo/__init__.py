@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 from flask_migrate import Migrate
-from .models import db,User,Overseer,TueBoard,ThuBoard,SatBoard,SunBoard
+from .models import db,User,Overseer,TueBoard,ThuBoard,FriBoard,SatBoard,SunBoard
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, time
 import json
@@ -16,6 +16,10 @@ def clear_thu_board(app):
     with app.app_context():
         ThuBoard.query.delete()
         db.session.commit()
+def clear_fri_board(app):
+    with app.app_context():
+        FriBoard.query.delete()
+        db.session.commit()
 
 def clear_sat_board(app):
     with app.app_context():
@@ -25,6 +29,7 @@ def clear_sun_board(app):
     with app.app_context():
         SunBoard.query.delete()
         db.session.commit()
+      
 
 
 # db = SQLAlchemy()
@@ -46,6 +51,7 @@ def create_app():
     scheduler = BackgroundScheduler()
     scheduler.add_job(lambda: clear_tue_board(app), 'cron', day_of_week='tue', hour=23)
     scheduler.add_job(lambda: clear_thu_board(app), 'cron', day_of_week='thu', hour=23)
+    scheduler.add_job(lambda: clear_fri_board(app), 'cron', day_of_week='fri', hour=23)
     scheduler.add_job(lambda: clear_sat_board(app), 'cron', day_of_week='sat', hour=23)
     scheduler.add_job(lambda: clear_sun_board(app), 'cron', day_of_week='sun', hour=23)
     scheduler.start()
@@ -81,7 +87,7 @@ def initialize_users_and_overseers(app):
             db.session.add(u)
             db.session.commit()
 
-        overseers =['김형민','이춘배','전재호','김경호','김진명','박정현','심지훈','한성희','현승우','김경준','김진윤','이성재','김동석','정병호','김양호','안승현','박말호']
+        overseers =['김형민','전재호','김경호','김진명','박정현','심지훈','이재욱','한성희','현승우','김경준','김진윤','이성재','김동석','이춘배','김재호','정병호','김양호','안승현','박말호']
 
         for overseer in overseers:
             u = Overseer(name = overseer)
