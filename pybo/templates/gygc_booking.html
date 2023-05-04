@@ -108,7 +108,8 @@
                                 `).join('')}
                             </div>
                             <br><br><br><br>
-                            <button type="button" class="btn btn-secondary announce-btn">공지하기</button><br><br><br><br>
+                            <button type="button" class="btn btn-secondary announce-btn">공지하기</button>
+                            <button type="button" class="btn btn-secondary import-btn">가져오기</button><br><br><br><br>
                         </div>
                     </div>
                 `;
@@ -329,6 +330,24 @@
                         }
                     });
                 });
+                
+                $('body').on('click', '.import-btn', function () {
+                    const $slotContainer = $(this).closest('.slot-container');
+                    const $slot = $slotContainer.find('.slot');
+                    const slotId = $slot.data('slot');
+                    const contents = [];
+
+                    for (let i = 0; i < 15; i++) {
+                        const content = $(`#label-${slotId}-${i}`).text();
+                        contents.push(content);
+                    }
+                    console.log(contents)
+                    for (let i = 0; i < 15; i++) {
+                                $(`#input-${slotId}-${i}`).val(contents[i]);
+                            }
+
+                });
+                
 
                 $('body').on('click', '.btn-primary', function () {
                     const $slot = $(this).closest('.slot');
