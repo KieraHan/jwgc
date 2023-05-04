@@ -56,6 +56,7 @@
                 const slotNames = {
                     "화": ["10~12시", "12~2시", "2~4시", "7~9시"],
                     "목": ["12~2시", "2~4시", "7~9시"],
+                    "금": ["10~12시"],
                     "토": ["10~12시(웨돔)","10~12시(마두)","12~2시(마두)", "2~4시(마두)"],
                     "일": ["1:30~3:30"]
                 };
@@ -186,7 +187,7 @@
                 const selectedDate = new Date(date);
                 const dayOfWeek = getDayOfWeek(selectedDate);
 
-                if (dayOfWeek === "화" || dayOfWeek === "목" || dayOfWeek === "토" || dayOfWeek === "일") {
+                if (dayOfWeek === "화" || dayOfWeek === "목" || dayOfWeek === "금" || dayOfWeek === "토" || dayOfWeek === "일") {
                     const board = createBoard(dayOfWeek);
                     $('#board-container').html(board);
                 } else {
@@ -233,11 +234,13 @@
 
                     if (currentDay === '화') {
                         slotIds = ['화1012', '화122', '화24', '화79'];
-                    } else if (currentDay === '목') {
+                    }  else if (currentDay === '목') {
                         slotIds = ['목122', '목24', '목79'];
-                    } else if (currentDay === '토') {
+                    }  else if (currentDay === '금') {
+                        slotIds = ['금1012'];
+                    }  else if (currentDay === '토') {
                         slotIds = ['토1012_웨돔_','토1012_마두_', '토122_마두_', '토24_마두_'];
-                    }else if (currentDay === '일') {
+                    }  else if (currentDay === '일') {
                         slotIds = ['일1:303:30'];
                     }
                     if (slotIds.length > 0) {
@@ -361,6 +364,8 @@
                         slotIds = ['화1012', '화122', '화24', '화79'];
                     } else if (currentDay === '목') {
                         slotIds = ['목122', '목24', '목79'];
+                    } else if (currentDay === '금') {
+                        slotIds = ['금1012'];
                     } else if (currentDay === '토') {
                         slotIds = ['토1012_웨돔_','토1012_마두_', '토122_마두_', '토24_마두_'];
                     }else if (currentDay === '일') {
