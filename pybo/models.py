@@ -44,6 +44,12 @@ class SatBoard(db.Model):
     user_id = db.Column(db.Integer, ForeignKey('user.id'))
     user_name = db.Column(db.String(50), nullable=False)  # user_name 필드 추가
     user = relationship("User", backref=db.backref('sat_board', lazy=True))
+class FriBoard(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slot = db.Column(db.String(5), nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
+    user_name = db.Column(db.String(50), nullable=False)  # user_name 필드 추가
+    user = relationship("User", backref=db.backref('fri_board', lazy=True))
 class SunBoard(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slot = db.Column(db.String(5), nullable=False)
