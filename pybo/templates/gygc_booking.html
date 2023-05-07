@@ -87,7 +87,7 @@
 
                             <div class="applicants" id="${slotId}-applicants"></div>
                             <br><br><br><br><br><br><br><br>
-                            <div class="slot-button"><button type="button" class="btn btn-primary">신청</button></div>
+                            <div class="slot-button"><button type="button" class="btn btn-primary">신청/취소</button></div>
                             <br><br>
                         </div>
                         <div class="announcement-label">
@@ -241,7 +241,7 @@
                     }  else if (currentDay === '토') {
                         slotIds = ['토1012_웨돔_','토1012_마두_', '토122_마두_', '토24_마두_'];
                     }  else if (currentDay === '일') {
-                        slotIds = ['일1:303:30'];
+                        slotIds = ['일1반3시반'];
                     }
                     if (slotIds.length > 0) {
                         $.ajax({
@@ -369,7 +369,7 @@
                     } else if (currentDay === '토') {
                         slotIds = ['토1012_웨돔_','토1012_마두_', '토122_마두_', '토24_마두_'];
                     }else if (currentDay === '일') {
-                        slotIds = ['일1:303:30'];
+                        slotIds = ['일1반3시반'];
                     }
                     $.ajax({
                         url: '/apply',
