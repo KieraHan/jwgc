@@ -57,7 +57,7 @@
                     "화": ["10~12시", "12~2시", "2~4시", "7~9시"],
                     "목": ["12~2시", "2~4시", "7~9시"],
                     "금": ["10~12시"],
-                    "토": ["1~3시(마두)", "3~5시(마두)"],
+                    "토": ["1~3시(마두)"],
                     "일": ["1시반~3시반"]
                 };
 
@@ -111,6 +111,9 @@
                             <br><br><br><br>
                             <button type="button" class="btn btn-secondary announce-btn">공지하기</button>
                             <button type="button" class="btn btn-secondary import-btn">가져오기</button><br><br><br><br>
+                            <div class ="lb_1">
+                                <label id="missing-${slotId}">누락:</label><br>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -194,6 +197,8 @@
                     $('#board-container').html(`<div style="text-align: center;"><p>${dayOfWeek}요일</p><p>전시대 계획이 없습니다.</p></div>`);
                 }
             }
+       
+       
             let overseerList = [];
             $(document).ready(function () {
 
@@ -330,6 +335,7 @@
                                 $(`#label-${slotId}-${i}`).text(contents[i]);
                             }
                             loadNotices(slotId)
+                            $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
                         }
                     });
                 });
@@ -353,8 +359,9 @@
                 
 
                 $('body').on('click', '.btn-primary', function () {
-                    const $slot = $(this).closest('.slot');
-                    const slot = $slot.find('.slot-title').text(); 
+                    const $slotContainer = $(this).closest('.slot-container');
+                    const $slot = $slotContainer.find('.slot');
+                    const slot = $slot.data('slot');
 
                     const selectedDay = currentDay;
 
@@ -381,18 +388,13 @@
                             slot_name: slot
                         },
                         success: function (response) {
-                            alert(response.message);
-
                             for (let i = 0; i < slotIds.length; i++) {
                                 const names = response[`names${i + 1}`];
                                 const namesStr = names.join(', ');
                                 $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
                             }
-
                         },
                         error: function (xhr, status, error) {
-                            if (xhr.status === 400 && JSON.parse(xhr.responseText).error === "이미 해당 시간대에 신청하셨습니다.") { // 수정된 부분
-                                if (confirm("이미 신청된 이름입니다. 취소하시겠습니까?")) {
                                         $.ajax({
                                             url: '/cancel',
                                             method: 'POST',
@@ -415,12 +417,7 @@
                                                 alert("취소에 실패했습니다. 다시 시도해주세요.");
                                             }
                                         });
-                                } else {
-                                    alert("취소되지 않았습니다.");
-                                }
-                            } else {
-                                alert("신청에 실패했습니다. 다시 시도해주세요.");
-                            }
+                                
                         }
                     });
                 });
