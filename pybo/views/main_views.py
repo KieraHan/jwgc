@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 import json
 from pybo import db
-from pybo.models import User,Overseer,TueBoard,ThuBoard,FriBoard,SatBoard,SunBoard,DisabledSlot,Notice,DayNotice,Writer
+from pybo.models import User,Overseer,MonBoard,TueBoard,ThuBoard,FriBoard,SatBoard,SunBoard,DisabledSlot,Notice,DayNotice,Writer
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
@@ -34,7 +34,26 @@ def apply():
         return jsonify({"error": "회원이 아닙니다."}), 400
 
     #선택된 요일에 따라 슬롯의 개수가 다름.
-    if day == '화':
+    
+    if day =='월':
+        existing_applicant = MonBoard.query.filter_by(slot=slot_name, user_id=user.id).first()  # 수정된 부분
+        if existing_applicant:
+            return jsonify({"error": "이미 해당 시간대에 신청하셨습니다."}), 400
+
+
+        board = MonBoard(slot=slot, user_id=user.id, user_name=user.name)
+        db.session.add(board)
+        db.session.commit()
+
+        applicants = MonBoard.query.filter_by(slot="월1012").all()
+        names1 = [applicant.user.name for applicant in applicants]
+        applicants = MonBoard.query.filter_by(slot="월122").all()
+        names2 = [applicant.user.name for applicant in applicants]
+        applicants = MonBoard.query.filter_by(slot="월24").all()
+        names3 = [applicant.user.name for applicant in applicants]
+        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3}), 200
+    
+    elif day == '화':
         existing_applicant = TueBoard.query.filter_by(slot=slot_name,user_id=user.id).first()  # 수정된 부분
         print(existing_applicant)
         if existing_applicant:
@@ -120,7 +139,15 @@ def apply():
 def update():
     username = request.form['username']
     day = request.form['day']
-
+    if day == '월':
+        # 해당 요일의 모든 신청자 목록을 가져옵니다.
+        applicants = MonBoard.query.filter_by(slot="월1012").all()
+        names1 = [applicant.user.name for applicant in applicants]
+        applicants = MonBoard.query.filter_by(slot="월122").all()
+        names2 = [applicant.user.name for applicant in applicants]
+        applicants = MonBoard.query.filter_by(slot="월24").all()
+        names3 = [applicant.user.name for applicant in applicants]
+        return jsonify({"message": "월요일 신청자명단 업데이트","names1": names1,"names2": names2,"names3": names3}), 200
     if day == '화':
         # 해당 요일의 모든 신청자 목록을 가져옵니다.
         applicants = TueBoard.query.filter_by(slot="화1012").all()
@@ -170,7 +197,19 @@ def cancel():
     if not user:
         return jsonify({"error": "회원이 아닙니다."}), 400
 
-    # 취소할 신청을 찾습니다.
+    if day == "월":
+        application_to_cancel = MonBoard.query.filter_by(user_id=user.id, slot=slot_name).first()
+        if application_to_cancel:
+            db.session.delete(application_to_cancel)
+            db.session.commit()
+
+            applicants = MonBoard.query.filter_by(slot="월1012").all()
+            names1 = [applicant.user.name for applicant in applicants]
+            applicants = MonBoard.query.filter_by(slot="월122").all()
+            names2 = [applicant.user.name for applicant in applicants]
+            applicants = MonBoard.query.filter_by(slot="월24").all()
+            names3 = [applicant.user.name for applicant in applicants]
+            return jsonify({"message": "신청이 취소되었습니다." ,"names1": names1,"names2": names2,"names3": names3}), 200
     if day == "화":
         application_to_cancel = TueBoard.query.filter_by(user_id=user.id, slot=slot_name).first()
         if application_to_cancel:
@@ -287,7 +326,10 @@ def create_notice():
     for i in contents:
         contentsStr = contentsStr+i
     #공지버튼이 눌러진 슬롯의 신청자명단을 리스트로 받아온다
-    if slot[0]=="화":
+    if slot[0]=="월":
+        applicants = MonBoard.query.filter_by(slot=slot).all()
+        names = [applicant.user.name for applicant in applicants]
+    elif slot[0]=="화":
         applicants = TueBoard.query.filter_by(slot=slot).all()
         names = [applicant.user.name for applicant in applicants]
     elif slot[0]=="목":
@@ -404,6 +446,8 @@ def us():
 def delete_all(model_name):
     if model_name == "user":
         User.query.delete()
+    elif model_name == "monboard":
+        MonBoard.query.delete()
     elif model_name == "tueboard":
         TueBoard.query.delete()
     elif model_name == "thuboard":
