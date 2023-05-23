@@ -26,6 +26,12 @@ class DayNotice(db.Model):
 
 
 # 요일별신청자데이터
+class MonBoard(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slot = db.Column(db.String(5), nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
+    user_name = db.Column(db.String(50), nullable=False)  # user_name 필드 추가
+    user = relationship("User", backref=db.backref('mon_board', lazy=True))
 class TueBoard(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slot = db.Column(db.String(5), nullable=False)
