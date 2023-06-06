@@ -114,6 +114,7 @@
                             <button type="button" class="btn btn-secondary import-btn">가져오기</button><br><br><br><br>
                             <div class ="lb_1">
                                 <label id="missing-${slotId}">누락:</label><br>
+                                <label id="duplicates-${slotId}">중복:</label><br>
                             </div>
                         </div>
                     </div>
@@ -332,15 +333,32 @@
                         }
                     }
 
-                    $.post('/notice', { 'contents[]': contents, slot: slotId, writer: username}, function (response) {
-                        if (response.message === '공지가 등록되었습니다.') {
-                            for (let i = 0; i < 15; i++) {
-                                $(`#label-${slotId}-${i}`).text(contents[i]);
+                    if (anyContentPresent) {
+                        $.post('/notice', { 'contents[]': contents, slot: slotId, writer: username }, function (response) {
+                            if (response.message === '공지가 등록되었습니다.') {
+                                for (let i = 0; i < 15; i++) {
+                                    $(`#label-${slotId}-${i}`).text(contents[i]);
+                                }
+                                loadNotices(slotId);
+                                $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
+                                $(`#duplicates-${slotId}`).text(`중복: ${response.duplicates}`);
                             }
-                            loadNotices(slotId)
-                            $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
+                        });
+                    } else {
+                        const confirmation = confirm('내용이 없습니다. 공지하시겠습니까?');
+                        if (confirmation) {
+                            $.post('/notice', { 'contents[]': contents, slot: slotId, writer: username }, function (response) {
+                                if (response.message === '공지가 등록되었습니다.') {
+                                    for (let i = 0; i < 15; i++) {
+                                        $(`#label-${slotId}-${i}`).text(contents[i]);
+                                    }
+                                    loadNotices(slotId);
+                                    $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
+                                    $(`#duplicates-${slotId}`).text(`중복: ${response.duplicates}`);
+                                }
+                            });
                         }
-                    });
+                    }
                 });
                 
                 $('body').on('click', '.import-btn', function () {
