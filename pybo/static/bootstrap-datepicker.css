@@ -17,7 +17,13 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 100%;
+    width: 90%;
+    border: 2px solid #191970;
+    background-color: #FFFFFF;
+    color: #00008B;
+    font-size: 20px;
+    text-align: left;
+    padding: 10px;
 }
 
 
@@ -101,7 +107,7 @@ textarea.announcement-input {
     border: 1px solid black;
     padding: 5px;
     margin-bottom: 10px;
-    background-color: #f0ffff;
+    background-color: #F0F8FF;
 }
 
 .slot {
@@ -152,7 +158,7 @@ textarea.announcement-input {
     box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
 }
 body {
-  background-color: #e0ffff;
+  background-color: #B0E0E6;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 10px;
   line-height: 0.4;
