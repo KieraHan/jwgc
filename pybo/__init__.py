@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 from flask_migrate import Migrate
-from .models import db,User,Overseer,TueBoard,ThuBoard,FriBoard,SatBoard,SunBoard
+from .models import db,User,Overseer,MonBoard,TueBoard,ThuBoard,FriBoard,SatBoard,SunBoard,Notice
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, time
 import json
