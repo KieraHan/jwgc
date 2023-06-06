@@ -7,26 +7,53 @@ import json
 import config
 migrate = Migrate()
 
+def clear_mon_board(app):
+    with app.app_context():
+        Notice.query.filter_by(slot="월1012").delete()
+        Notice.query.filter_by(slot="월122").delete()
+        Notice.query.filter_by(slot="월24").delete()
+        MonBoard.query.delete()
+        db.session.commit()
+
 def clear_tue_board(app):
     with app.app_context():
+        Notice.query.filter_by(slot="화1012").delete()
+        Notice.query.filter_by(slot="화122").delete()
+        Notice.query.filter_by(slot="화24").delete()
+        Notice.query.filter_by(slot="화79").delete()
+        db.session.commit()
         TueBoard.query.delete()
         db.session.commit()
 
 def clear_thu_board(app):
     with app.app_context():
+        Notice.query.filter_by(slot="목122").delete()
+        Notice.query.filter_by(slot="목24").delete()
+        Notice.query.filter_by(slot="목79").delete()
+        db.session.commit()
         ThuBoard.query.delete()
         db.session.commit()
+
 def clear_fri_board(app):
     with app.app_context():
+        Notice.query.filter_by(slot="금1012").delete()
+        db.session.commit()
         FriBoard.query.delete()
         db.session.commit()
 
 def clear_sat_board(app):
     with app.app_context():
+        Notice.query.filter_by(slot="토1012_웨돔_").delete()
+        Notice.query.filter_by(slot="토1012_마두_").delete()
+        Notice.query.filter_by(slot="토122_마두_").delete()
+        Notice.query.filter_by(slot="토24_마두_").delete()
+        db.session.commit()
         SatBoard.query.delete()
         db.session.commit()
+        
 def clear_sun_board(app):
     with app.app_context():
+        Notice.query.filter_by(slot="일1반3시반").delete()
         SunBoard.query.delete()
         db.session.commit()
       
@@ -49,6 +76,7 @@ def create_app():
     app.register_blueprint(main_views.bp)
 
     scheduler = BackgroundScheduler()
+    scheduler.add_job(lambda: clear_mon_board(app), 'cron', day_of_week='mon', hour=23)
     scheduler.add_job(lambda: clear_tue_board(app), 'cron', day_of_week='tue', hour=23)
     scheduler.add_job(lambda: clear_thu_board(app), 'cron', day_of_week='thu', hour=23)
     scheduler.add_job(lambda: clear_fri_board(app), 'cron', day_of_week='fri', hour=23)
