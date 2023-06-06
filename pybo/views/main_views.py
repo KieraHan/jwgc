@@ -344,6 +344,17 @@ def create_notice():
     elif slot[0]=="일":
         applicants = SunBoard.query.filter_by(slot=slot).all()
         names = [applicant.user.name for applicant in applicants]
+    
+    #신청자이름이 공지에 두번등장하면 중복되었다고 알려주기
+    duplicate = []
+    for name in names:
+        count = contentsStr.count(name)
+        if count > 1:
+            duplicate.append(name)
+
+    duplicates = ""
+    for i in duplicate:
+        duplicates += i + ","
 
     #문자열과 리스트를 하나씩 비교확인하여 누락된 이름을 찾는다.
     for i in range(len(names)):
@@ -380,7 +391,7 @@ def create_notice():
     db.session.add(new_writer)
     db.session.commit()
 
-    return jsonify({"message": "공지가 등록되었습니다.","missing": missing}), 200
+    return jsonify({"message": "공지가 등록되었습니다.","missing": missing,"duplicates":duplicates}), 200
 
 @bp.route('/get_notices', methods=['POST'])
 def get_notices():
