@@ -53,8 +53,8 @@ def clear_fri_board(app):
 
 def clear_sat_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="토13_마두_").delete()
-        Notice.query.filter_by(slot="토35_마두_").delete()
+        Notice.query.filter_by(slot="토13").delete()
+        Notice.query.filter_by(slot="토35").delete()
         db.session.commit()
         SatBoard.query.delete()
         db.session.commit()
