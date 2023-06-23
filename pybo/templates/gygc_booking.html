@@ -60,7 +60,7 @@
                     "목": ["12~2시", "2~4시", "7~9시"],
                     "금": ["10~12시"],
                     "토": ["1~3시","3~5시"],
-                    "일": ["1시반~3시반"]
+                    "일": ["1시반~3시반(마두)","1시반~3시반(웨돔)"]
                 };
 
                 let slots = '';
@@ -193,12 +193,8 @@
                 const selectedDate = new Date(date);
                 const dayOfWeek = getDayOfWeek(selectedDate);
 
-                if (dayOfWeek !=="수") {
-                    const board = createBoard(dayOfWeek);
-                    $('#board-container').html(board);
-                } else {
-                    $('#board-container').html(`<div style="text-align: center;"><p>${dayOfWeek}요일</p><p>전시대 계획이 없습니다.</p></div>`);
-                }
+                const board = createBoard(dayOfWeek);
+                $('#board-container').html(board);
             }
        
        
