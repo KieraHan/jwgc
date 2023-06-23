@@ -38,6 +38,12 @@ class TueBoard(db.Model):
     user_id = db.Column(db.Integer, ForeignKey('user.id'))
     user_name = db.Column(db.String(50), nullable=False)  # user_name 필드 추가
     user = relationship("User", backref=db.backref('tue_board', lazy=True))
+class WedBoard(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slot = db.Column(db.String(5), nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
+    user_name = db.Column(db.String(50), nullable=False)  # user_name 필드 추가
+    user = relationship("User", backref=db.backref('wed_board', lazy=True))
 class ThuBoard(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slot = db.Column(db.String(5), nullable=False)
