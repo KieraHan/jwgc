@@ -24,6 +24,16 @@ def clear_tue_board(app):
         db.session.commit()
         TueBoard.query.delete()
         db.session.commit()
+        
+def clear_wed_board(app):
+    with app.app_context():
+        Notice.query.filter_by(slot="수1012_마두_").delete()
+        Notice.query.filter_by(slot="수1012_웨돔_").delete()
+        Notice.query.filter_by(slot="수24_마두_").delete()
+        Notice.query.filter_by(slot="수24_웨돔_").delete()
+        db.session.commit()
+        WedBoard.query.delete()
+        db.session.commit()
 
 def clear_thu_board(app):
     with app.app_context():
@@ -43,15 +53,16 @@ def clear_fri_board(app):
 
 def clear_sat_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="토13").delete()
-        Notice.query.filter_by(slot="토35").delete()
+        Notice.query.filter_by(slot="토13_마두_").delete()
+        Notice.query.filter_by(slot="토35_마두_").delete()
         db.session.commit()
         SatBoard.query.delete()
         db.session.commit()
         
 def clear_sun_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="일1반3시반").delete()
+        Notice.query.filter_by(slot="일1반3시반_마두_").delete()
+        Notice.query.filter_by(slot="일1반3시반_웨돔_").delete()
         SunBoard.query.delete()
         db.session.commit()
       
@@ -76,6 +87,7 @@ def create_app():
     scheduler = BackgroundScheduler()
     scheduler.add_job(lambda: clear_mon_board(app), 'cron', day_of_week='mon', hour=23)
     scheduler.add_job(lambda: clear_tue_board(app), 'cron', day_of_week='tue', hour=23)
+    scheduler.add_job(lambda: clear_wed_board(app), 'cron', day_of_week='wed', hour=23)
     scheduler.add_job(lambda: clear_thu_board(app), 'cron', day_of_week='thu', hour=23)
     scheduler.add_job(lambda: clear_fri_board(app), 'cron', day_of_week='fri', hour=23)
     scheduler.add_job(lambda: clear_sat_board(app), 'cron', day_of_week='sat', hour=23)
