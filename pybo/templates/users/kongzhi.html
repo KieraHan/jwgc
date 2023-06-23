@@ -7,7 +7,7 @@
     <title>Delete Models</title>
 </head>
 <body>
-    {% for model_name in ["user","monboard","tueboard", "thuboard", "friboard","satboard", "sunboard"] %}
+    {% for model_name in ["user","monboard","tueboard","wedboard","thuboard", "friboard","satboard", "sunboard"] %}
         <form action="{{ url_for('main.delete_all', model_name=model_name) }}" method="post" style="display:inline;">
             <button type="submit">데이터삭제 {{ model_name.capitalize() }}</button>
         </form>
