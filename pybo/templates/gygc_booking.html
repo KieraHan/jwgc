@@ -301,7 +301,7 @@
                             const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
                             $slotContainer.removeClass('disabled');  // disabled 클래스 제거
                             $slotContainer.addClass('hidden');
-                            $slotContainer.siblings('.slot-hide').find('.slot-hide-checkbox').prop('checked', true);
+                            $slotContainer.siblings('.slot-hide').find(`#${slotId}-hide`).prop('checked', true);
 
                         }
                     }).fail(function(error) {
