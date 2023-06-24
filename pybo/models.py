@@ -75,6 +75,12 @@ class DisabledSlot(db.Model):
     slot_id = db.Column(db.String(20), nullable=False, unique=True)
     is_disabled = db.Column(db.Boolean, nullable=False, default=False)
 
+#슬롯숨기기
+class Hide(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slot_id = db.Column(db.String(20), nullable=False, unique=True)
+    is_hide = db.Column(db.Boolean, nullable=False, default=False)
+
 #공지
 class Notice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
