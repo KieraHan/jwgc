@@ -77,6 +77,11 @@
                 const isOverseer = overseerList.includes(username);
                 const slotId = dayOfWeek.slice(0, 1).toLowerCase() + slotName.replace('~', '').replace('시', '').replace(/ /g, '').replace('(', '_').replace(')', '_');
                 const slot = `
+                    <div class="slot-hide" ${username === '전재호' ? '' : 'style="display: none;"'}>
+                        <input type="checkbox" class="slot-hide-checkbox" id="${slotId}-hide" data-slot-id="${slotId}">
+                        <label for="${slotId}-hide">${slotName} 숨기기</label>
+                    </div>
+                    <br><br>
                     <div class="slot-container">
                         <div class="slot-checkbox" ${ !isOverseer ? ' style="display: none;"' : ''}>
                             <input type="checkbox" class="slot-toggle" id="${slotId}-checkbox" data-slot-id="${slotId}">
@@ -278,8 +283,26 @@
                         const disabledSlotIds = response.disabled_slot_ids;
                         for (const slotId of disabledSlotIds) {
                             const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
+                            $slotContainer.removeClass('hidden');  // hidden 클래스 제거
                             $slotContainer.addClass('disabled');
                             $slotContainer.find('.slot-toggle').prop('checked', true);
+                        }
+                    }).fail(function(error) {
+                        console.log(error);
+                    });
+
+                    $.ajax({
+                        url: '/get_hide_slots',
+                        method: 'GET'
+                    }).done(function(response) {
+                        const hideSlotIds = response.hide_slot_ids;
+
+                        for (const slotId of hideSlotIds) {
+                            const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
+                            $slotContainer.removeClass('disabled');  // disabled 클래스 제거
+                            $slotContainer.addClass('hidden');
+                            $slotContainer.siblings('.slot-hide').find('.slot-hide-checkbox').prop('checked', true);
+
                         }
                     }).fail(function(error) {
                         console.log(error);
@@ -307,6 +330,30 @@
                         data: {
                             slot_id: slotId,
                             is_disabled: isChecked
+                        }
+                    }).done(function(response) {
+                        console.log(response.message);
+                    }).fail(function(error) {
+                        console.log(error);
+                    });
+                });
+                $('body').on('change', '.slot-hide-checkbox', function() {
+                    const slotId = $(this).data('slot-id');
+                    const isHide = $(this).is(':checked');
+                    const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
+
+                    if (isHide) {
+                        $slotContainer.addClass('hidden');
+                    } else {
+                        $slotContainer.removeClass('hidden');
+                    }
+
+                    $.ajax({
+                        url: '/update_hide_slot',
+                        method: 'POST',
+                        data: {
+                            slot_id: slotId,
+                            is_hide: isHide
                         }
                     }).done(function(response) {
                         console.log(response.message);
