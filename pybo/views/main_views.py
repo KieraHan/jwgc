@@ -536,6 +536,8 @@ def delete_all(model_name):
         SatBoard.query.delete()
     elif model_name == "sunboard":
         SunBoard.query.delete()
+    elif model_name == "hide":
+        Hide.query.delete()
     else:
         print("Model not found.")
         return redirect(url_for('index'))
