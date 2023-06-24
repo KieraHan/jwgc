@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 import json
 from pybo import db
-from pybo.models import User,Overseer,MonBoard,TueBoard,WedBoard,ThuBoard,FriBoard,SatBoard,SunBoard,DisabledSlot,Notice,DayNotice,Writer
+from pybo.models import Hide,User,Overseer,MonBoard,TueBoard,WedBoard,ThuBoard,FriBoard,SatBoard,SunBoard,DisabledSlot,Notice,DayNotice,Writer
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
@@ -354,6 +354,27 @@ def get_disabled_slots():
     disabled_slots = DisabledSlot.query.filter_by(is_disabled=True).all()
     disabled_slot_ids = [ds.slot_id for ds in disabled_slots]
     return jsonify({"disabled_slot_ids": disabled_slot_ids})
+
+@bp.route('/update_hide_slot', methods=['POST'])
+def update_hide_slot():
+    slot_id = request.form['slot_id']
+    is_hide = request.form['is_hide'] == 'true'
+
+    hide_slot = Hide.query.filter_by(slot_id=slot_id).first()
+    if not hide_slot:
+        hide_slot = Hide(slot_id=slot_id, is_hide=is_hide)
+        db.session.add(hide_slot)
+    else:
+        hide_slot.is_hide = is_hide
+
+    db.session.commit()
+    return jsonify({"message": "숨기기 상태가 업데이트되었습니다."}), 200
+
+@bp.route('/get_hide_slots', methods=['GET'])
+def get_hide_slots():
+    hide_slots = Hide.query.filter_by(is_hide=True).all()
+    hide_slot_ids = [ds.slot_id for ds in hide_slots]
+    return jsonify({"hide_slot_ids": hide_slot_ids})
 
 #공지등록
 @bp.route('/notice', methods=['POST'])
