@@ -95,6 +95,14 @@ textarea.announcement-input {
 .disabled .slot-button {
     display: none;
 }
+
+.slot-hide{
+    font-size:15px;
+
+}
+.slot-container.hidden{
+    display: none;
+}
 /* 시간별네모칸스타일*/
 
 .board, .slot-container {
