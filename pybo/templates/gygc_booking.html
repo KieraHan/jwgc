@@ -99,23 +99,39 @@
                         </div>
                         <div class="announcement-label">
                             <div class="grid_label">
-                                ${Array.from({ length: 15 }, (_, index) => `
-                                    <label id="label-${slotId}-${index}" class="announcement-label-item"></label>
-                                `).join('')}
-                            </div>
+                            ${Array.from({ length: 40 }, (_, index) => {
+                                if ([1, 3, 21, 23].includes(index)) {
+                                    return '<div class="empty-space"></div>';
+                                }
+                                if (index % 2 === 0) {
+                                    return `<label id="label-${slotId}-${index}" class="announcement-label-item large"></label>`;
+                                } else {
+                                    return `<button id="button-${slotId}-${index}" class="announcement-label-item medium announcement-button""></button>`;
+                                }
+                            }).join('')}
                         </div>
-                        <br><br><br><br>
-                        <div class="slot-writer">
-                            <label id="label-${slotId}-writer">작성자:</label>
-                        </div>
-                        <br><br><br><br>
-                        <div class="announcement-section" ${ !isOverseer ? 'style="display: none;"' : ''}>
-                            <div class="grid">
-                                ${Array.from({ length: 15 }, (_, index) => `
-                                    <textarea id="input-${slotId}-${index}" class="announcement-input" rows="1" cols="20"></textarea>
-                                `).join('')}
+
+                            <br><br><br><br>
+                            <div class="slot-writer">
+                                <label id="label-${slotId}-writer">작성자:</label>
                             </div>
                             <br><br><br><br>
+                        </div>
+                        <div class="announcement-section" ${ !isOverseer ? 'style="display: none;"' : ''}>
+                            <div class="grid">
+                                ${Array.from({ length: 40 }, (_, index) => {
+                                    if ([1, 3, 21, 23].includes(index)) {
+                                        return '<div class="empty-space"></div>'; 
+                                    }
+                                    if (index % 2 === 0) {   
+                                        return `<textarea id="input-${slotId}-${index}" class="announcement-label-item large announcement-input"></textarea>`;
+                                    } else {
+                                        return `<textarea id="input-${slotId}-${index}" class="announcement-label-item medium announcement-input""></textarea>`;
+                                    }
+                                }).join('')}
+                            </div>
+                            <br><br><br><br>
+
                             <button type="button" class="btn btn-secondary announce-btn">공지하기</button>
                             <button type="button" class="btn btn-secondary import-btn">가져오기</button><br><br><br><br>
                             <div class ="lb_1">
@@ -134,6 +150,7 @@
 
                     for (let i = 0; i < notice_contents.length; i++) {
                         $(`#label-${slotId}-${i}`).text(notice_contents[i]);
+                        $(`#button-${slotId}-${i}`).text(notice_contents[i]);
                         if (notice_contents[i]) {
                             anyContentPresent = true;
                         }
@@ -362,19 +379,39 @@
                     });
                 });
 
+                $('body').on('click', '.announcement-button', function() { //구역카드클릭
+                    const buttonText = $(this).text();
+                    if (!buttonText) {
+                        return;
+                    }
+                    const username = '{{ username }}';
+                    const today = new Date();
 
-                $('body').on('click', '.announce-btn', function () {
+                    const month = String(today.getMonth() + 1).padStart(2, '0');  
+                    const day = String(today.getDate()).padStart(2, '0');
+                    const currentDate = month + day;
+                    const targetURL = 'https://gch.jwcard.co.kr/territory.aspx?v_name='+username+'&z_num='+buttonText+'&c_time='+currentDate
+                    window.location.href = targetURL;
+                });
+
+
+                $('body').on('click', '.announce-btn', function () { //공지하기클릭
                     const username = '{{ username }}';
                     const $slotContainer = $(this).closest('.slot-container');
                     const $slot = $slotContainer.find('.slot');
                     const slotId = $slot.data('slot');
-                    const contents = [];
+                    const contents = new Array(40).fill(null); // 초기에 모든 값을 null로 설정
                     anyContentPresent = false;
+                    console.log(slotId)
 
-                    for (let i = 0; i < 15; i++) {
+                    for (let i = 0; i < 40; i++) {
+                        if ([1, 3, 21, 23].includes(i)) {
+                            continue;
+                        }
                         const content = $(`#input-${slotId}-${i}`).val();
-                        contents.push(content);
-                        if (content.trim() !== '') {
+                        contents[i] = content; 
+
+                        if (content && content.trim() !== '') {
                             anyContentPresent = true;
                         }
                     }
@@ -382,9 +419,16 @@
                     if (anyContentPresent) {
                         $.post('/notice', { 'contents[]': contents, slot: slotId, writer: username }, function (response) {
                             if (response.message === '공지가 등록되었습니다.') {
-                                for (let i = 0; i < 15; i++) {
-                                    $(`#label-${slotId}-${i}`).text(contents[i]);
+                                for (let i = 0; i < 40; i++) {
+                                    if (contents[i]) { 
+                                        if (i % 2 === 0) {
+                                            $(`#label-${slotId}-${i}`).text(contents[i]);
+                                        } else {
+                                            $(`#button-${slotId}-${i}`).text(contents[i]);
+                                        }
+                                    }
                                 }
+
                                 loadNotices(slotId);
                                 $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
                                 $(`#duplicates-${slotId}`).text(`중복: ${response.duplicates}`);
@@ -395,7 +439,7 @@
                         if (confirmation) {
                             $.post('/notice', { 'contents[]': contents, slot: slotId, writer: username }, function (response) {
                                 if (response.message === '공지가 등록되었습니다.') {
-                                    for (let i = 0; i < 15; i++) {
+                                    for (let i = 0; i < 40; i++) {
                                         $(`#label-${slotId}-${i}`).text(contents[i]);
                                     }
                                     loadNotices(slotId);
