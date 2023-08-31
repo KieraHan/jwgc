@@ -32,7 +32,7 @@ label {
 }
 
 input[type="text"] {
-    width: 85%; /* 입력 창의 너비를 원하는 크기로 조절하세요. */
+    width: 90%; /* 입력 창의 너비를 원하는 크기로 조절하세요. */
 }
 
 
@@ -44,10 +44,16 @@ input[type="text"] {
 
 }
 .grid_label {
-        display: grid;
+    margin-left: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;  /* 각각의 네모칸 사이의 간격 */
+
+
+ /*     display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(5, 1fr);
-        gap: 1px;
+        gap: 1px;*/
 
 /*    display: center;
     width: 100%;*/
@@ -55,15 +61,30 @@ input[type="text"] {
     row-gap: 2px;
     column-gap: 2px;*/
 }
+.grid_label > :nth-child(20) {
+    margin-bottom: 20px; /* 다섯번째줄과 여섯번째줄 사이 간격 */
+}
+.empty-space {
+    width: 60px; /* 버튼없는첫번째,여섯번째줄 빈공간넣  */
+}
+
 .announcement-label-item {
     display: inline-block;
     border: 1px solid #000;
-    width: 110px;
-    height: 20px;
     line-height: 20px;
-    text-align: center;
-    margin-right: 2px;
+    margin-right: 1px;
     margin-bottom: 2px;
+    font-size:13px;
+}
+.announcement-label-item.large {
+    height: 23px;  /* 큰 네모칸의 높이 */
+    width: 120px;   /* 큰 네모칸의 넓이 */
+}
+
+.announcement-label-item.medium {
+    height: 23px;   /* 중간 네모칸의 높이 */
+    width: 50px;    /* 중간 네모칸의 넓이 */
+    text-align: center;
     font-size:11px;
 }
 
@@ -76,11 +97,10 @@ textarea.announcement-input {
     width: 100%;
 }
 .grid {
-    margin-left: 4px;
+    margin-left: 5px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 1px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;  /* 각각의 네모칸 사이의 간격 */
 }
 .slot-container.disabled .slot-button {
     pointer-events: none;
@@ -95,7 +115,6 @@ textarea.announcement-input {
 .disabled .slot-button {
     display: none;
 }
-
 .slot-hide{
     font-size:15px;
 
@@ -110,8 +129,8 @@ textarea.announcement-input {
     flex-direction: column;
     width: 100%;
     height: auto;
-    max-width: 350px;
-    max-height: 600px;
+    max-width: 380px;
+    max-height: 950px;
     border: 1px solid black;
     padding: 5px;
     margin-bottom: 10px;
@@ -166,6 +185,7 @@ textarea.announcement-input {
     box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
 }
 body {
+  /*background-color: #e0ffff;*/
   background-color: #B0E0E6;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 10px;
