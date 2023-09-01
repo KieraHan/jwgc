@@ -44,28 +44,17 @@ input[type="text"] {
 
 }
 .grid_label {
-    margin-left: 10px;
+    margin-left: 5px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1px;  /* 각각의 네모칸 사이의 간격 */
+    gap:3px;  /* 각각의 네모칸 사이의 간격 */
 
-
- /*     display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(5, 1fr);
-        gap: 1px;*/
-
-/*    display: center;
-    width: 100%;*/
-/*    width: 350px;  *//*label width * 4 + gap * 3*//*
-    row-gap: 2px;
-    column-gap: 2px;*/
 }
 .grid_label > :nth-child(20) {
     margin-bottom: 20px; /* 다섯번째줄과 여섯번째줄 사이 간격 */
 }
 .empty-space {
-    width: 60px; /* 버튼없는첫번째,여섯번째줄 빈공간넣  */
+    width: 40px; /* 버튼없는첫번째,여섯번째줄 빈공간넣  */
 }
 
 .announcement-label-item {
@@ -77,16 +66,52 @@ input[type="text"] {
     font-size:13px;
 }
 .announcement-label-item.large {
+    background-color: #FFFFFF;
     height: 23px;  /* 큰 네모칸의 높이 */
-    width: 120px;   /* 큰 네모칸의 넓이 */
+    width: 140px;   /* 큰 네모칸의 넓이 */
 }
 
 .announcement-label-item.medium {
     height: 23px;   /* 중간 네모칸의 높이 */
-    width: 50px;    /* 중간 네모칸의 넓이 */
-    text-align: center;
+    width: 40px;    /* 중간 네모칸의 넓이 */
     font-size:11px;
 }
+
+.announcement-label-item.large.announcement-input{
+    background-color: #FFFFFF;
+    height: 23px;  /* 큰 네모칸의 높이 */
+    width: 140px;   /* 큰 네모칸의 넓이 */
+}
+.announcement-label-item.medium.announcement-input{
+    background-color: #FFFFFF;
+    height: 23px;  /* 큰 네모칸의 높이 */
+    width: 30px;   /* 큰 네모칸의 넓이 */
+}
+.announcement-button {
+    /* 버튼의 기본 스타일 */
+    padding: 2px 5px;  /* 내부 패딩 */
+    border: none;        /* 기본 테두리 제거 */
+    background-color: #3498db; /* 기본 배경색 */
+    color: white;        /* 글자색 */
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s; /* 부드러운 배경색과 크기 변화 효과 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);  /* 입체감을 위한 그림자 */
+    cursor: pointer;     /* 마우스가 버튼 위에 있을 때 손가락 모양으로 바뀜 */
+    border-radius: 5px;  /* 모서리 둥글게 */
+}
+
+.announcement-button:hover {
+    /* 마우스가 버튼 위에 있을 때의 스타일 */
+    background-color: #2980b9;  /* 조금 더 진한 색으로 */
+    transform: scale(1.05);     /* 약간 확대 */
+}
+
+.announcement-button:active {
+    /* 버튼을 클릭할 때의 스타일 */
+    transform: scale(1);         /* 원래 크기로 */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);  /* 그림자를 조금 낮춤 */
+}
+
 
 /*공지텍스트칸*/
 textarea.announcement-input {
