@@ -92,7 +92,7 @@ input[type="text"] {
     padding: 2px 5px;  /* 내부 패딩 */
     border: 1px solid #778899;        /* 기본 테두리 제거 */
     background-color: #d3d3d3; /* 기본 배경색 */
-    color: white;        /* 글자색 */
+    color: black;        /* 글자색 */
     text-align: center;
     transition: background-color 0.3s, transform 0.3s; /* 부드러운 배경색과 크기 변화 효과 */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);  /* 입체감을 위한 그림자 */
