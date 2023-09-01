@@ -557,6 +557,9 @@ def delete_all(model_name):
         SunBoard.query.delete()
     elif model_name == "hide":
         Hide.query.delete()
+    elif model_name == "dayNotice":
+        DayNotice.query.delete()
+    
     else:
         print("Model not found.")
         return redirect(url_for('index'))
