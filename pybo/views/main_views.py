@@ -446,14 +446,14 @@ def create_notice():
                 if names[i][0] == contentsStr[j]:
                     if names[i][1] == contentsStr[j + 1]:
                         if names[i][2] == contentsStr[j + 2]:
-                            names[i] = "0"
+                            names[i] = "-1"
             else:
                 if names[i][0] == contentsStr[j]:
                     if names[i][1] == contentsStr[j + 1]:
-                        names[i] = "0"
+                        names[i] = "-1"
     missing = ""
     for i in names:
-        if i != "0":
+        if i != "-1":
             missing += i+","
 
     #같은슬롯이름의 데이터를 찾아서 전부 지움.
