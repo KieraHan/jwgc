@@ -533,8 +533,9 @@ def us():
     #데이터를 불러와서 저장
     user_list = User.query
     overseer_list = Overseer.query
+    notice_list = Notice.query
     #저장된 데이터를 전달
-    return render_template('users/user_list.html', user_list=user_list,overseer_list=overseer_list)
+    return render_template('users/user_list.html', user_list=user_list,overseer_list=overseer_list,notice_list =notice_list)
 
 @bp.route('/delete_all/<model_name>', methods=['POST'])
 def delete_all(model_name):
