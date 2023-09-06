@@ -41,6 +41,7 @@ def clear_wed_board(app):
 
 def clear_thu_board(app):
     with app.app_context():
+        Notice.query.filter_by(slot="목1012").delete()
         Notice.query.filter_by(slot="목122").delete()
         Notice.query.filter_by(slot="목24").delete()
         Notice.query.filter_by(slot="목79").delete()
@@ -61,6 +62,7 @@ def clear_fri_board(app):
 
 def clear_sat_board(app):
     with app.app_context():
+        Notice.query.filter_by(slot="토1012").delete()
         Notice.query.filter_by(slot="토13").delete()
         Notice.query.filter_by(slot="토35").delete()
         db.session.commit()
