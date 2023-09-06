@@ -104,13 +104,15 @@ def apply():
         db.session.add(board)
         db.session.commit()
 
-        applicants = ThuBoard.query.filter_by(slot="목122").all()
+        applicants = ThuBoard.query.filter_by(slot="목1012").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = ThuBoard.query.filter_by(slot="목24").all()
+        applicants = ThuBoard.query.filter_by(slot="목122").all()
         names2 = [applicant.user.name for applicant in applicants]
-        applicants = ThuBoard.query.filter_by(slot="목79").all()
+        applicants = ThuBoard.query.filter_by(slot="목24").all()
         names3 = [applicant.user.name for applicant in applicants]
-        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3}), 200
+        applicants = ThuBoard.query.filter_by(slot="목79").all()
+        names4 = [applicant.user.name for applicant in applicants]
+        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3,"names4": names4}), 200
     elif day =='금':
         existing_applicant = FriBoard.query.filter_by(slot=slot_name, user_id=user.id).first()  # 수정된 부분
         if existing_applicant:
