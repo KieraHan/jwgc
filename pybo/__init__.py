@@ -13,7 +13,9 @@ def clear_mon_board(app):
         Notice.query.filter_by(slot="월1012").delete()
         Notice.query.filter_by(slot="월122").delete()
         Notice.query.filter_by(slot="월24").delete()
+        db.session.commit()
         MonBoard.query.delete()
+        db.session.commit()
         DayNotice.query.filter_by(day_of_week="월").delete()
         db.session.commit()
 
@@ -25,6 +27,7 @@ def clear_tue_board(app):
         Notice.query.filter_by(slot="화79").delete()
         db.session.commit()
         TueBoard.query.delete()
+        db.session.commit()
         DayNotice.query.filter_by(day_of_week="화").delete()
         db.session.commit()
         
@@ -36,6 +39,7 @@ def clear_wed_board(app):
         Notice.query.filter_by(slot="수24_웨돔_").delete()
         db.session.commit()
         WedBoard.query.delete()
+        db.session.commit()
         DayNotice.query.filter_by(day_of_week="수").delete()
         db.session.commit()
 
@@ -47,6 +51,7 @@ def clear_thu_board(app):
         Notice.query.filter_by(slot="목79").delete()
         db.session.commit()
         ThuBoard.query.delete()
+        db.session.commit()
         DayNotice.query.filter_by(day_of_week="목").delete()
         db.session.commit()
 
@@ -57,6 +62,7 @@ def clear_fri_board(app):
         Notice.query.filter_by(slot="금24").delete()
         db.session.commit()
         FriBoard.query.delete()
+        db.session.commit()
         DayNotice.query.filter_by(day_of_week="금").delete()
         db.session.commit()
 
@@ -67,6 +73,7 @@ def clear_sat_board(app):
         Notice.query.filter_by(slot="토35").delete()
         db.session.commit()
         SatBoard.query.delete()
+        db.session.commit()
         DayNotice.query.filter_by(day_of_week="토").delete()
         db.session.commit()
         
@@ -74,7 +81,9 @@ def clear_sun_board(app):
     with app.app_context():
         Notice.query.filter_by(slot="일1반3시반_마두_").delete()
         Notice.query.filter_by(slot="일3반5시반_마두_").delete()
+        db.session.commit()
         SunBoard.query.delete()
+        db.session.commit()
         DayNotice.query.filter_by(day_of_week="일").delete()
         db.session.commit()
       
