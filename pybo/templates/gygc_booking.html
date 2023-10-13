@@ -15,7 +15,6 @@
                 const monthIndex = date.getMonth();
                 const year = date.getFullYear();
                 const dayOfWeekIndex = date.getDay();
-
                 return `Today: ${monthNames[monthIndex]}${day}일 ${dayNames[dayOfWeekIndex]}`;
            }
            function getDayOfWeek(date) {
@@ -23,7 +22,6 @@
                 const dayOfWeekIndex = date.getDay();
                 return dayNames[dayOfWeekIndex];
             }
-
             function createBoard(dayOfWeek) {
                 const username = '{{ username }}';
                 const isOverseer = overseerList.includes(username);
@@ -48,30 +46,27 @@
                         </div>
                     </div>
                 `;
-
                 return board;
             }
-
             function createSlots(dayOfWeek) {
                 const slotNames = {
-                    "월": ["10~12시", "12~2시", "2~4시"],
-                    "화": ["10~12시", "12~2시", "2~4시", "7~9시"],
-                    "수": ["10~12시(마두)","1~3시(마두)"],
-                    "목": ["10~12시","12~2시", "2~4시", "7~9시"],
-                    "금": ["10~12시","12~2시","2~4시"],
-                    "토": ["10~12시","12~2시","2~4시"],
-                    "일": ["1시반~3시반(마두)","1시반~3시반(웨돔)","3시반~5시반(마두)"]
-                };
+                    "월" : [ "10~12시" ,  "12~2시" ,  "2~4시" ] ,
+                    "화" : [ "10~12시" ,  "12~2시" ,  "2~4시" ,  "7~9시" ] ,
+                    "수" : [ "10~12시(마두)" , "1~3시(마두)" ] ,
+                    "목" : [ "12~2시" ,  "2~4시" ,  "7~9시" ] ,
+                    "목" : [ " 10~12시" , " 12~2시" ,  "2~4시" ,  "7~9시" ] ,
+                    "금" : [ "10~12시" , "12~2시" , "2~4시" ] ,
+                    "토" : [ "1~3시" , "3~5시" ] ,
+                    "토" : [ " 10~12시" , " 1~3시" , "3~5시" ] ,
+                    "일" : [ "1시반~3시반(마두)" , "1시반~3시반(웨돔)" , "3시반~5시반(마두)" ]
+                } ;
 
                 let slots = '';
                 for (let i = 0; i < slotNames[dayOfWeek].length; i++) {
                     slots += createSlot(slotNames[dayOfWeek][i],dayOfWeek);
                 }
-
                 return slots;
             }
-
-
            function createSlot(slotName, dayOfWeek) {
                 const username = '{{ username }}';
                 const isOverseer = overseerList.includes(username);
@@ -83,195 +78,19 @@
                     </div>
                     <br><br>
                     <div class="slot-container">
-                        <div class="slot-checkbox" ${ !isOverseer ? ' style="display: none;"' : ''}>
-                            <input type="checkbox" class="slot-toggle" id="${slotId}-checkbox" data-slot-id="${slotId}">
-                            <label for="${slotId}-checkbox">신청 마감</label>
-                        </div>
-                        <br><br>
-                        <div class="slot" data-slot="${slotId}">
-                            <div class="slot-title">${slotName}</div>
-                            <br><br><br><br><br><br><br><br>
-
-                            <div class="applicants" id="${slotId}-applicants"></div>
-                            <br><br><br><br><br><br><br><br>
-                            <div class="slot-button"><button type="button" class="btn btn-primary">신청/취소</button></div>
-                            <br><br>
-                        </div>
-                        <div class="announcement-label">
-                            <div class="grid_label">
-                            ${Array.from({ length: 40 }, (_, index) => {
-                                if ([1, 3, 21, 23].includes(index)) {
-                                    return '<div class="empty-space"></div>';
-                                }
-                                if (index % 2 === 0) {
-                                    return `<label id="label-${slotId}-${index}" class="announcement-label-item large"></label>`;
-                                } else {
-                                    return `<button id="button-${slotId}-${index}" class="announcement-label-item medium announcement-button""></button>`;
-                                }
-                            }).join('')}
-                        </div>
-
-                            <br><br><br><br>
-                            <div class="slot-writer">
-                                <label id="label-${slotId}-writer">작성자:</label>
-                            </div>
-                            <br><br><br><br>
-                        </div>
-                        <div class="announcement-section" ${ !isOverseer ? 'style="display: none;"' : ''}>
-                            <div class="grid">
-                                ${Array.from({ length: 40 }, (_, index) => {
-                                    if ([1, 3, 21, 23].includes(index)) {
-                                        return '<div class="empty-space"></div>'; 
-                                    }
-                                    if (index % 2 === 0) {   
-                                        return `<textarea id="input-${slotId}-${index}" class="announcement-label-item large announcement-input"></textarea>`;
-                                    } else {
-                                        return `<textarea id="input-${slotId}-${index}" class="announcement-label-item medium announcement-input""></textarea>`;
-                                    }
-                                }).join('')}
-                            </div>
-                            <br><br><br><br>
-
-                            <button type="button" class="btn btn-secondary announce-btn">공지하기</button>
-                            <button type="button" class="btn btn-secondary import-btn">가져오기</button><br><br><br><br>
-                            <div class ="lb_1">
-                                <label id="missing-${slotId}">누락:</label><br>
-                                <label id="duplicates-${slotId}">중복:</label><br>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                return slot;
-            }
-            function loadNotices(slotId) {
-                $.post('/get_notices', { slot: slotId }, function (response) {
-                    const notice_contents = response.notice_contents;
-                    let anyContentPresent = false;
-
-                    for (let i = 0; i < notice_contents.length; i++) {
-                        $(`#label-${slotId}-${i}`).text(notice_contents[i]);
-                        $(`#button-${slotId}-${i}`).text(notice_contents[i]);
-                        if (notice_contents[i]) {
-                            anyContentPresent = true;
-                        }
-                    }
-
-                    $.post('/get_writer', { slot: slotId }, function (response) {
-                        const username = response.writer;
-
-                        if (anyContentPresent) {
-                            $(`#label-${slotId}-writer`).text("작성자: " + username);
-                        } else {
-                            $(`#label-${slotId}-writer`).text("작성자: ");
-                        }
-                    });
-                });
-            }
-            function submitComment(dayOfWeek) {
-                const commentInput = document.getElementById(`${dayOfWeek}-comment`);
-                const comment = commentInput.value;
-
-                
-                $.ajax({
-                    url: '/save_notice',
-                    method: 'POST',
-                    data: {
-                        day_of_week: dayOfWeek,
-                        notice: comment
-                    },
-                    success: function (response) {
-                        alert(response.message);
-                        commentInput.value = '';
-                        fetchNotice(dayOfWeek);
-
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        alert('공지 저장에 실패했습니다.');
-                    }
-                });
-            }
-
-            function fetchNotice(dayOfWeek) {
-                $.ajax({
-                    url: '/get_notice',
-                    method: 'GET',
-                    data: { day_of_week: dayOfWeek },
-                    success: function(response) {
-                        const noticeElement = document.getElementById(`${dayOfWeek}-notice`);
-                        if (noticeElement) {
-                            noticeElement.innerText = response.notice || " ";
-                        } 
-                    },
-                    error: function(error) {
-                        alert('공지를 불러오는 데 실패했습니다.');
-                    }
-                });
-            }
-
-
-
-            function updateBoard(date) {
-                const selectedDate = new Date(date);
-                const dayOfWeek = getDayOfWeek(selectedDate);
-
-                const board = createBoard(dayOfWeek);
-                $('#board-container').html(board);
-            }
-       
-       
-            let overseerList = [];
-            $(document).ready(function () {
-
-
-                $.ajax({
-                  url: '/get_overseer_list',
-                  method: 'GET',
-                  success: function (data) {
-                    overseerList = data.overseer_list;
-                  }
-                });
-
-                let currentDay = null;
-                const today = new Date();
-                const todayText = formatDate(today);
-                $('#date-title').text(todayText);
-
-                $('#datepicker').datepicker({
-                    startDate: 'd',
-                    endDate: '+6d',
-                    format: 'yyyy-mm-dd',
-                    autoclose: false,
-                    inline: true
-                }).on('changeDate', function (e) {
-                    const selectedDate = e.format('yyyy-mm-dd');
-                    const day = new Date(selectedDate).getDay();
-                    const dayNames = ['일', '월', '화', '수', '목', '금', '토']
-                    currentDay = dayNames[day];
-                    fetchNotice(currentDay)
-
-                    let slotIds = [];
-
-                    updateBoard(selectedDate);
-                    $('.slot').each(function () {
-                        const slotId = $(this).data('slot');
-                        loadNotices(slotId);
-                    });
-
-                    if (currentDay === '월') {
-                        slotIds = ['월1012', '월122', '월24'];
-                    } else if (currentDay === '화') {
-                        slotIds = ['화1012', '화122', '화24', '화79'];
-                    } else if (currentDay === '수') {
-                        slotIds = ['수1012_마두_','수1012_웨돔_','수13_마두_','수24_웨돔_' ];
-                    } else if (currentDay === '목') {
-                        slotIds = ['목1012','목122', '목24', '목79'];
-                    } else if (currentDay === '금') {
-                        slotIds = ['금1012','금122','금24'];
-                    }else if (currentDay === '토') {
-                        slotIds = ['토1012','토1012_마두_','토122', '토24'];
-                    }else if (currentDay === '일') {
-                        slotIds = ['일1반3시반_마두_','일1반3시반_웨돔_','일3반5시반_마두_'];
+@@ -265,11 +265,11 @@
+                    }  else  if  ( currentDay  ===  '수' )  {
+                        SlotIds  =  [ '수1012_마두_' , '수1012_웨돔_' , '수13_마두_' , '수24_웨돔_'  ] ;
+                    }  else  if  ( currentDay  ===  '목' )  {
+                        SlotIds  =  [ '목122' ,  '목24' ,  '목79' ] ;
+                        SlotIds  =  [ ' 목1012' , ' 목122' ,  '목24' ,  '목79' ] ;
+                    }  else  if  ( currentDay  ===  '금' )  {
+                        SlotIds  =  [ '금1012' , '금122' , '금24' ] ;
+                    } else  if  ( currentDay  ===  '토' )  {
+                        SlotIds  =  [ ' 토1012_웨돔_ ' , '토1012_마두_' ,  '토13' ,  '토35' ] ;
+                        SlotIds  =  [ ' 토1012 ' , '토1012_마두_' ,  '토13' ,  '토35' ] ;
+                    } else  if  ( currentDay  ===  '일' )  {
+                        SlotIds  =  [ '일1반3시반_마두_' , '일1반3시반_웨돔_' , '일3반5시반_마두_' ] ;
                     }
                     if (slotIds.length > 0) {
                         $.ajax({
@@ -287,12 +106,9 @@
                                     const namesStr = names.join(',  ');
                                     $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
                                 }
-
                             }
                         });
                     }
-
-
                     $.ajax({
                         url: '/get_disabled_slots',
                         method: 'GET'
@@ -307,19 +123,16 @@
                     }).fail(function(error) {
                         console.log(error);
                     });
-
                     $.ajax({
                         url: '/get_hide_slots',
                         method: 'GET'
                     }).done(function(response) {
                         const hideSlotIds = response.hide_slot_ids;
-
                         for (const slotId of hideSlotIds) {
                             const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
                             $slotContainer.removeClass('disabled');  // disabled 클래스 제거
                             $slotContainer.addClass('hidden');
                             $slotContainer.siblings('.slot-hide').find(`#${slotId}-hide`).prop('checked', true);
-
                         }
                     }).fail(function(error) {
                         console.log(error);
@@ -331,7 +144,6 @@
                         submitComment(dayOfWeek);
                     });
                 });
-
                 $('body').on('change', '.slot-toggle', function() {
                     const slotId = $(this).data('slot-id');
                     const $slotContainer = $(this).closest('.slot-container');
@@ -358,13 +170,11 @@
                     const slotId = $(this).data('slot-id');
                     const isHide = $(this).is(':checked');
                     const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
-
                     if (isHide) {
                         $slotContainer.addClass('hidden');
                     } else {
                         $slotContainer.removeClass('hidden');
                     }
-
                     $.ajax({
                         url: '/update_hide_slot',
                         method: 'POST',
@@ -378,7 +188,6 @@
                         console.log(error);
                     });
                 });
-
                 $('body').on('click', '.announcement-button', function() { //구역카드클릭
                     const buttonText = $(this).text();
                     if (!buttonText) {
@@ -386,15 +195,12 @@
                     }
                     const username = '{{ username }}';
                     const today = new Date();
-
                     const month = String(today.getMonth() + 1).padStart(2, '0');  
                     const day = String(today.getDate()).padStart(2, '0');
                     const currentDate = month + day;
                     const targetURL = 'https://gch.jwcard.co.kr/territory.aspx?v_name='+username+'&z_num='+buttonText+'&c_time='+currentDate
                     window.location.href = targetURL;
                 });
-
-
                 $('body').on('click', '.announce-btn', function () { //공지하기클릭
                     const username = '{{ username }}';
                     const $slotContainer = $(this).closest('.slot-container');
@@ -403,19 +209,16 @@
                     const contents = new Array(40).fill(null); // 초기에 모든 값을 null로 설정
                     anyContentPresent = false;
                     console.log(slotId)
-
                     for (let i = 0; i < 40; i++) {
                         if ([1, 3, 21, 23].includes(i)) {
                             continue;
                         }
                         const content = $(`#input-${slotId}-${i}`).val();
                         contents[i] = content; 
-
                         if (content && content.trim() !== '') {
                             anyContentPresent = true;
                         }
                     }
-
                     if (anyContentPresent) {
                         $.post('/notice', { 'contents[]': contents, slot: slotId, writer: username }, function (response) {
                             if (response.message === '공지가 등록되었습니다.') {
@@ -428,7 +231,6 @@
                                         }
                                     }
                                 }
-
                                 loadNotices(slotId);
                                 $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
                                 $(`#duplicates-${slotId}`).text(`중복: ${response.duplicates}`);
@@ -456,7 +258,6 @@
                     const $slot = $slotContainer.find('.slot');
                     const slotId = $slot.data('slot');
                     const contents = [];
-
                     for (let i = 0; i < 40; i++) {
                         const content = $(`#label-${slotId}-${i}`).text() || $(`#button-${slotId}-${i}`).text();
                         contents.push(content);
@@ -465,33 +266,30 @@
                     for (let i = 0; i < 40; i++) {
                                 $(`#input-${slotId}-${i}`).val(contents[i]);
                             }
-
                 });
                 
-
                 $('body').on('click', '.btn-primary', function () {
                     const $slotContainer = $(this).closest('.slot-container');
                     const $slot = $slotContainer.find('.slot');
                     const slot = $slot.data('slot');
-
                     const selectedDay = currentDay;
-
                     let slotIds = [];
-
                     if (currentDay === '월') {
-                        slotIds = ['월1012','월122','월24'];
+                        slotIds = ['월1012', '월122', '월24'];
                     } else if (currentDay === '화') {
-                        slotIds = ['화1012','화122','화24','화79'];
-                    } else if (currentDay === '수') {
-                        slotIds = ['수1012_마두_','수1012_웨돔_','수13_마두_','수24_웨돔_' ];
-                    } else if (currentDay === '목') {
-                        slotIds = ['목1012','목122', 목24','목79'];
-                    } else if (currentDay === '금') {
-                        slotIds = ['금1012','금122','금24'];
-                    }else if (currentDay === '토') {
-                        slotIds = ['토1012','토1012_마두_','토122','토24'];
-                    }else if (currentDay === '일') {
-                        slotIds = ['일1반3시반_마두_','일1반3시반_웨돔_','일3반5시반_마두_'];
+                        slotIds = ['화1012', '화122', '화24', '화79'];
+                    }  else  if  ( currentDay  ===  '수' )  {
+                        SlotIds  =  [ '수1012_마두_' , '수1012_웨돔_' , '수13_마두_' , '수24_웨돔_'  ] ;
+                    }  else  if  ( currentDay  ===  '목' )  {
+                        SlotIds  =  [ '목122' ,  '목24' ,  '목79' ] ;
+                        SlotIds  =  [ ' 목1012' , ' 목122' ,  '목24' ,  '목79' ] ;
+                    }  else  if  ( currentDay  ===  '금' )  {
+                        SlotIds  =  [ '금1012' , '금122' , '금24' ] ;
+                    } else  if  ( currentDay  ===  '토' )  {
+                        SlotIds  =  [ ' 토1012_웨돔_ ' , '토1012_마두_' ,  '토13' ,  '토35' ] ;
+                        SlotIds  =  [ ' 토1012 ' , '토1012_마두_' ,  '토13' ,  '토35' ] ;
+                    } else  if  ( currentDay  ===  '일' )  {
+                        SlotIds  =  [ '일1반3시반_마두_' , '일1반3시반_웨돔_' , '일3반5시반_마두_' ] ;
                     }
                     $.ajax({
                         url: '/apply',
@@ -518,10 +316,8 @@
                                                 slot_name: slot,
                                                 day: selectedDay,
                                             },
-
                                             success: function (response) {
                                                 alert(response.message);
-
                                                 for (let i = 0; i < slotIds.length; i++) {
                                                     const names = response[`names${i + 1}`];
                                                     const namesStr = names.join(', ');
@@ -536,12 +332,8 @@
                         }
                     });
                 });
-
-
         });
-
     </script>
-
 </head>
 <body>
     <div class="container">
@@ -553,6 +345,5 @@
             </div>
         </div>
     </div>
-
 </body>
 </html>
