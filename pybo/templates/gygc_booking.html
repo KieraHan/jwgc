@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, user-scalable=yes">
-    <title>전시대 날짜별 신청(공지기능까지 완성!!!)</title>
+    <title>공지 전시대 날짜별 신청(작성자추가)</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-datepicker.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='bootstrap-datepicker.js') }}"></script>
@@ -36,7 +36,7 @@
                                 <label for="${dayOfWeek}-comment">공지:</label>
                                 <span id="${dayOfWeek}-notice"></span>
                             </div>
-                            <br><br>
+                            <br><br><br>
                             <div class ="input_t"${ !isOverseer ? 'style="display: none;"' : ''}>
                                 <input type="text" id="${dayOfWeek}-comment" name="${dayOfWeek}-comment" placeholder="간단한 요일 전체공지를 작성할 수 있습니다.">
                                 <button type="button" onclick="submitComment('${dayOfWeek}')">등록</button>
@@ -54,10 +54,13 @@
 
             function createSlots(dayOfWeek) {
                 const slotNames = {
+                    "월": ["10~12시", "12~2시", "2~4시"],
                     "화": ["10~12시", "12~2시", "2~4시", "7~9시"],
-                    "목": ["12~2시", "2~4시", "7~9시"],
-                    "토": ["10~12시(웨돔)","10~12시(마두)","12~2시(마두)", "2~4시(마두)"],
-                    "일": ["1:30~3:30"]
+                    "목": ["10~12시","12~2시", "2~4시", "7~9시"],
+                    "수": ["10~12시(마두)","1~3시(마두)"],
+                    "금": ["10~12시","12~2시","2~4시"],
+                    "토": ["10~12시","1~3시(마두)", "3~5시(마두)"],
+                    "일": ["1시반~3시반(마두)","1시반~3시반(웨돔)","3시반~5시반(마두)"]
                 };
 
                 let slots = '';
@@ -74,39 +77,73 @@
                 const isOverseer = overseerList.includes(username);
                 const slotId = dayOfWeek.slice(0, 1).toLowerCase() + slotName.replace('~', '').replace('시', '').replace(/ /g, '').replace('(', '_').replace(')', '_');
                 const slot = `
+                    <div class="slot-hide" ${username === '전재호' ? '' : 'style="display: none;"'}>
+                        <input type="checkbox" class="slot-hide-checkbox" id="${slotId}-hide" data-slot-id="${slotId}">
+                        <label for="${slotId}-hide">${slotName} 숨기기</label>
+                    </div>
+                    <br><br>
                     <div class="slot-container">
                         <div class="slot-checkbox" ${ !isOverseer ? ' style="display: none;"' : ''}>
                             <input type="checkbox" class="slot-toggle" id="${slotId}-checkbox" data-slot-id="${slotId}">
                             <label for="${slotId}-checkbox">신청 마감</label>
                         </div>
                         <br><br>
-                        <div class="slot" data-slot="${slotId}">
+                        <div class="slot"  data-slot="${slotId}">
                             <div class="slot-title">${slotName}</div>
                             <br><br><br><br><br><br><br><br>
 
                             <div class="applicants" id="${slotId}-applicants"></div>
                             <br><br><br><br><br><br><br><br>
-                            <div class="slot-button"><button type="button" class="btn btn-primary">신청</button></div>
+                            <div class="slot-button"><button type="button" class="btn btn-primary">신청/취소</button></div>
                             <br><br>
                         </div>
                         <div class="announcement-label">
-                            <div class="grid_label">
-                                ${Array.from({ length: 15 }, (_, index) => `
-                                    <label id="label-${slotId}-${index}" class="announcement-label-item"></label>
-                                `).join('')}
+                        <div class="grid_label">
+                            ${Array.from({ length: 40 }, (_, index) => {
+                                if ([1, 3, 21, 23].includes(index)) {
+                                    return '<div class="empty-space"></div>'; // 빈 공간 유지를 위한 빈 div
+                                }
+
+                                if (index % 2 === 0) {
+                                    // 짝수 인덱스에는 레이블을 배치
+                                    return `<label id="label-${slotId}-${index}" class="announcement-label-item large"></label>`;
+                                } else {
+                                    // 홀수 인덱스에는 버튼을 배치
+                                    return `<button id="button-${slotId}-${index}" class="announcement-label-item medium announcement-button"></button>`;
+                                }
+                            }).join('')}
+                        </div>
+
+                            <br><br><br><br>
+                            <div class="slot-writer">
+                                <label id="label-${slotId}-writer">작성자:</label>
                             </div>
+                            <br><br><br><br>
                         </div>
                         <div class="announcement-section" ${ !isOverseer ? 'style="display: none;"' : ''}>
                             <div class="grid">
-                                ${Array.from({ length: 15 }, (_, index) => `
-                                    <textarea id="input-${slotId}-${index}" class="announcement-input" rows="1" cols="20"></textarea>
-                                `).join('')}
+                                ${Array.from({ length: 40 }, (_, index) => {
+                                    if ([1, 3, 21, 23].includes(index)) {
+                                        return '<div class="empty-space"></div>'; // 빈 공간 유지를 위한 빈 div
+                                    }
+
+                                    if (index % 2 === 0) {
+                                        // 짝수 인덱스에는 레이블을 배치
+                                        return `<textarea id="input-${slotId}-${index}" class="announcement-label-item large announcement-input"></textarea>`;
+                                    } else {
+                                        // 홀수 인덱스에는 버튼을 배치
+                                        return `<textarea id="input-${slotId}-${index}" class="announcement-label-item medium announcement-input""></textarea>`;
+                                    }
+                                }).join('')}
                             </div>
                             <br><br><br><br>
-                            <div class="slot-writer">
-                                <label for="${slotId}-writer">작성자:</label>
+
+                            <button type="button" class="btn btn-secondary announce-btn">공지하기</button>
+                            <button type="button" class="btn btn-secondary import-btn">가져오기</button><br><br><br><br>
+                            <div class ="lb_1">
+                                <label id="missing-${slotId}">누락:</label><br>
+                                <label id="duplicates-${slotId}">중복:</label><br>
                             </div>
-                            <button type="button" class="btn btn-secondary announce-btn">공지하기</button><br><br><br><br>
                         </div>
                     </div>
                 `;
@@ -115,19 +152,36 @@
             function loadNotices(slotId) {
                 $.post('/get_notices', { slot: slotId }, function (response) {
                     const notice_contents = response.notice_contents;
+                    let anyContentPresent = false;
+
                     for (let i = 0; i < notice_contents.length; i++) {
                         $(`#label-${slotId}-${i}`).text(notice_contents[i]);
+                        $(`#button-${slotId}-${i}`).text(notice_contents[i]);
+                        if (notice_contents[i]) {
+                            anyContentPresent = true;
+                        }
                     }
+
+                    $.post('/get_writer', { slot: slotId }, function (response) {
+                        const username = response.writer;
+
+                        if (anyContentPresent) {
+                            $(`#label-${slotId}-writer`).text("작성자: " + username);
+                        } else {
+                            $(`#label-${slotId}-writer`).text("작성자: ");
+                        }
+                    });
                 });
+
             }
+
+
+
+
             function submitComment(dayOfWeek) {
                 const commentInput = document.getElementById(`${dayOfWeek}-comment`);
                 const comment = commentInput.value;
 
-                if (comment === '') {
-                    alert('공지를 입력해주세요.');
-                    return;
-                }
 
                 // AJAX 요청을 사용하여 서버에 데이터를 전송하고, 응답을 받습니다.
                 $.ajax({
@@ -170,14 +224,13 @@
             function updateBoard(date) {
                 const selectedDate = new Date(date);
                 const dayOfWeek = getDayOfWeek(selectedDate);
+                const board = createBoard(dayOfWeek);
+                $('#board-container').html(board);
 
-                if (dayOfWeek === "화" || dayOfWeek === "목" || dayOfWeek === "토" || dayOfWeek === "일") {
-                    const board = createBoard(dayOfWeek);
-                    $('#board-container').html(board);
-                } else {
-                    $('#board-container').html(`<div style="text-align: center;"><p>${dayOfWeek}요일</p><p>전시대 계획이 없습니다.</p></div>`);
-                }
             }
+
+
+
             let overseerList = [];
             $(document).ready(function () {
 
@@ -190,10 +243,10 @@
                   }
                 });
 
-
                 let currentDay = null;
                 const today = new Date();
                 const todayText = formatDate(today);
+
                 $('#date-title').text(todayText);
 
                 $('#datepicker').datepicker({
@@ -202,6 +255,7 @@
                     format: 'yyyy-mm-dd',
                     autoclose: false,
                     inline: true
+
                 }).on('changeDate', function (e) {
                     const selectedDate = e.format('yyyy-mm-dd');
                     const day = new Date(selectedDate).getDay();
@@ -217,14 +271,20 @@
                         loadNotices(slotId);
                     });
 
-                    if (currentDay === '화') {
+                    if (currentDay === '월') {
+                        slotIds = ['월1012', '월122', '월24'];
+                    } else if (currentDay === '화') {
                         slotIds = ['화1012', '화122', '화24', '화79'];
+                    } else if (currentDay === '수') {
+                        slotIds = ['수1012_마두_','수1012_웨돔_','수13_마두_','수24_웨돔_' ];
                     } else if (currentDay === '목') {
-                        slotIds = ['목122', '목24', '목79'];
-                    } else if (currentDay === '토') {
-                        slotIds = ['토1012_웨돔_','토1012_마두_', '토122_마두_', '토24_마두_'];
+                        slotIds = ['목1012','목122', '목24', '목79'];
+                    } else if (currentDay === '금') {
+                        slotIds = ['금1012','금122','금24'];
+                    }else if (currentDay === '토') {
+                        slotIds = ['토1012','토13_마두_', '토35_마두_'];
                     }else if (currentDay === '일') {
-                        slotIds = ['일1:303:30'];
+                        slotIds = ['일1반3시반_마두_','일1반3시반_웨돔_','일3반5시반_마두_'];
                     }
                     if (slotIds.length > 0) {
                         $.ajax({
@@ -245,19 +305,39 @@
                         });
                     }
 
-                    $.ajax({
+                   $.ajax({
                         url: '/get_disabled_slots',
                         method: 'GET'
                     }).done(function(response) {
                         const disabledSlotIds = response.disabled_slot_ids;
                         for (const slotId of disabledSlotIds) {
                             const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
+                            $slotContainer.removeClass('hidden');  // hidden 클래스 제거
                             $slotContainer.addClass('disabled');
                             $slotContainer.find('.slot-toggle').prop('checked', true);
                         }
                     }).fail(function(error) {
                         console.log(error);
                     });
+
+                    $.ajax({
+                        url: '/get_hide_slots',
+                        method: 'GET'
+                    }).done(function(response) {
+                        const hideSlotIds = response.hide_slot_ids;
+
+                        for (const slotId of hideSlotIds) {
+                            const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
+
+                            $slotContainer.removeClass('disabled');  // disabled 클래스 제거
+                            $slotContainer.addClass('hidden');
+                            $slotContainer.siblings('.slot-hide').find(`#${slotId}-hide`).prop('checked', true);
+
+                        }
+                    }).fail(function(error) {
+                        console.log(error);
+                    });
+
                 });
                 document.querySelectorAll('button[type="button"]').forEach((button) => {
                     button.addEventListener('click', (event) => {
@@ -269,6 +349,7 @@
                 $('body').on('change', '.slot-toggle', function() {
                     const slotId = $(this).data('slot-id');
                     const $slotContainer = $(this).closest('.slot-container');
+                    console.log($slotContainer)
                     const isChecked = $(this).is(':checked');
                     if (isChecked) {
                         $slotContainer.addClass('disabled');
@@ -289,44 +370,152 @@
                     });
                 });
 
+                $('body').on('change', '.slot-hide-checkbox', function() {
+                    const slotId = $(this).data('slot-id');
+                    const isHide = $(this).is(':checked');
+                    const $slotContainer = $(`.slot[data-slot="${slotId}"]`).closest('.slot-container');
+
+                    if (isHide) {
+                        $slotContainer.addClass('hidden');
+                    } else {
+                        $slotContainer.removeClass('hidden');
+                    }
+
+                    $.ajax({
+                        url: '/update_hide_slot',
+                        method: 'POST',
+                        data: {
+                            slot_id: slotId,
+                            is_hide: isHide
+                        }
+                    }).done(function(response) {
+                        console.log(response.message);
+                    }).fail(function(error) {
+                        console.log(error);
+                    });
+                });
+                $('body').on('click', '.announcement-button', function() {
+                    // 버튼의 텍스트(값)를 가져옵니다.
+                    const buttonText = $(this).text();
+                    if (!buttonText) {
+                        return;
+                    }
+                    const username = '{{ username }}';
+                    const today = new Date();
+
+                    const month = String(today.getMonth() + 1).padStart(2, '0');  // 월은 0부터 시작하므로 1을 더해줍니다.
+                    const day = String(today.getDate()).padStart(2, '0');
+                    const currentDate = month + day;
+                    const targetURL = 'https://gch.jwcard.co.kr/territory.aspx?v_name='+username+'&z_num='+buttonText+'&c_time='+currentDate
+                    window.location.href = targetURL;
+                });
 
                 $('body').on('click', '.announce-btn', function () {
+                    const username = '{{ username }}';
+                    const $slotContainer = $(this).closest('.slot-container');
+                    const $slot = $slotContainer.find('.slot');
+                    const slotId = $slot.data('slot');
+                    const contents = new Array(40).fill(null); // 초기에 모든 값을 null로 설정
+                    anyContentPresent = false;
+                    console.log(slotId)
+
+                    for (let i = 0; i < 40; i++) {
+                        // 빈공간에 해당하는 인덱스는 건너뜁니다.
+                        if ([1, 3, 21, 23].includes(i)) {
+                            continue;
+                        }
+
+                        const content = $(`#input-${slotId}-${i}`).val();
+                        contents[i] = content; // 직접적인 인덱스에 값을 할당
+
+                        if (content && content.trim() !== '') {
+                            anyContentPresent = true;
+                        }
+
+                    }
+
+
+                    if (anyContentPresent) {
+                        $.post('/notice', { 'contents[]': contents, slot: slotId, writer: username }, function (response) {
+                            if (response.message === '공지가 등록되었습니다.') {
+                                for (let i = 0; i < 40; i++) {
+                                    if (contents[i]) { // null이 아닌 경우에만 값을 할당
+                                        if (i % 2 === 0) {
+                                            // 짝수 인덱스는 레이블
+                                            $(`#label-${slotId}-${i}`).text(contents[i]);
+                                        } else {
+                                            // 홀수 인덱스는 버튼
+                                            $(`#button-${slotId}-${i}`).text(contents[i]);
+                                        }
+                                    }
+                                }
+
+                                loadNotices(slotId);
+                                $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
+                                $(`#duplicates-${slotId}`).text(`중복: ${response.duplicates}`);
+                            }
+                        });
+                    } else {
+                        const confirmation = confirm('내용이 없습니다. 공지하시겠습니까?');
+                        if (confirmation) {
+                            $.post('/notice', { 'contents[]': contents, slot: slotId, writer: username }, function (response) {
+                                if (response.message === '공지가 등록되었습니다.') {
+                                    for (let i = 0; i < 40; i++) {
+                                        $(`#label-${slotId}-${i}`).text(contents[i]);
+                                    }
+                                    loadNotices(slotId);
+                                    $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
+                                    $(`#duplicates-${slotId}`).text(`중복: ${response.duplicates}`);
+                                }
+                            });
+                        }
+                    }
+
+                });
+
+                $('body').on('click', '.import-btn', function () {
                     const $slotContainer = $(this).closest('.slot-container');
                     const $slot = $slotContainer.find('.slot');
                     const slotId = $slot.data('slot');
                     const contents = [];
 
-                    for (let i = 0; i < 15; i++) {
-                        const content = $(`#input-${slotId}-${i}`).val();
+                    for (let i = 0; i < 40; i++) {
+                        const content = $(`#label-${slotId}-${i}`).text() || $(`#button-${slotId}-${i}`).text();
                         contents.push(content);
                     }
-                    console.log('Sending data:', { 'contents[]': contents, slot: slotId }); // Add this line
-
-                    $.post('/notice', { 'contents[]': contents, slot: slotId }, function (response) {
-                        if (response.message === '공지가 등록되었습니다.') {
-                            for (let i = 0; i < 15; i++) {
-                                $(`#label-${slotId}-${i}`).text(contents[i]);
+                    console.log(contents)
+                    for (let i = 0; i < 40; i++) {
+                                $(`#input-${slotId}-${i}`).val(contents[i]);
                             }
-                        }
-                    });
+
                 });
 
+
                 $('body').on('click', '.btn-primary', function () {
-                    const $slot = $(this).closest('.slot');
-                    const slot = $slot.find('.slot-title').text(); // 슬롯 이름 가져오기
+                    const $slotContainer = $(this).closest('.slot-container');
+                    const $slot = $slotContainer.find('.slot');
+                    const slot = $slot.data('slot');
+
+
 
                     const selectedDay = currentDay;
 
                     let slotIds = [];
 
-                    if (currentDay === '화') {
+                    if (currentDay === '월') {
+                        slotIds = ['월1012', '월122', '월24'];
+                    } else if (currentDay === '화') {
                         slotIds = ['화1012', '화122', '화24', '화79'];
+                    } else if (currentDay === '수') {
+                        slotIds = ['수1012_마두_','수1012_웨돔_','수13_마두_','수24_웨돔_' ];
                     } else if (currentDay === '목') {
-                        slotIds = ['목122', '목24', '목79'];
-                    } else if (currentDay === '토') {
-                        slotIds = ['토1012_웨돔_','토1012_마두_', '토122_마두_', '토24_마두_'];
+                        slotIds = ['목1012','목122', '목24', '목79'];
+                    } else if (currentDay === '금') {
+                        slotIds = ['금1012','금122','금24'];
+                    }else if (currentDay === '토') {
+                        slotIds = ['토1012', '토13_마두_', '토35_마두_'];
                     }else if (currentDay === '일') {
-                        slotIds = ['일1:303:30'];
+                        slotIds = ['일1반3시반_마두_','일1반3시반_웨돔_','일3반5시반_마두_'];
                     }
                     $.ajax({
                         url: '/apply',
@@ -338,46 +527,35 @@
                             slot_name: slot
                         },
                         success: function (response) {
-                            alert(response.message);
-
                             for (let i = 0; i < slotIds.length; i++) {
                                 const names = response[`names${i + 1}`];
                                 const namesStr = names.join(', ');
                                 $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
                             }
-
                         },
                         error: function (xhr, status, error) {
-                            if (xhr.status === 400 && JSON.parse(xhr.responseText).error === "이미 해당 시간대에 신청하셨습니다.") { // 수정된 부분
-                                if (confirm("이미 신청된 이름입니다. 취소하시겠습니까?")) {
-                                        $.ajax({
-                                            url: '/cancel',
-                                            method: 'POST',
-                                            data: {
-                                                username: '{{ username }}',
-                                                slot_name: slot,
-                                                day: selectedDay,
-                                            },
-
-                                            success: function (response) {
-                                                alert(response.message);
-
-                                                for (let i = 0; i < slotIds.length; i++) {
-                                                    const names = response[`names${i + 1}`];
-                                                    const namesStr = names.join(', ');
-                                                    $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
-                                                }
-                                            },
-                                            error: function () {
-                                                alert("취소에 실패했습니다. 다시 시도해주세요.");
-                                            }
-                                        });
-                                } else {
-                                    alert("취소되지 않았습니다.");
+                            console.log(xhr, status, error);
+                            $.ajax({
+                                url: '/cancel',
+                                method: 'POST',
+                                data: {
+                                    username: '{{ username }}',
+                                    slot_name: slot,
+                                    day: selectedDay,
+                                },
+                                success: function (response) {
+                                    for (let i = 0; i < slotIds.length; i++) {
+                                        const names = response[`names${i + 1}`];
+                                        const namesStr = names.join(', ');
+                                        $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
+                                    }
+                                },
+                                error: function () {
+                                    alert("취소에 실패했습니다. 다시 시도해주세요.");
                                 }
-                            } else {
-                                alert("신청에 실패했습니다. 다시 시도해주세요.");
-                            }
+                            });
+
+
                         }
                     });
                 });
