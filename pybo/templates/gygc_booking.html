@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, user-scalable=yes">
-    <title>공지 전시대 날짜별 신청(작성자추가)</title>
+    <title>강촌 전시대 신청</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-datepicker.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='bootstrap-datepicker.js') }}"></script>
@@ -59,7 +59,7 @@
                     "목": ["10~12시","12~2시", "2~4시", "7~9시"],
                     "수": ["10~12시(마두)","1~3시(마두)"],
                     "금": ["10~12시","12~2시","2~4시"],
-                    "토": ["10~12시","1~3시(마두)", "3~5시(마두)"],
+                    "토": ["10~12시","12~2시", "2~4시"],
                     "일": ["1시반~3시반(마두)","1시반~3시반(웨돔)","3시반~5시반(마두)"]
                 };
 
@@ -282,7 +282,7 @@
                     } else if (currentDay === '금') {
                         slotIds = ['금1012','금122','금24'];
                     }else if (currentDay === '토') {
-                        slotIds = ['토1012','토13_마두_', '토35_마두_'];
+                        slotIds = ['토1012','토122', '토24'];
                     }else if (currentDay === '일') {
                         slotIds = ['일1반3시반_마두_','일1반3시반_웨돔_','일3반5시반_마두_'];
                     }
@@ -513,7 +513,7 @@
                     } else if (currentDay === '금') {
                         slotIds = ['금1012','금122','금24'];
                     }else if (currentDay === '토') {
-                        slotIds = ['토1012', '토13_마두_', '토35_마두_'];
+                        slotIds = ['토1012', '토122', '토24'];
                     }else if (currentDay === '일') {
                         slotIds = ['일1반3시반_마두_','일1반3시반_웨돔_','일3반5시반_마두_'];
                     }
