@@ -146,7 +146,7 @@ def initialize_users_and_overseers(app):
             db.session.add(u)
             db.session.commit()
 
-        overseers =['김형민','전재호','김경호','김진명','박정현','심지훈','이재욱','한성희','현승우','김경준','김진윤','이성재','김동석','이춘배','김재호','정병호','김양호','안승현','박말호']
+        overseers =['김형민','전재호','김경호','김진명','박정현','심지훈','이재욱','한성희','현승우','김경준','김진윤','이성재','김동석','이춘배','김재호','정병호','김양호','안승현','박말호','최세욱']
 
         for overseer in overseers:
             u = Overseer(name = overseer)
