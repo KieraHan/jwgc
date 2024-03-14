@@ -138,13 +138,17 @@ def apply():
         board = SunBoard(slot=slot, user_id=user.id, user_name=user.name)
         db.session.add(board)
         db.session.commit()
-        applicants = SunBoard.query.filter_by(slot="일1반3시반_마두_").all()
+        applicants = SunBoard.query.filter_by(slot="일1012_마두_").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = SunBoard.query.filter_by(slot="일1반3시반_웨돔_").all()
+        applicants = SunBoard.query.filter_by(slot="일122_마두_").all()
         names2 = [applicant.user.name for applicant in applicants]
-        applicants = SunBoard.query.filter_by(slot="일3반5시반_마두_").all()
+        applicants = SunBoard.query.filter_by(slot="일122_웨돔_").all()
         names3 = [applicant.user.name for applicant in applicants]
-        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1,"names2": names2,"names3": names3}), 200
+        applicants = SunBoard.query.filter_by(slot="일24_마두_").all()
+        names4 = [applicant.user.name for applicant in applicants]
+        applicants = SunBoard.query.filter_by(slot="일24_웨돔_").all()
+        names5 = [applicant.user.name for applicant in applicants]
+        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1,"names2": names2,"names3": names3,"names4": names4,"names4": names4}), 200
 @bp.route('/update', methods=['POST'])
 def update():
     username = request.form['username']
@@ -211,13 +215,17 @@ def update():
         names5 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "토요일 신청자명단 업데이트","names1": names1,"names2": names2,"names3": names3,"names4": names4,"names5": names5,}), 200
     elif day == '일':
-        applicants = SunBoard.query.filter_by(slot="일1반3시반_마두_").all()
+        applicants = SunBoard.query.filter_by(slot="일1012_마두_").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = SunBoard.query.filter_by(slot="일1반3시반_웨돔_").all()
+        applicants = SunBoard.query.filter_by(slot="일122_마두_").all()
         names2 = [applicant.user.name for applicant in applicants]
-        applicants = SunBoard.query.filter_by(slot="일3반5시반_마두_").all()
+        applicants = SunBoard.query.filter_by(slot="일122_웨돔_").all()
         names3 = [applicant.user.name for applicant in applicants]
-        return jsonify({"message": "일요일 신청자명단 업데이트","names1": names1,"names2": names2,"names3": names3}), 200
+        applicants = SunBoard.query.filter_by(slot="일24_마두_").all()
+        names4 = [applicant.user.name for applicant in applicants]
+        applicants = SunBoard.query.filter_by(slot="일24_웨돔_").all()
+        names5 = [applicant.user.name for applicant in applicants]
+        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1,"names2": names2,"names3": names3,"names4": names4,"names4": names4}), 200
 @bp.route('/cancel', methods=['POST'])
 def cancel():
     username = request.form['username']
@@ -314,13 +322,17 @@ def cancel():
         if application_to_cancel:
             db.session.delete(application_to_cancel)
             db.session.commit()
-            applicants = SunBoard.query.filter_by(slot="일1반3시반_마두_").all()
+            applicants = SunBoard.query.filter_by(slot="일1012_마두_").all()
             names1 = [applicant.user.name for applicant in applicants]
-            applicants = SunBoard.query.filter_by(slot="일1반3시반_웨돔_").all()
+            applicants = SunBoard.query.filter_by(slot="일122_마두_").all()
             names2 = [applicant.user.name for applicant in applicants]
-            applicants = SunBoard.query.filter_by(slot="일3반5시반_마두_").all()
+            applicants = SunBoard.query.filter_by(slot="일122_웨돔_").all()
             names3 = [applicant.user.name for applicant in applicants]
-            return jsonify({"message": "신청이 취소되었습니다.", "names1": names1,"names2": names2,"names3": names3}), 200
+            applicants = SunBoard.query.filter_by(slot="일24_마두_").all()
+            names4 = [applicant.user.name for applicant in applicants]
+            applicants = SunBoard.query.filter_by(slot="일24_웨돔_").all()
+            names5 = [applicant.user.name for applicant in applicants]
+            return jsonify({"message": "신청이 완료되었습니다.", "names1": names1,"names2": names2,"names3": names3,"names4": names4,"names4": names4}), 200
 #슬롯비활성화업데이트
 @bp.route('/update_disabled_slot', methods=['POST'])
 def update_disabled_slot():
