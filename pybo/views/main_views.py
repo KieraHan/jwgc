@@ -119,7 +119,7 @@ def apply():
         names1 = [applicant.user.name for applicant in applicants]
         applicants = SatBoard.query.filter_by(slot="토1012").all()
         names2 = [applicant.user.name for applicant in applicants]
-        applicants = SatBoard.query.filter_by(slot="토122_마두_").all()
+        applicants = SatBoard.query.filter_by(slot="토122").all()
         names3 = [applicant.user.name for applicant in applicants]
         applicants = SatBoard.query.filter_by(slot="토24").all()
         names4 = [applicant.user.name for applicant in applicants]
@@ -131,9 +131,9 @@ def apply():
         board = SunBoard(slot=slot, user_id=user.id, user_name=user.name)
         db.session.add(board)
         db.session.commit()
-        applicants = SunBoard.query.filter_by(slot="일1반3시반_마두_").all()
+        applicants = SunBoard.query.filter_by(slot="일1반3시반").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = SunBoard.query.filter_by(slot="일3반5시반_마두_").all()
+        applicants = SunBoard.query.filter_by(slot="일3반5시반").all()
         names2 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "신청이 완료되었습니다.", "names1": names1,"names2": names2}), 200
 @bp.route('/update', methods=['POST'])
