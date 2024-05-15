@@ -45,9 +45,9 @@ def clear_wed_board(app):
 
 def clear_thu_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="목1012").delete()
+        Notice.query.filter_by(slot="목1012_전시대_").delete()
         Notice.query.filter_by(slot="목122").delete()
-        Notice.query.filter_by(slot="목24").delete()
+        Notice.query.filter_by(slot="목24_호별_").delete()
         Notice.query.filter_by(slot="목79").delete()
         db.session.commit()
         ThuBoard.query.delete()
@@ -57,9 +57,9 @@ def clear_thu_board(app):
 
 def clear_fri_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="금1012").delete()
+        Notice.query.filter_by(slot="금1012_전시대_").delete()
         Notice.query.filter_by(slot="금122").delete()
-        Notice.query.filter_by(slot="금24").delete()
+        Notice.query.filter_by(slot="금24_호별_").delete()
         db.session.commit()
         FriBoard.query.delete()
         db.session.commit()
@@ -70,8 +70,8 @@ def clear_sat_board(app):
     with app.app_context():
         Notice.query.filter_by(slot="토810").delete()
         Notice.query.filter_by(slot="토1012").delete()
-        Notice.query.filter_by(slot="토122_마두_").delete()
-        Notice.query.filter_by(slot="토122_웨돔_").delete()
+        Notice.query.filter_by(slot="토122").delete()
+        Notice.query.filter_by(slot="토122").delete()
         Notice.query.filter_by(slot="토24").delete()
         db.session.commit()
         SatBoard.query.delete()
@@ -81,9 +81,9 @@ def clear_sat_board(app):
         
 def clear_sun_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="일1반3시반_마두_").delete()
-        Notice.query.filter_by(slot="일3반5시반_마두_").delete()
-        Notice.query.filter_by(slot="일1반3시반_웨돔_").delete()
+        Notice.query.filter_by(slot="일1반3시반").delete()
+        Notice.query.filter_by(slot="일3반5시반").delete()
+        Notice.query.filter_by(slot="일1반3시반").delete()
         db.session.commit()
         SunBoard.query.delete()
         db.session.commit()
@@ -143,7 +143,7 @@ def initialize_users_and_overseers(app):
                  '현승우','김경준','김연례','김재심','김진윤','김희숙','박원숙','박정숙','이성재','이효선','최예진','하혜자','함성희','허수봉','허숙자',
                  '김동석','이춘배','계현숙','김서현','김수석','김영식','김은주','김원숙','김정현','김지현','김진형','노경임','이영주','임애경','김재호','조경옥','최병선','김경희',
                  '김양호','안승현','김재희','박말호','박종서','박혜인','양현미','이혜경','임응진','장명희','장영숙','전상옥','정은실','조미선','최미례','문행숙','박시원','최현우',
-                 '강신혜','문지원','최세욱','안병철','한순아','서종덕','배소연']
+                 '강신혜','문지원','최세욱','안병철','한순아','서종덕','배소연','황찬규','백승정']
 
         for user in users:
             u = User(name = user)
