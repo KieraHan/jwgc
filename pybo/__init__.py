@@ -145,14 +145,18 @@ def initialize_users_and_overseers(app):
                  '김양호','안승현','김재희','박말호','박종서','박혜인','양현미','이혜경','임응진','장명희','장영숙','전상옥','정은실','조미선','최미례','문행숙','박시원','최현우',
                  '강신혜','문지원','최세욱','안병철','한순아','서종덕','배소연','황찬규','백승정','유수아','서정우','김누리']
 
-        for user in users:
-            u = User(name = user)
+
+        overseers =['김형민','전재호','김경호','김진명','박정현','심지훈','이재욱','한성희','현승우','김경준','김진윤','이성재','김동석','이춘배','김재호','정병호','김양호','안승현','박말호','최세욱','서정우','박종서']
+        ov = [name + '인도' for name in overseers]
+
+        for overseer in ov:
+            u = Overseer(name = overseer)
             db.session.add(u)
             db.session.commit()
 
-        overseers =['김형민','전재호','김경호','김진명','박정현','심지훈','이재욱','한성희','현승우','김경준','김진윤','이성재','김동석','이춘배','김재호','정병호','김양호','안승현','박말호','최세욱','박종서','서정우']
+        allUsers = ov + users
 
-        for overseer in overseers:
-            u = Overseer(name = overseer)
+        for user in allUsers:
+            u = User(name = user)
             db.session.add(u)
             db.session.commit()
