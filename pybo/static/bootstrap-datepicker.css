@@ -71,12 +71,12 @@ input[type="text"] {
 .announcement-label-item.large {
     background-color: #FFFFFF;
     height: 23px;  /* 큰 네모칸의 높이 */
-    width: 147px;   /* 큰 네모칸의 넓이 */
+    width: 145px;   /* 큰 네모칸의 넓이 */
 }
 
 .announcement-label-item.medium {
     height: 23px;   /* 중간 네모칸의 높이 */
-    width: 40px;    /* 중간 네모칸의 넓이 */
+    width: 35px;    /* 중간 네모칸의 넓이 */
     font-size:11px;
 }
 
@@ -157,7 +157,7 @@ textarea.announcement-input {
     flex-direction: column;
     width: 100%;
     height: auto;
-    max-width: 400px;
+    max-width: 390px;
     max-height: 1300px;
     border: 1px solid black;
     padding: 5px;
