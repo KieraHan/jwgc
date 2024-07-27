@@ -416,7 +416,8 @@ def get_notices():
 def get_writer():
     slot = request.form['slot']
     writers = Writer.query.filter_by(slot=slot).all()
-    writer_name = [w.writer for w in writers]
+    names = [w.writer for w in writers]
+    writer_name = [name.replace("인도","") for name in names]
     return jsonify({"writer": writer_name})
 @bp.route('/get_overseer_list', methods=['GET'])
 def get_overseer_list():
