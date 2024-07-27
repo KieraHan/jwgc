@@ -46,11 +46,14 @@ input[type="text"] {
 .grid_label {
     margin-left: 5px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);/*네모 네개((이름+구역번호)*2) 있고 한칸밑으로*/
     gap:3px;  /* 각각의 네모칸 사이의 간격 */
 
 }
-.grid_label > :nth-child(20) {
+.grid_label > :nth-child(28) {
+    margin-bottom: 20px; /* 다섯번째줄과 여섯번째줄 사이 간격 */
+}
+.grid > :nth-child(28) {
     margin-bottom: 20px; /* 다섯번째줄과 여섯번째줄 사이 간격 */
 }
 .empty-space {
@@ -68,7 +71,7 @@ input[type="text"] {
 .announcement-label-item.large {
     background-color: #FFFFFF;
     height: 23px;  /* 큰 네모칸의 높이 */
-    width: 140px;   /* 큰 네모칸의 넓이 */
+    width: 147px;   /* 큰 네모칸의 넓이 */
 }
 
 .announcement-label-item.medium {
@@ -80,12 +83,12 @@ input[type="text"] {
 .announcement-label-item.large.announcement-input{
     background-color: #FFFFFF;
     height: 23px;  /* 큰 네모칸의 높이 */
-    width: 140px;   /* 큰 네모칸의 넓이 */
+    width: 145px;   /* 큰 네모칸의 넓이 */
 }
 .announcement-label-item.medium.announcement-input{
     background-color: #FFFFFF;
-    height: 23px;  /* 큰 네모칸의 높이 */
-    width: 30px;   /* 큰 네모칸의 넓이 */
+    height: 23px;  /* 번호 네모칸의 높이 */
+    width: 36px;   /* 번호 네모칸의 넓이 */
 }
 .announcement-button {
     /* 버튼의 기본 스타일 */
@@ -154,8 +157,8 @@ textarea.announcement-input {
     flex-direction: column;
     width: 100%;
     height: auto;
-    max-width: 380px;
-    max-height: 950px;
+    max-width: 400px;
+    max-height: 1300px;
     border: 1px solid black;
     padding: 5px;
     margin-bottom: 10px;
