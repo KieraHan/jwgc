@@ -280,7 +280,7 @@ def cancel():
             applicants = SatBoard.query.filter_by(slot="토1012_호별_").all()
             names2 = [applicant.user.name for applicant in applicants]
             applicants = SatBoard.query.filter_by(slot="토24_호별_").all()
-            names4 = [applicant.user.name for applicant in applicants]
+            names3 = [applicant.user.name for applicant in applicants]
             return jsonify({"message": "신청이 취소되었습니다.","names1": names1,"names2": names2,"names3": names3}), 200
     elif day == "일":
         application_to_cancel = SunBoard.query.filter_by(user_id=user.id, slot=slot_name).first()
