@@ -59,7 +59,8 @@ def clear_fri_board(app):
     with app.app_context():
         Notice.query.filter_by(slot="금1012_전시대_").delete()
         Notice.query.filter_by(slot="금122").delete()
-        Notice.query.filter_by(slot="금24_호별_").delete()
+        Notice.query.filter_by(slot="금46_호별_").delete()
+        Notice.query.filter_by(slot="금79").delete()
         db.session.commit()
         FriBoard.query.delete()
         db.session.commit()
@@ -68,11 +69,11 @@ def clear_fri_board(app):
 
 def clear_sat_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="토810").delete()
-        Notice.query.filter_by(slot="토1012").delete()
+        Notice.query.filter_by(slot="토810_전시대_").delete()
+        Notice.query.filter_by(slot="토1012_호별_").delete()
         Notice.query.filter_by(slot="토122").delete()
         Notice.query.filter_by(slot="토122").delete()
-        Notice.query.filter_by(slot="토24").delete()
+        Notice.query.filter_by(slot="토24_호별_").delete()
         db.session.commit()
         SatBoard.query.delete()
         db.session.commit()
@@ -81,7 +82,7 @@ def clear_sat_board(app):
         
 def clear_sun_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="일1반3시반").delete()
+        Notice.query.filter_by(slot="일1반3시반_호별_").delete()
         Notice.query.filter_by(slot="일3반5시반").delete()
         Notice.query.filter_by(slot="일1반3시반").delete()
         db.session.commit()
