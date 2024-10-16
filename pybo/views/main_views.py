@@ -117,13 +117,15 @@ def apply():
         board = SatBoard(slot=slot, user_id=user.id, user_name=user.name)
         db.session.add(board)
         db.session.commit()
-        applicants = SatBoard.query.filter_by(slot="토810_전시대_").all()
+        applicants = SatBoard.query.filter_by(slot="토810").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = SatBoard.query.filter_by(slot="토1012_호별_").all()
+        applicants = SatBoard.query.filter_by(slot="토1012").all()
         names2 = [applicant.user.name for applicant in applicants]
-        applicants = SatBoard.query.filter_by(slot="토24_호별_").all()
+        applicants = SatBoard.query.filter_by(slot="토122").all()
         names3 = [applicant.user.name for applicant in applicants]
-        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3}), 200
+        applicants = SatBoard.query.filter_by(slot="토24_호별_").all()
+        names4 = [applicant.user.name for applicant in applicants]
+        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3,"names4": names4}), 200
     elif day == '일':
         existing_applicant = SunBoard.query.filter_by(slot=slot_name, user_id=user.id).first()  
         if existing_applicant:
@@ -131,9 +133,11 @@ def apply():
         board = SunBoard(slot=slot, user_id=user.id, user_name=user.name)
         db.session.add(board)
         db.session.commit()
-        applicants = SunBoard.query.filter_by(slot="일1반3시반_호별_").all()
+        applicants = SunBoard.query.filter_by(slot="일1시반3시반").all()
         names1 = [applicant.user.name for applicant in applicants]
-        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1}), 200
+        applicants = SunBoard.query.filter_by(slot="일1시반3시반").all()
+        names2 = [applicant.user.name for applicant in applicants]
+        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1,"names2": names2}), 200
         
 @bp.route('/update', methods=['POST'])
 def update():
@@ -183,17 +187,21 @@ def update():
         names3 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "금요일 신청자명단 업데이트","names1": names1,"names2": names2,"names3": names3}), 200
     elif day == '토':
-        applicants = SatBoard.query.filter_by(slot="토810_전시대_").all()
+        applicants = SatBoard.query.filter_by(slot="토810").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = SatBoard.query.filter_by(slot="토1012_호별_").all()
+        applicants = SatBoard.query.filter_by(slot="토1012").all()
         names2 = [applicant.user.name for applicant in applicants]
-        applicants = SatBoard.query.filter_by(slot="토24_호별_").all()
+        applicants = SatBoard.query.filter_by(slot="토122").all()
         names3 = [applicant.user.name for applicant in applicants]
-        return jsonify({"message": "토요일 신청자명단 업데이트","names1": names1,"names2": names2,"names3": names3}), 200
+        applicants = SatBoard.query.filter_by(slot="토24_호별_").all()
+        names4 = [applicant.user.name for applicant in applicants]
+        return jsonify({"message": "토요일 신청자명단 업데이트","names1": names1,"names2": names2,"names3": names3,"names4": names4}), 200
     elif day == '일':
-        applicants = SunBoard.query.filter_by(slot="일1반3시반_호별_").all()
+         applicants = SunBoard.query.filter_by(slot="일1시반3시반").all()
         names1 = [applicant.user.name for applicant in applicants]
-        return jsonify({"message": "일요일 신청자명단 업데이트","names1": names1}), 200
+        applicants = SunBoard.query.filter_by(slot="일1시반3시반").all()
+        names2 = [applicant.user.name for applicant in applicants]
+        return jsonify({"message": "일요일 신청자명단 업데이트","names1": names1,"names2": names2}), 200
         
 @bp.route('/cancel', methods=['POST'])
 def cancel():
@@ -275,21 +283,25 @@ def cancel():
         if application_to_cancel:
             db.session.delete(application_to_cancel)
             db.session.commit()
-            applicants = SatBoard.query.filter_by(slot="토810_전시대_").all()
+            applicants = SatBoard.query.filter_by(slot="토810").all()
             names1 = [applicant.user.name for applicant in applicants]
-            applicants = SatBoard.query.filter_by(slot="토1012_호별_").all()
+            applicants = SatBoard.query.filter_by(slot="토1012").all()
             names2 = [applicant.user.name for applicant in applicants]
-            applicants = SatBoard.query.filter_by(slot="토24_호별_").all()
+            applicants = SatBoard.query.filter_by(slot="토122").all()
             names3 = [applicant.user.name for applicant in applicants]
-            return jsonify({"message": "신청이 취소되었습니다.","names1": names1,"names2": names2,"names3": names3}), 200
+            applicants = SatBoard.query.filter_by(slot="토24_호별_").all()
+            names4 = [applicant.user.name for applicant in applicants]
+            return jsonify({"message": "신청이 취소되었습니다.","names1": names1,"names2": names2,"names3": names3,"names4": names4}), 200
     elif day == "일":
         application_to_cancel = SunBoard.query.filter_by(user_id=user.id, slot=slot_name).first()
         if application_to_cancel:
             db.session.delete(application_to_cancel)
             db.session.commit()
-            applicants = SunBoard.query.filter_by(slot="일1반3시반").all()
+            applicants = SunBoard.query.filter_by(slot="일1시반3시반").all()
             names1 = [applicant.user.name for applicant in applicants]
-            return jsonify({"message": "신청이 취소되었습니다.", "names1": names1}), 200
+            applicants = SunBoard.query.filter_by(slot="일1시반3시반").all()
+            names2 = [applicant.user.name for applicant in applicants]
+            return jsonify({"message": "신청이 취소되었습니다.", "names1": names1,"names2": names2}), 200
 
 @bp.route('/update_disabled_slot', methods=['POST'])
 def update_disabled_slot():
