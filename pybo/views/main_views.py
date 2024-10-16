@@ -102,7 +102,7 @@ def apply():
         db.session.add(board)
         db.session.commit()
 
-        applicants = FriBoard.query.filter_by(slot="금1012_전시대_").all()
+        applicants = FriBoard.query.filter_by(slot="금1012").all()
         names1 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금46_호별_").all()
         names2 = [applicant.user.name for applicant in applicants]
@@ -133,9 +133,9 @@ def apply():
         board = SunBoard(slot=slot, user_id=user.id, user_name=user.name)
         db.session.add(board)
         db.session.commit()
-        applicants = SunBoard.query.filter_by(slot="일1반3시반_호별_").all()
+        applicants = SunBoard.query.filter_by(slot="일1반3시반").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = SunBoard.query.filter_by(slot="일3반5시반_호별_").all()
+        applicants = SunBoard.query.filter_by(slot="일3반5시반").all()
         names1 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2}), 200
 
@@ -179,7 +179,7 @@ def update():
         names3 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "목요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3,}), 200
     elif day == '금':
-        applicants = FriBoard.query.filter_by(slot="금1012_전시대_").all()
+        applicants = FriBoard.query.filter_by(slot="금1012").all()
         names1 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금46_호별_").all()
         names2 = [applicant.user.name for applicant in applicants]
@@ -197,9 +197,9 @@ def update():
         names3 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "토요일 신청자명단 업데이트","names1": names1,"names2": names2,"names3": names3,"names4": names4}), 200
     elif day == '일':
-        applicants = SunBoard.query.filter_by(slot="일1반3시반_호별_").all()
+        applicants = SunBoard.query.filter_by(slot="일1반3시반").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = SunBoard.query.filter_by(slot="일3반5시반_호별_").all()
+        applicants = SunBoard.query.filter_by(slot="일3반5시반").all()
         names2 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "일요일 신청자명단 업데이트","names1": names1}), 200
 
@@ -271,7 +271,7 @@ def cancel():
         if application_to_cancel:
             db.session.delete(application_to_cancel)
             db.session.commit()
-            applicants = FriBoard.query.filter_by(slot="금1012_전시대_").all()
+            applicants = FriBoard.query.filter_by(slot="금1012").all()
             names1 = [applicant.user.name for applicant in applicants]
             applicants = FriBoard.query.filter_by(slot="금24_호별_").all()
             applicants = FriBoard.query.filter_by(slot="금46_호별_").all()
