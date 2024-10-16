@@ -192,9 +192,9 @@ def update():
         applicants = SatBoard.query.filter_by(slot="토1012").all()
         names2 = [applicant.user.name for applicant in applicants]
         applicants = SatBoard.query.filter_by(slot="토122").all()
-        names2 = [applicant.user.name for applicant in applicants]
-        applicants = SatBoard.query.filter_by(slot="토24").all()
         names3 = [applicant.user.name for applicant in applicants]
+        applicants = SatBoard.query.filter_by(slot="토24").all()
+        names4 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "토요일 신청자명단 업데이트","names1": names1,"names2": names2,"names3": names3,"names4": names4}), 200
     elif day == '일':
         applicants = SunBoard.query.filter_by(slot="일1반3반").all()
