@@ -136,7 +136,7 @@ def apply():
         applicants = SunBoard.query.filter_by(slot="일1반3반").all()
         names1 = [applicant.user.name for applicant in applicants]
         applicants = SunBoard.query.filter_by(slot="일3반5반").all()
-        names1 = [applicant.user.name for applicant in applicants]
+        names2 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2}), 200
 
 @bp.route('/update', methods=['POST'])
