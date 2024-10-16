@@ -282,9 +282,9 @@
                     } else if (currentDay === '금') {
                         slotIds = ['금1012_전시대_','금46_호별_','금79'];
                     }else if (currentDay === '토') {
-                        slotIds = ['토810_전시대_','토1012_호별_','토24_호별_'];
+                        slotIds = ['토810','토1012','토122','토24'];
                     }else if (currentDay === '일') {
-                        slotIds = ['일1반3시반_호별_'];
+                        slotIds = ['일1시반3시반','일3시반5시반'];
                     }
                     if (slotIds.length > 0) {
                         $.ajax({
@@ -502,7 +502,7 @@
 
                     let slotIds = [];
 
-                   if (currentDay === '월') {
+                    if (currentDay === '월') {
                         slotIds = ['월1012', '월122', '월24'];
                     } else if (currentDay === '화') {
                         slotIds = ['화1012', '화122', '화24', '화79'];
@@ -513,9 +513,9 @@
                     } else if (currentDay === '금') {
                         slotIds = ['금1012_전시대_','금46_호별_','금79'];
                     }else if (currentDay === '토') {
-                        slotIds = ['토810_전시대_','토1012_호별_','토24_호별_'];
+                        slotIds = ['토810','토1012','토122','토24'];
                     }else if (currentDay === '일') {
-                        slotIds = ['일1반3시반_호별_'];
+                        slotIds = ['일1시반3시반','일3시반5시반'];
                     }
                     $.ajax({
                         url: '/apply',
