@@ -33,10 +33,8 @@ def clear_tue_board(app):
 
 def clear_wed_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="수1012_마두_").delete()
-        Notice.query.filter_by(slot="수1012_웨돔_").delete()
-        Notice.query.filter_by(slot="수24_마두_").delete()
-        Notice.query.filter_by(slot="수24_웨돔_").delete()
+        Notice.query.filter_by(slot="수1012").delete()
+        Notice.query.filter_by(slot="수122").delete()
         db.session.commit()
         WedBoard.query.delete()
         db.session.commit()
@@ -71,12 +69,10 @@ def clear_fri_board(app):
 def clear_sat_board(app):
     with app.app_context():
         Notice.query.filter_by(slot="토810").delete()
-        Notice.query.filter_by(slot="토1012").delete()
-        Notice.query.filter_by(slot="토810_전시대_").delete()
-        Notice.query.filter_by(slot="토1012_호별_").delete()
+        Notice.query.filter_by(slot="토1012_웨돔_").delete()
+        Notice.query.filter_by(slot="토1012_마두_").delete()
         Notice.query.filter_by(slot="토122").delete() 
         Notice.query.filter_by(slot="토24").delete()
-        Notice.query.filter_by(slot="토24_호별_").delete()
         db.session.commit()
         SatBoard.query.delete()
         db.session.commit()
