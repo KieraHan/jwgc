@@ -76,7 +76,7 @@ def apply():
         db.session.commit()
         applicants = WedBoard.query.filter_by(slot="수1012").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = WedBoard.query.filter_by(slot="수13").all()
+        applicants = WedBoard.query.filter_by(slot="수122").all()
         names2 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2}), 200
 
@@ -171,7 +171,7 @@ def update():
         # 해당 요일의 모든 신청자 목록을 가져옵니다.
         applicants = WedBoard.query.filter_by(slot="수1012").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = WedBoard.query.filter_by(slot="수13").all()
+        applicants = WedBoard.query.filter_by(slot="수122").all()
         names2 = [applicant.user.name for applicant in applicants]
         return jsonify({"message": "수요일 신청자명단 업데이트","names1": names1,"names2": names2}), 200
     elif day =='목':
@@ -258,7 +258,7 @@ def cancel():
             db.session.commit()
             applicants = WedBoard.query.filter_by(slot="수1012").all()
             names1 = [applicant.user.name for applicant in applicants]
-            applicants = WedBoard.query.filter_by(slot="수13").all()
+            applicants = WedBoard.query.filter_by(slot="수122").all()
             names2 = [applicant.user.name for applicant in applicants]
             return jsonify({"message": "신청이 취소되었습니다." ,"names1": names1,"names2": names2}), 200
 
