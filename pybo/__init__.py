@@ -57,7 +57,7 @@ def clear_fri_board(app):
     with app.app_context():
         Notice.query.filter_by(slot="금1012").delete()
         Notice.query.filter_by(slot="금122").delete()
-        Notice.query.filter_by(slot="금24_호별_").delete()
+        Notice.query.filter_by(slot="금35_호별_").delete()
         Notice.query.filter_by(slot="금46_호별_").delete()
         Notice.query.filter_by(slot="금79").delete()
         db.session.commit()
