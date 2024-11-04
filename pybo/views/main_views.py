@@ -106,7 +106,7 @@ def apply():
 
         applicants = FriBoard.query.filter_by(slot="금1012").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = FriBoard.query.filter_by(slot="금46_호별_").all()
+        applicants = FriBoard.query.filter_by(slot="금35_호별_").all()
         names2 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금79").all()
         names3 = [applicant.user.name for applicant in applicants]
@@ -187,7 +187,7 @@ def update():
     elif day == '금':
         applicants = FriBoard.query.filter_by(slot="금1012").all()
         names1 = [applicant.user.name for applicant in applicants]
-        applicants = FriBoard.query.filter_by(slot="금46_호별_").all()
+        applicants = FriBoard.query.filter_by(slot="금35_호별_").all()
         names2 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금79").all()
         names3 = [applicant.user.name for applicant in applicants]
@@ -284,7 +284,7 @@ def cancel():
             applicants = FriBoard.query.filter_by(slot="금1012").all()
             names1 = [applicant.user.name for applicant in applicants]
             applicants = FriBoard.query.filter_by(slot="금24_호별_").all()
-            applicants = FriBoard.query.filter_by(slot="금46_호별_").all()
+            applicants = FriBoard.query.filter_by(slot="금35_호별_").all()
             names2 = [applicant.user.name for applicant in applicants]
             applicants = FriBoard.query.filter_by(slot="금79").all()
             names3 = [applicant.user.name for applicant in applicants]
