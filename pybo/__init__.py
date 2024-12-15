@@ -13,8 +13,9 @@ def clear_mon_board(app):
         Notice.query.filter_by(slot="월1012").delete()
         Notice.query.filter_by(slot="월122").delete()
         Notice.query.filter_by(slot="월24").delete()
+        db.session.commit()
         MonBoard.query.delete()
-        Hide.query.delete()
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -24,8 +25,9 @@ def clear_tue_board(app):
         Notice.query.filter_by(slot="화122").delete()
         Notice.query.filter_by(slot="화24").delete()
         Notice.query.filter_by(slot="화79").delete()
+        db.session.commit()
         TueBoard.query.delete()
-        Hide.query.delete()
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -36,7 +38,6 @@ def clear_wed_board(app):
         db.session.commit()
         WedBoard.query.delete()
         db.session.commit()
-        Hide.query.delete()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -46,8 +47,9 @@ def clear_thu_board(app):
         Notice.query.filter_by(slot="목122").delete()
         Notice.query.filter_by(slot="목24_호별_").delete()
         Notice.query.filter_by(slot="목79").delete()
+        db.session.commit()
         ThuBoard.query.delete()
-        Hide.query.delete()
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -57,8 +59,9 @@ def clear_fri_board(app):
         Notice.query.filter_by(slot="금122").delete()
         Notice.query.filter_by(slot="금35_호별_").delete()
         Notice.query.filter_by(slot="금79").delete()
+        db.session.commit()
         FriBoard.query.delete()
-        Hide.query.delete()
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -69,8 +72,9 @@ def clear_sat_board(app):
         Notice.query.filter_by(slot="토1012_마두_").delete()
         Notice.query.filter_by(slot="토122").delete() 
         Notice.query.filter_by(slot="토24").delete()
+        db.session.commit()
         SatBoard.query.delete()
-        Hide.query.delete()
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -78,8 +82,9 @@ def clear_sun_board(app):
     with app.app_context():
         Notice.query.filter_by(slot="일1반3시반").delete()
         Notice.query.filter_by(slot="일3반5시반").delete()
+        db.session.commit()
         SunBoard.query.delete()
-        Hide.query.delete()
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
