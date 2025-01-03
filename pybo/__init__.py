@@ -106,18 +106,6 @@ def create_app():
     from .views import main_views
     app.register_blueprint(main_views.bp)
 
-
-    MonBoard.query.delete()
-    TueBoard.query.delete()
-    WedBoard.query.delete()
-    ThuBoard.query.delete()
-    FriBoard.query.delete()
-    SatBoard.query.delete()
-    SunBoard.query.delete()
-    Notice.query.delete()
-    DayNotice.query.delete()
-    DisabledSlot.query.update({DisabledSlot.is_disabled: False})
-
     scheduler = BackgroundScheduler()
     scheduler.add_job(lambda: clear_mon_board(app), 'cron', day_of_week='mon', hour=23)
     scheduler.add_job(lambda: clear_tue_board(app), 'cron', day_of_week='tue', hour=23)
