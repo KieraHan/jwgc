@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 from flask_migrate import Migrate
-from .models import db,User,Overseer,MonBoard,TueBoard,WedBoard,ThuBoard,FriBoard,SatBoard,SunBoard,Notice,DisabledSlot,DayNotice
+from .models import db,User,Overseer,MonBoard,TueBoard,WedBoard,ThuBoard,FriBoard,SatBoard,SunBoard,Notice
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, time
 import json
@@ -15,7 +15,7 @@ def clear_mon_board(app):
         Notice.query.filter_by(slot="월24").delete()
         db.session.commit()
         MonBoard.query.delete()
-        DisabledSlot.query.update({DisabledSlot.is_disabled: False})
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -27,9 +27,9 @@ def clear_tue_board(app):
         Notice.query.filter_by(slot="화79").delete()
         db.session.commit()
         TueBoard.query.delete()
-        DisabledSlot.query.update({DisabledSlot.is_disabled: False})
+        db.session.commit()
         DayNotice.query.delete()
-        db.session.commit())
+        db.session.commit()
 
 def clear_wed_board(app):
     with app.app_context():
@@ -37,7 +37,7 @@ def clear_wed_board(app):
         Notice.query.filter_by(slot="수122").delete()
         db.session.commit()
         WedBoard.query.delete()
-        DisabledSlot.query.update({DisabledSlot.is_disabled: False})
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -49,7 +49,7 @@ def clear_thu_board(app):
         Notice.query.filter_by(slot="목79").delete()
         db.session.commit()
         ThuBoard.query.delete()
-        DisabledSlot.query.update({DisabledSlot.is_disabled: False})
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -61,7 +61,7 @@ def clear_fri_board(app):
         Notice.query.filter_by(slot="금79").delete()
         db.session.commit()
         FriBoard.query.delete()
-        DisabledSlot.query.update({DisabledSlot.is_disabled: False})
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -74,7 +74,7 @@ def clear_sat_board(app):
         Notice.query.filter_by(slot="토24").delete()
         db.session.commit()
         SatBoard.query.delete()
-        DisabledSlot.query.update({DisabledSlot.is_disabled: False})
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
@@ -84,7 +84,7 @@ def clear_sun_board(app):
         Notice.query.filter_by(slot="일3반5시반").delete()
         db.session.commit()
         SunBoard.query.delete()
-        DisabledSlot.query.update({DisabledSlot.is_disabled: False})
+        db.session.commit()
         DayNotice.query.delete()
         db.session.commit()
 
