@@ -138,7 +138,6 @@
                             <div class ="lb_1">
                                 <label id="missing-${slotId}">누락:</label><br>
                                 <label id="duplicates-${slotId}">중복:</label><br>
-                                <label id="unregistered-${slotId}">미신청자:</label><br>
                             </div>
                         </div>
                     </div>
@@ -449,7 +448,6 @@
                                 loadNotices(slotId);
                                 $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
                                 $(`#duplicates-${slotId}`).text(`중복: ${response.duplicates}`);
-                                $(`#unregistered-${slotId}`).text(`미신청자: ${response.unregistered}`);
                             }
                         });
                     } else {
@@ -463,7 +461,6 @@
                                     loadNotices(slotId);
                                     $(`#missing-${slotId}`).text(`누락: ${response.missing}`);
                                     $(`#duplicates-${slotId}`).text(`중복: ${response.duplicates}`);
-                                    $(`#unregistered-${slotId}`).text(`미신청자: ${response.unregistered}`);
                                 }
                             });
                         }
