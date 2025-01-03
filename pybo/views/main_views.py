@@ -354,6 +354,7 @@ def get_hide_slots():
 #공지등록
 @bp.route('/notice', methods=['POST'])
 def create_notice():
+    user_names = [user.name for user in User.query.all()]
     print('Received data:', request.form)
     contents = request.form.getlist('contents[]')
     slot = request.form['slot']
@@ -401,7 +402,8 @@ def create_notice():
         duplicates += i + ","
     #신청자에 없는 이름이 공지리스트에 있다면 찾아서 문자열로 만든다
     only_in_contents = [name for name in flattened_contents if name not in names]
-    unregistered = ", ".join(only_in_contents)
+    filtered_only_in_contents = [name for name in only_in_contents if name in user_names]
+    unregistered = ", ".join(filtered_only_in_contents)
     
     #문자열과 리스트를 하나씩 비교확인하여 누락된 이름을 찾는다.
     for i in range(len(names)):
