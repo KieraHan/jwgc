@@ -506,6 +506,8 @@ def delete_all(model_name):
         Hide.query.delete()
     elif model_name == "dayNotice":
         DayNotice.query.delete()
+    elif model_name == "disabledSlot":
+        DisabledSlot.query.update({DisabledSlot.is_disabled: False})
 
     else:
         print("Model not found.")
