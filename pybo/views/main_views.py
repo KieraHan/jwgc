@@ -362,6 +362,11 @@ def create_notice():
     contentsStr = ""
     for i in contents:
         contentsStr = contentsStr+i
+    #공지 리스트를 띄어쓰기 기준으로 구분하여 다시 만든다.
+    flattened_contents = []
+    for item in contents:
+        flattened_contents.extend(item.split())
+        
     #공지버튼이 눌러진 슬롯의 신청자명단을 리스트로 받아온다
     if slot[0]=="월":
         applicants = MonBoard.query.filter_by(slot=slot).all()
@@ -394,6 +399,10 @@ def create_notice():
     duplicates = ""
     for i in duplicate:
         duplicates += i + ","
+    #신청자에 없는 이름이 공지리스트에 있다면 찾아서 문자열로 만든다
+    only_in_contents = [name for name in flattened_contents if name not in names]
+    unregistered = ", ".join(only_in_contents)
+    
     #문자열과 리스트를 하나씩 비교확인하여 누락된 이름을 찾는다.
     for i in range(len(names)):
         for j in range(len(contentsStr)):
@@ -425,7 +434,7 @@ def create_notice():
     new_writer = Writer(writer=writer, slot=slot)
     db.session.add(new_writer)
     db.session.commit()
-    return jsonify({"message": "공지가 등록되었습니다.","missing": missing,"duplicates":duplicates}), 200
+    return jsonify({"message": "공지가 등록되었습니다.","missing": missing,"duplicates":duplicates,"unregistered": unregistered}), 200
 @bp.route('/get_notices', methods=['POST'])
 def get_notices():
     slot = request.form['slot']
