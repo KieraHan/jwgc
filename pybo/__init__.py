@@ -83,6 +83,9 @@ def clear_sun_board(app):
     with app.app_context():
         Notice.query.filter_by(slot="일1반3시반").delete()
         Notice.query.filter_by(slot="일3반5시반").delete()
+        Notice.query.filter_by(slot="일1012").delete()
+        Notice.query.filter_by(slot="일122").delete()
+        Notice.query.filter_by(slot="일24").delete()
         db.session.commit()
         SunBoard.query.delete()
         DayNotice.query.delete()
