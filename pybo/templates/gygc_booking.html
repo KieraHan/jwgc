@@ -292,11 +292,30 @@
                             },
                             success: function (response) {
                                 for (let i = 0; i < slotIds.length; i++) {
-                                    const names = response[`names${i + 1}`];
-                                    const namesStr = names.join(',  ');
-                                    $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
-                                }
+                                    const names = response[`names${i + 1}`] || [];
+                                    let result = "";
+                                    let dividerIndex = names.indexOf("//");
 
+                                    if (dividerIndex === -1) {
+                                        // // 구분자가 없으면 일반 출력
+                                        result = names.join(", ");
+                                    } else {
+                                        const before = names.slice(0, dividerIndex).join(", ");
+                                        const after = names.slice(dividerIndex + 1).join(", ");
+                                        if (before && after) {
+                                            result = `${before} <span class="divider">//</span> ${after}`;
+                                        } else if (before) {
+                                            result = `${before} <span class="divider">//</span>`;
+                                        } else if (after) {
+                                            result = `<span class="divider">//</span> ${after}`;
+                                        } else {
+                                            result = `<span class="divider">//</span>`;
+                                        }
+
+                                    }
+
+                                    $(`.slot[data-slot='${slotIds[i]}'] .applicants`).html(result);
+                                }
                             }
                         });
                     }
@@ -526,9 +545,29 @@
                         },
                         success: function (response) {
                             for (let i = 0; i < slotIds.length; i++) {
-                                const names = response[`names${i + 1}`];
-                                const namesStr = names.join(', ');
-                                $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
+                                const names = response[`names${i + 1}`] || [];
+                                let result = "";
+                                let dividerIndex = names.indexOf("//");
+
+                                if (dividerIndex === -1) {
+                                    // // 구분자가 없으면 일반 출력
+                                    result = names.join(", ");
+                                } else {
+                                    const before = names.slice(0, dividerIndex).join(", ");
+                                    const after = names.slice(dividerIndex + 1).join(", ");
+                                    if (before && after) {
+                                        result = `${before} <span class="divider">//</span> ${after}`;
+                                    } else if (before) {
+                                        result = `${before} <span class="divider">//</span>`;
+                                    } else if (after) {
+                                        result = `<span class="divider">//</span> ${after}`;
+                                    } else {
+                                        result = `<span class="divider">//</span>`;
+                                    }
+
+                                }
+
+                                $(`.slot[data-slot='${slotIds[i]}'] .applicants`).html(result);
                             }
                         },
                         error: function (xhr, status, error) {
@@ -543,9 +582,29 @@
                                 },
                                 success: function (response) {
                                     for (let i = 0; i < slotIds.length; i++) {
-                                        const names = response[`names${i + 1}`];
-                                        const namesStr = names.join(', ');
-                                        $(`.slot[data-slot='${slotIds[i]}'] .applicants`).text(namesStr);
+                                        const names = response[`names${i + 1}`] || [];
+                                        let result = "";
+                                        let dividerIndex = names.indexOf("//");
+    
+                                        if (dividerIndex === -1) {
+                                            // // 구분자가 없으면 일반 출력
+                                            result = names.join(", ");
+                                        } else {
+                                            const before = names.slice(0, dividerIndex).join(", ");
+                                            const after = names.slice(dividerIndex + 1).join(", ");
+                                            if (before && after) {
+                                                result = `${before} <span class="divider">//</span> ${after}`;
+                                            } else if (before) {
+                                                result = `${before} <span class="divider">//</span>`;
+                                            } else if (after) {
+                                                result = `<span class="divider">//</span> ${after}`;
+                                            } else {
+                                                result = `<span class="divider">//</span>`;
+                                            }
+    
+                                        }
+    
+                                        $(`.slot[data-slot='${slotIds[i]}'] .applicants`).html(result);
                                     }
                                 },
                                 error: function () {
