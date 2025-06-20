@@ -71,8 +71,8 @@ def clear_sat_board(app):
         Notice.query.filter_by(slot="토810").delete()
         Notice.query.filter_by(slot="토1012_웨돔_").delete()
         Notice.query.filter_by(slot="토1012_마두_").delete()
-        Notice.query.filter_by(slot="토122_웨돔_").delete() 
-        Notice.query.filter_by(slot="토122_마두_").delete() 
+        Notice.query.filter_by(slot="토122_웨돔_").delete()
+        Notice.query.filter_by(slot="토122_마두_").delete()
         Notice.query.filter_by(slot="토24").delete()
         db.session.commit()
         SatBoard.query.delete()
@@ -201,16 +201,13 @@ def create_app():
     return app
 
 def initialize_users_and_overseers(app):
-        with app.app_context():
-        # 모든 사용자 제거 (단, "//"는 제외)
-        all_users = User.query.all()
-        for user in all_users:
-            if user.name != '//':
-                db.session.delete(user)
-
-        # 인도자 전부 삭제
-        all_overseers = Overseer.query.all()
-        for overseer in all_overseers:
+    with app.app_context():
+        alluser = User.query.all()
+        for user in alluser:
+            db.session.delete(user)
+        db.session.commit()
+        alloverseer = Overseer.query.all()
+        for overseer in alloverseer:
             db.session.delete(overseer)
         db.session.commit()
 
