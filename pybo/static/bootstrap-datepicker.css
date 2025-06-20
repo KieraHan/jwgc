@@ -3,6 +3,12 @@
  *
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
+/*신청마감시간표시*/
+.divider {
+    font-weight: bold;
+    color: crimson;
+}
+
 .lb_1{
     font-size: 15px;
     width: 350px;
