@@ -201,11 +201,13 @@ def create_app():
 
 def initialize_users_and_overseers(app):
         with app.app_context():
+        # 모든 사용자 제거 (단, "//"는 제외)
         all_users = User.query.all()
         for user in all_users:
             if user.name != '//':
                 db.session.delete(user)
 
+        # "//" 사용자 존재 확인, 없으면 생성
         divider_user = User.query.filter_by(name='//').first()
         if not divider_user:
             divider_user = User(name='//')
@@ -213,6 +215,7 @@ def initialize_users_and_overseers(app):
 
         db.session.commit()
 
+        # 인도자 전부 삭제
         all_overseers = Overseer.query.all()
         for overseer in all_overseers:
             db.session.delete(overseer)
