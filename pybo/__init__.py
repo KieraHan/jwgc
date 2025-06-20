@@ -96,7 +96,76 @@ def clear_sun_board(app):
 
 
 # db = SQLAlchemy()
+def mark_divider(app, model, target_slots=None):
+    with app.app_context():
+        divider_user = User.query.filter_by(name='//').first()
+        if not divider_user:
+            print("⚠️ '//' user not found. Divider not inserted.")
+            return
 
+        for slot in target_slots or []:
+            existing = model.query.filter_by(slot=slot, user_name='//').first()
+            if not existing:
+                divider = model(slot=slot, user_id=divider_user.id, user_name='//')
+                db.session.add(divider)
+        db.session.commit()
+
+
+def mark_all_dividers(app):
+    now = datetime.now()
+    day = now.weekday()
+    hour = now.hour
+    minute = now.minute
+
+    if day == 0:
+        if hour == 9 and minute == 0:
+            mark_divider(app, MonBoard, ["월1012"])
+        elif hour == 11 and minute == 0:
+            mark_divider(app, MonBoard, ["월122"])
+        elif hour == 13 and minute == 0:
+            mark_divider(app, MonBoard, ["월24"])
+    elif day == 1:
+        if hour == 9 and minute == 0:
+            mark_divider(app, TueBoard, ["화1012"])
+        elif hour == 11 and minute == 0:
+            mark_divider(app, TueBoard, ["화122"])
+        elif hour == 13 and minute == 0:
+            mark_divider(app, TueBoard, ["화24"])
+        elif hour == 18 and minute == 0:
+            mark_divider(app, TueBoard, ["화79"])
+    elif day == 2:
+        if hour == 9 and minute == 0:
+            mark_divider(app, WedBoard, ["수1012"])
+        elif hour == 12 and minute == 0:
+            mark_divider(app, WedBoard, ["수13"])
+    elif day == 3:
+        if hour == 9 and minute == 0:
+            mark_divider(app, ThuBoard, ["목1012"])
+        elif hour == 13 and minute == 0:
+            mark_divider(app, ThuBoard, ["목24_호별_"])
+        elif hour == 18 and minute == 0:
+            mark_divider(app, ThuBoard, ["목79"])
+    elif day == 4:
+        if hour == 9 and minute == 0:
+            mark_divider(app, FriBoard, ["금1012"])
+        elif hour == 15 and minute == 0:
+            mark_divider(app, FriBoard, ["금46_호별_"])
+        elif hour == 18 and minute == 0:
+            mark_divider(app, FriBoard, ["금79"])
+    elif day == 5:
+        if hour == 4 and minute == 35:
+            mark_divider(app, SatBoard, ["토810"])
+        elif hour == 9 and minute == 0:
+            mark_divider(app, SatBoard, ["토1012"])
+        elif hour == 11 and minute == 0:
+            mark_divider(app, SatBoard, ["토122"])
+        elif hour == 13 and minute == 0:
+            mark_divider(app, SatBoard, ["토24"])
+    elif day == 6:
+        if hour == 12 and minute == 30:
+            mark_divider(app, SunBoard, ["일1반3시반"])
+        elif hour == 14 and minute == 30:
+            mark_divider(app, SunBoard, ["일3반5시반"])
 
 def create_app():
     app = Flask(__name__,static_url_path='/static')
@@ -119,6 +188,7 @@ def create_app():
     scheduler.add_job(lambda: clear_fri_board(app), 'cron', day_of_week='fri', hour=23)
     scheduler.add_job(lambda: clear_sat_board(app), 'cron', day_of_week='sat', hour=23)
     scheduler.add_job(lambda: clear_sun_board(app), 'cron', day_of_week='sun', hour=23)
+    scheduler.add_job(lambda: mark_all_dividers(app), 'cron', second='0')  # 매분 0초마다 실행
     scheduler.start()
 
     if not hasattr(app, 'initialized'):
@@ -130,22 +200,30 @@ def create_app():
     return app
 
 def initialize_users_and_overseers(app):
-    with app.app_context():
-        alluser = User.query.all()
-        for user in alluser:
-            db.session.delete(user)
+        with app.app_context():
+        all_users = User.query.all()
+        for user in all_users:
+            if user.name != '//':
+                db.session.delete(user)
+
+        divider_user = User.query.filter_by(name='//').first()
+        if not divider_user:
+            divider_user = User(name='//')
+            db.session.add(divider_user)
+
         db.session.commit()
-        alloverseer = Overseer.query.all()
-        for overseer in alloverseer:
+
+        all_overseers = Overseer.query.all()
+        for overseer in all_overseers:
             db.session.delete(overseer)
         db.session.commit()
 
         users = ['김형민','강민성','김진숙','박봉임','박영수','서정현','성윤영','이은미','전재호','전지은','한주연','임정완','최소진',
                  '김경호','김진명','김귀덕','김미경','이예빛나','이윤남','이현숙','정병호','정우숙','차복순','최순남','최혜경',
-                 '박정현','심지훈','권순자','김민교','김영길','모모코','박덕희','박홍숙','송현','이수림','전은희','한선욱','한성희','김지아',
+                 '박정현','심지훈','권순자','김영길','모모코','박덕희','박홍숙','송현','이수림','전은희','한선욱','한성희','김지아',
                  '현승우','김경준','김연례','김재심','김진윤','김희숙','박원숙','이성재','최예진','하혜자','함성희','허수봉','허숙자',
                  '김동석','김서현','김수석','김영식','김은주','김원숙','김정현','김지현','노경임','이영주','임애경','김재호','조경옥','최병선','김경희',
-                 '김양호','안승현','김재희','박말호','박종서','박혜인','양현미','임응진','장명희','장영숙','전상옥','정은실','조미선','최미례','문행숙','박시원','최현우',
+                 '김양호','안승현','김재희','박말호','박종서','박혜인','양현미','장명희','장영숙','전상옥','정은실','조미선','최미례','문행숙','박시원','최현우',
                  '강신혜','문지원','최세욱','안병철','한순아','서종덕','배소연','유수아','서정우','김누리','황미희','김민서']
 
 
