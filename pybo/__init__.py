@@ -208,14 +208,6 @@ def initialize_users_and_overseers(app):
             if user.name != '//':
                 db.session.delete(user)
 
-        # "//" 사용자 존재 확인, 없으면 생성
-        divider_user = User.query.filter_by(name='//').first()
-        if not divider_user:
-            divider_user = User(name='//')
-            db.session.add(divider_user)
-
-        db.session.commit()
-
         # 인도자 전부 삭제
         all_overseers = Overseer.query.all()
         for overseer in all_overseers:
