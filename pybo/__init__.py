@@ -107,6 +107,62 @@ def mark_divider(app, model, target_slots=None):
                 db.session.add(divider)
         db.session.commit()
 
+def mark_all_dividers(app):
+    now = datetime.now()
+    day = now.weekday()
+    hour = now.hour
+    minute = now.minute
+
+    if day == 0:
+        if hour == 9 and minute == 0:
+            mark_divider(app, MonBoard, ["월1012"])
+        elif hour == 11 and minute == 0:
+            mark_divider(app, MonBoard, ["월122"])
+        elif hour == 13 and minute == 0:
+            mark_divider(app, MonBoard, ["월24"])
+    elif day == 1:
+        if hour == 9 and minute == 0:
+            mark_divider(app, TueBoard, ["화1012"])
+        elif hour == 11 and minute == 0:
+            mark_divider(app, TueBoard, ["화122"])
+        elif hour == 13 and minute == 0:
+            mark_divider(app, TueBoard, ["화24"])
+        elif hour == 18 and minute == 0:
+            mark_divider(app, TueBoard, ["화79"])
+    elif day == 2:
+        if hour == 9 and minute == 0:
+            mark_divider(app, WedBoard, ["수1012"])
+        elif hour == 12 and minute == 0:
+            mark_divider(app, WedBoard, ["수13"])
+    elif day == 3:
+        if hour == 9 and minute == 0:
+            mark_divider(app, ThuBoard, ["목1012"])
+        elif hour == 13 and minute == 0:
+            mark_divider(app, ThuBoard, ["목24_호별_"])
+        elif hour == 18 and minute == 0:
+            mark_divider(app, ThuBoard, ["목79"])
+    elif day == 4:
+        if hour == 9 and minute == 0:
+            mark_divider(app, FriBoard, ["금1012"])
+        elif hour == 15 and minute == 0:
+            mark_divider(app, FriBoard, ["금46_호별_"])
+        elif hour == 18 and minute == 0:
+            mark_divider(app, FriBoard, ["금79"])
+    elif day == 5:
+        if hour == 7 and minute == 0:
+            mark_divider(app, SatBoard, ["토810"])
+        elif hour == 9 and minute == 0:
+            mark_divider(app, SatBoard, ["토1012"])
+        elif hour == 11 and minute == 0:
+            mark_divider(app, SatBoard, ["토122"])
+        elif hour == 13 and minute == 0:
+            mark_divider(app, SatBoard, ["토24"])
+    elif day == 6:
+        if hour == 12 and minute == 30:
+            mark_divider(app, SunBoard, ["일1반3시반"])
+        elif hour == 14 and minute == 30:
+            mark_divider(app, SunBoard, ["일3반5시반"])
+
 
 
 # db = SQLAlchemy()
