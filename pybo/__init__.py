@@ -189,6 +189,7 @@ def create_app():
     scheduler.add_job(lambda: clear_fri_board(app), 'cron', day_of_week='fri', hour=23)
     scheduler.add_job(lambda: clear_sat_board(app), 'cron', day_of_week='sat', hour=23)
     scheduler.add_job(lambda: clear_sun_board(app), 'cron', day_of_week='sun', hour=23)
+    scheduler.add_job(lambda: mark_all_dividers(app), 'cron', second='0')
     scheduler.start()
 
     if not hasattr(app, 'initialized'):
