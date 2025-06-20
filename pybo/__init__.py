@@ -93,6 +93,20 @@ def clear_sun_board(app):
         DisabledSlot.query.update({DisabledSlot.is_disabled: False})
         db.session.commit()
 
+def mark_divider(app, model, target_slots=None):
+    with app.app_context():
+        divider_user = User.query.filter_by(name='//').first()
+        if not divider_user:
+            print("⚠️ '//' user not found. Divider not inserted.")
+            return
+
+        for slot in target_slots or []:
+            existing = model.query.filter_by(slot=slot, user_name='//').first()
+            if not existing:
+                divider = model(slot=slot, user_id=divider_user.id, user_name='//')
+                db.session.add(divider)
+        db.session.commit()
+
 
 
 # db = SQLAlchemy()
