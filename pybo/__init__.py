@@ -202,13 +202,22 @@ def create_app():
 
 def initialize_users_and_overseers(app):
     with app.app_context():
-        alluser = User.query.all()
-        for user in alluser:
-            db.session.delete(user)
+        # 우선 divider 유저가 존재하는지 확인
+        divider_user = User.query.filter_by(name='//').first()
+        if not divider_user:
+            divider_user = User(name='//')
+            db.session.add(divider_user)
+            db.session.commit()  # 먼저 커밋해서 DB에 반영
+
+        # 나머지 유저 전부 삭제 (단, // 제외)
+        all_users = User.query.all()
+        for user in all_users:
+            if user.name != '//':
+                db.session.delete(user)
         db.session.commit()
-        alloverseer = Overseer.query.all()
-        for overseer in alloverseer:
-            db.session.delete(overseer)
+
+        # overseer 삭제
+        Overseer.query.delete()
         db.session.commit()
 
         users = ['김형민','강민성','김진숙','박봉임','박영수','서정현','성윤영','이은미','전재호','전지은','한주연','임정완','최소진',
