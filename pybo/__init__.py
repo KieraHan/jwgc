@@ -116,51 +116,71 @@ def mark_all_dividers(app):
     if day == 0:
         if hour == 9 and minute == 0:
             mark_divider(app, MonBoard, ["월1012"])
-        elif hour == 11 and minute == 0:
+        if hour == 11 and minute == 0:
             mark_divider(app, MonBoard, ["월122"])
-        elif hour == 13 and minute == 0:
+        if hour == 13 and minute == 0:
             mark_divider(app, MonBoard, ["월24"])
-    elif day == 1:
+
+    if day == 1:
         if hour == 9 and minute == 0:
             mark_divider(app, TueBoard, ["화1012"])
-        elif hour == 11 and minute == 0:
+        if hour == 11 and minute == 0:
             mark_divider(app, TueBoard, ["화122"])
-        elif hour == 13 and minute == 0:
+        if hour == 13 and minute == 0:
             mark_divider(app, TueBoard, ["화24"])
-        elif hour == 18 and minute == 0:
+        if hour == 18 and minute == 0:
             mark_divider(app, TueBoard, ["화79"])
-    elif day == 2:
+
+    if day == 2:
         if hour == 9 and minute == 0:
             mark_divider(app, WedBoard, ["수1012"])
-        elif hour == 12 and minute == 0:
-            mark_divider(app, WedBoard, ["수13"])
-    elif day == 3:
+        if hour == 12 and minute == 0:
+            mark_divider(app, WedBoard, ["수122"])
+
+    if day == 3:
         if hour == 9 and minute == 0:
             mark_divider(app, ThuBoard, ["목1012"])
-        elif hour == 13 and minute == 0:
+        if hour == 11 and minute == 0:
+            mark_divider(app, ThuBoard, ["목122"])
+        if hour == 13 and minute == 0:
             mark_divider(app, ThuBoard, ["목24_호별_"])
-        elif hour == 18 and minute == 0:
+        if hour == 18 and minute == 0:
             mark_divider(app, ThuBoard, ["목79"])
-    elif day == 4:
+
+    if day == 4:
         if hour == 9 and minute == 0:
             mark_divider(app, FriBoard, ["금1012"])
-        elif hour == 15 and minute == 0:
+        if hour == 11 and minute == 0:
+            mark_divider(app, FriBoard, ["금122"])
+        if hour == 13 and minute == 0:
+            mark_divider(app, FriBoard, ["금24"])
+        if hour == 15 and minute == 0:
             mark_divider(app, FriBoard, ["금46_호별_"])
-        elif hour == 18 and minute == 0:
+        if hour == 18 and minute == 0:
             mark_divider(app, FriBoard, ["금79"])
-    elif day == 5:
+
+    if day == 5:
         if hour == 7 and minute == 0:
             mark_divider(app, SatBoard, ["토810"])
-        elif hour == 9 and minute == 0:
-            mark_divider(app, SatBoard, ["토1012"])
-        elif hour == 11 and minute == 0:
-            mark_divider(app, SatBoard, ["토122"])
-        elif hour == 20 and minute == 26:
+        if hour == 9 and minute == 0:
+            mark_divider(app, SatBoard, ["토1012_웨돔_"])
+            mark_divider(app, SatBoard, ["토1012_마두_"])
+        if hour == 11 and minute == 0:
+            mark_divider(app, SatBoard, ["토122_웨돔_"])
+            mark_divider(app, SatBoard, ["토122_마두_"])
+        if hour == 13 and minute == 0:
             mark_divider(app, SatBoard, ["토24"])
-    elif day == 6:
+
+    if day == 6:
+        if hour == 10 and minute == 0:
+            mark_divider(app, SunBoard, ["일1012"])
+        if hour == 12 and minute == 0:
+            mark_divider(app, SunBoard, ["일122"])
+        if hour == 14 and minute == 0:
+            mark_divider(app, SunBoard, ["일24"])
         if hour == 12 and minute == 30:
             mark_divider(app, SunBoard, ["일1반3시반"])
-        elif hour == 14 and minute == 30:
+        if hour == 14 and minute == 30:
             mark_divider(app, SunBoard, ["일3반5시반"])
 
 
