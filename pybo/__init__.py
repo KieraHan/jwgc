@@ -160,7 +160,7 @@ def mark_all_dividers(app):
             mark_divider(app, FriBoard, ["금79"])
 
     if day == 5:
-        if hour == 20 and minute == 43:
+        if hour == 7 and minute == 0:
             mark_divider(app, SatBoard, ["토810"])
         if hour == 9 and minute == 0:
             mark_divider(app, SatBoard, ["토1012_웨돔_"])
