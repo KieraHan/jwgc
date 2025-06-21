@@ -155,7 +155,7 @@ def mark_all_dividers(app):
             mark_divider(app, SatBoard, ["토1012"])
         elif hour == 11 and minute == 0:
             mark_divider(app, SatBoard, ["토122"])
-        elif hour == 20 and minute == 24:
+        elif hour == 20 and minute == 26:
             mark_divider(app, SatBoard, ["토24"])
     elif day == 6:
         if hour == 12 and minute == 30:
