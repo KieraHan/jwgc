@@ -137,14 +137,18 @@ def mark_all_dividers(app):
             mark_divider(app, WedBoard, ["수1012"])
         if hour == 12 and minute == 0:
             mark_divider(app, WedBoard, ["수122"])
+        if hour == 13 and minute == 0:
+            mark_divider(app, WedBoard, ["수24"])
 
     if day == 3:
         if hour == 9 and minute == 0:
             mark_divider(app, ThuBoard, ["목1012"])
         if hour == 11 and minute == 0:
             mark_divider(app, ThuBoard, ["목122"])
+        if hour == 12 and minute == 0:
+            mark_divider(app, ThuBoard, ["목13_호별_"])
         if hour == 13 and minute == 0:
-            mark_divider(app, ThuBoard, ["목24_호별_"])
+            mark_divider(app, ThuBoard, ["목24"])
         if hour == 18 and minute == 0:
             mark_divider(app, ThuBoard, ["목79"])
 
@@ -153,10 +157,10 @@ def mark_all_dividers(app):
             mark_divider(app, FriBoard, ["금1012"])
         if hour == 11 and minute == 0:
             mark_divider(app, FriBoard, ["금122"])
+        if hour == 12 and minute == 0:
+            mark_divider(app, FriBoard, ["금13_호별_"])
         if hour == 13 and minute == 0:
             mark_divider(app, FriBoard, ["금24"])
-        if hour == 15 and minute == 0:
-            mark_divider(app, FriBoard, ["금46_호별_"])
         if hour == 18 and minute == 0:
             mark_divider(app, FriBoard, ["금79"])
 
@@ -164,11 +168,11 @@ def mark_all_dividers(app):
         if hour == 7 and minute == 0:
             mark_divider(app, SatBoard, ["토810"])
         if hour == 9 and minute == 0:
-            mark_divider(app, SatBoard, ["토1012_웨돔_"])
-            mark_divider(app, SatBoard, ["토1012_마두_"])
+            mark_divider(app, SatBoard, ["토1012"])
         if hour == 11 and minute == 0:
-            mark_divider(app, SatBoard, ["토122_웨돔_"])
-            mark_divider(app, SatBoard, ["토122_마두_"])
+            mark_divider(app, SatBoard, ["토122"])
+        if hour == 12 and minute == 0:
+            mark_divider(app, SatBoard, ["토13_호별_"])
         if hour == 13 and minute == 0:
             mark_divider(app, SatBoard, ["토24"])
 
