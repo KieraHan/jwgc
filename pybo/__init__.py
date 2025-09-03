@@ -44,7 +44,7 @@ def clear_wed_board(app):
 
 def clear_thu_board(app):
     with app.app_context():
-        Notice.query.filter_by(slot="목1012").delete()
+        Notice.query.filter_by(slot="목1012_호별_").delete()
         Notice.query.filter_by(slot="목122").delete()
         Notice.query.filter_by(slot="목13_호별_").delete()
         Notice.query.filter_by(slot="목24").delete()
