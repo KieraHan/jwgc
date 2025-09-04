@@ -113,9 +113,9 @@ def apply():
         names1 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금122").all()
         names2 = [applicant.user.name for applicant in applicants]
-        applicants = FriBoard.query.filter_by(slot="금24").all()
-        names3 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금13_호별_").all()
+        names3 = [applicant.user.name for applicant in applicants]
+        applicants = FriBoard.query.filter_by(slot="금24").all()
         names4 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금79").all()
         names5 = [applicant.user.name for applicant in applicants]
@@ -208,9 +208,9 @@ def update():
         names1 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금122").all()
         names2 = [applicant.user.name for applicant in applicants]
-        applicants = FriBoard.query.filter_by(slot="금24").all()
-        names3 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금13_호별_").all()
+        names3 = [applicant.user.name for applicant in applicants]
+        applicants = FriBoard.query.filter_by(slot="금24").all()
         names4 = [applicant.user.name for applicant in applicants]
         applicants = FriBoard.query.filter_by(slot="금79").all()
         names5 = [applicant.user.name for applicant in applicants]
@@ -319,10 +319,10 @@ def cancel():
             names1 = [applicant.user.name for applicant in applicants]
             applicants = FriBoard.query.filter_by(slot="금122").all()
             names2 = [applicant.user.name for applicant in applicants]
-            applicants = FriBoard.query.filter_by(slot="금24").all()
-            names3 = [applicant.user.name for applicant in applicants]
             applicants = FriBoard.query.filter_by(slot="금13_호별_").all()
             names4 = [applicant.user.name for applicant in applicants]
+            applicants = FriBoard.query.filter_by(slot="금24").all()
+            names3 = [applicant.user.name for applicant in applicants]
             applicants = FriBoard.query.filter_by(slot="금79").all()
             names5 = [applicant.user.name for applicant in applicants]
             return jsonify({"message": "신청이 취소되었습니다.", "names1": names1, "names2": names2, "names3": names3,"names4": names4,"names5": names5}), 200
