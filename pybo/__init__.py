@@ -94,6 +94,7 @@ def clear_sun_board(app):
         DisabledSlot.query.update({DisabledSlot.is_disabled: False})
         db.session.commit()
 
+"""
 def mark_divider(app, model, target_slots=None):
     with app.app_context():
         divider_user = User.query.filter_by(name='//').first()
@@ -188,8 +189,7 @@ def mark_all_dividers(app):
         if hour == 14 and minute == 30:
             mark_divider(app, SunBoard, ["일3반5시반"])
 
-
-
+"""
 # db = SQLAlchemy()
 
 
