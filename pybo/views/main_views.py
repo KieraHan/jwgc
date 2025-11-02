@@ -90,10 +90,13 @@ def apply():
         db.session.commit()
 
         names1 = insert_divider(ThuBoard.query.filter_by(slot="목1012_호별_").all())
-        names2 = insert_divider(ThuBoard.query.filter_by(slot="목13_호별_").all())
-        names3 = insert_divider(ThuBoard.query.filter_by(slot="목79").all())
+        names2 = insert_divider(ThuBoard.query.filter_by(slot="목122").all())
+        names3 = insert_divider(ThuBoard.query.filter_by(slot="목13_호별_").all())
+        names4 = insert_divider(ThuBoard.query.filter_by(slot="목24").all())
+        names5 = insert_divider(ThuBoard.query.filter_by(slot="목79").all())
 
-        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3}), 200
+
+        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3,"names4": names4,"names5": names5}), 200
 
     elif day == '금':
         existing_applicant = FriBoard.query.filter_by(slot=slot_name, user_id=user.id).first()
@@ -104,10 +107,12 @@ def apply():
         db.session.commit()
 
         names1 = insert_divider(FriBoard.query.filter_by(slot="금1012").all())
-        names2 = insert_divider(FriBoard.query.filter_by(slot="금13_호별_").all())
+        names2 = insert_divider(FriBoard.query.filter_by(slot="금122").all())
+        names3 = insert_divider(FriBoard.query.filter_by(slot="금13_호별_").all())
+        names4 = insert_divider(FriBoard.query.filter_by(slot="금24").all())
         names3 = insert_divider(FriBoard.query.filter_by(slot="금79").all())
 
-        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3}), 200
+        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3,"names4": names4,"names5": names5}), 200
 
     elif day == '토':
         existing_applicant = SatBoard.query.filter_by(slot=slot_name, user_id=user.id).first()
@@ -116,13 +121,13 @@ def apply():
         board = SatBoard(slot=slot, user_id=user.id, user_name=user.name)
         db.session.add(board)
         db.session.commit()
+        names1 = insert_divider(SatBoard.query.filter_by(slot="토810").all())
+        names2 = insert_divider(SatBoard.query.filter_by(slot="토1012").all())
+        names3 = insert_divider(SatBoard.query.filter_by(slot="토122").all())
+        names4 = insert_divider(SatBoard.query.filter_by(slot="토13_호별_").all())
+        names5 = insert_divider(SatBoard.query.filter_by(slot="토24").all())
 
-        names1 = insert_divider(SatBoard.query.filter_by(slot="토1012").all())
-        names2 = insert_divider(SatBoard.query.filter_by(slot="토122").all())
-        names3 = insert_divider(SatBoard.query.filter_by(slot="토13_호별_").all())
-        names4 = insert_divider(SatBoard.query.filter_by(slot="토24").all())
-
-        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3, "names4": names4}), 200
+        return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3, "names4": names4,"names5": names5}), 200
 
     elif day == '일':
         existing_applicant = SunBoard.query.filter_by(slot=slot_name, user_id=user.id).first()
@@ -133,9 +138,10 @@ def apply():
         db.session.commit()
          
         names1 = insert_divider(SunBoard.query.filter_by(slot="일1012").all())
-        names2 = insert_divider(SunBoard.query.filter_by(slot="일1반3시반").all())
-        names4 = insert_divider(SunBoard.query.filter_by(slot="일13").all())
-        names3 = insert_divider(SunBoard.query.filter_by(slot="일3반5시반").all())
+        names2 = insert_divider(SunBoard.query.filter_by(slot="일122").all())
+        names3 = insert_divider(SunBoard.query.filter_by(slot="일24").all())
+        names4 = insert_divider(SunBoard.query.filter_by(slot="일1반3시반").all())
+        names5 = insert_divider(SunBoard.query.filter_by(slot="일3반5시반").all())
 
         return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2,"names3": names3,"names4": names4}), 200
 
@@ -164,35 +170,41 @@ def update():
 
     elif day == '수':
         names1 = add_divider([applicant.user.name for applicant in WedBoard.query.filter_by(slot="수1012").all()])
-        names2 = add_divider([applicant.user.name for applicant in WedBoard.query.filter_by(slot="수13").all()])
+        names2 = add_divider([applicant.user.name for applicant in WedBoard.query.filter_by(slot="수122").all()])
         names3 = add_divider([applicant.user.name for applicant in WedBoard.query.filter_by(slot="수24").all()])
         return jsonify({"message": "수요일 신청자명단 업데이트", "names1": names1, "names2": names2,"names3": names3}), 200
 
     elif day == '목':
         names1 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목1012_호별").all()])
-        names2 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목13_호별_").all()])
+        names2 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목122").all()])
+        names3 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목13_호별_").all()])
+        names2 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목24").all()])
         names3 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목79").all()])
-        return jsonify({"message": "목요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3}), 200
+        return jsonify({"message": "목요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3,"names4": names4, "names5": names5}), 200
 
     elif day == '금':
         names1 = add_divider([applicant.user.name for applicant in FriBoard.query.filter_by(slot="금1012").all()])
-        names2 = add_divider([applicant.user.name for applicant in FriBoard.query.filter_by(slot="금13_호별_").all()])
-        names3 = add_divider([applicant.user.name for applicant in FriBoard.query.filter_by(slot="금79").all()])
-        return jsonify({"message": "금요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3}), 200
+        names2 = add_divider([applicant.user.name for applicant in FriBoard.query.filter_by(slot="금122").all()])
+        names3 = add_divider([applicant.user.name for applicant in FriBoard.query.filter_by(slot="금13_호별_").all()])
+        names4 = add_divider([applicant.user.name for applicant in FriBoard.query.filter_by(slot="금24").all()])
+        names5 = add_divider([applicant.user.name for applicant in FriBoard.query.filter_by(slot="금79").all()])
+        return jsonify({"message": "금요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3,"names4": names4, "names5": names5}), 200
 
     elif day == '토':
-        names1 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="토1012").all()])
-        names2 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="토122").all()])
-        names3 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="토13_호별_").all()])
-        names4 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="토24").all()])
-        return jsonify({"message": "토요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3, "names4": names4}), 200
+        names1 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="토810").all()])
+        names2 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="토1012").all()])
+        names3 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="토122").all()])
+        names4 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="토13_호별_").all()])
+        names5 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="토24").all()])
+        return jsonify({"message": "토요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3, "names4": names4, "names5": names5}), 200
 
     elif day == '일':
         names1 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일1012").all()])
         names2 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일122").all()])
-        names3 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일1반3시반").all()])
-        names4 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일3반5시반").all()])
-        return jsonify({"message": "토요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3, "names4": names4}), 200
+        names3 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일24").all()])
+        names4 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일1반3시반").all()])
+        names5 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일3반5시반").all()])
+        return jsonify({"message": "토요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3, "names4": names4,"names5": names5}), 200
 
 
 
@@ -240,7 +252,7 @@ def cancel():
             db.session.delete(application_to_cancel)
             db.session.commit()
             names1 = add_divider([a.user.name for a in WedBoard.query.filter_by(slot="수1012").all()])
-            names2 = add_divider([a.user.name for a in WedBoard.query.filter_by(slot="수13").all()])
+            names2 = add_divider([a.user.name for a in WedBoard.query.filter_by(slot="수122").all()])
             names3 = add_divider([a.user.name for a in WedBoard.query.filter_by(slot="수24").all()])
             return jsonify({"message": "신청이 취소되었습니다." ,"names1": names1,"names2": names2,"names3": names3}), 200
 
@@ -249,10 +261,12 @@ def cancel():
         if application_to_cancel:
             db.session.delete(application_to_cancel)
             db.session.commit()
-            names1 = add_divider([a.user.name for a in ThuBoard.query.filter_by(slot="목1012").all()])
-            names2 = add_divider([a.user.name for a in ThuBoard.query.filter_by(slot="목13_호별_").all()])
-            names3 = add_divider([a.user.name for a in ThuBoard.query.filter_by(slot="목79").all()])
-            return jsonify({"message": "신청이 취소되었습니다.", "names1": names1, "names2": names2, "names3": names3}), 200
+            names1 = add_divider([a.user.name for a in ThuBoard.query.filter_by(slot="목1012_호별_").all()])
+            names2 = add_divider([a.user.name for a in ThuBoard.query.filter_by(slot="목24").all()])
+            names3 = add_divider([a.user.name for a in ThuBoard.query.filter_by(slot="목13_호별_").all()])
+            names4 = add_divider([a.user.name for a in ThuBoard.query.filter_by(slot="목24").all()])
+            names5 = add_divider([a.user.name for a in ThuBoard.query.filter_by(slot="목79").all()])
+            return jsonify({"message": "신청이 취소되었습니다.", "names1": names1, "names2": names2, "names3": names3, "names4": names4,"names5": names5}), 200
 
     elif day == "금":
         application_to_cancel = FriBoard.query.filter_by(user_id=user.id, slot=slot_name).first()
@@ -260,20 +274,23 @@ def cancel():
             db.session.delete(application_to_cancel)
             db.session.commit()
             names1 = add_divider([a.user.name for a in FriBoard.query.filter_by(slot="금1012").all()])
-            names2 = add_divider([a.user.name for a in FriBoard.query.filter_by(slot="금13_호별_").all()])
-            names3 = add_divider([a.user.name for a in FriBoard.query.filter_by(slot="금79").all()])
-            return jsonify({"message": "신청이 취소되었습니다.", "names1": names1,"names2": names2,"names3": names3}), 200
+            names2 = add_divider([a.user.name for a in FriBoard.query.filter_by(slot="금122").all()])
+            names3 = add_divider([a.user.name for a in FriBoard.query.filter_by(slot="금13_호별_").all()])
+            names4 = add_divider([a.user.name for a in FriBoard.query.filter_by(slot="금24").all()])
+            names5 = add_divider([a.user.name for a in FriBoard.query.filter_by(slot="금79").all()])
+            return jsonify({"message": "신청이 취소되었습니다.", "names1": names1,"names2": names2,"names3": names3,"names4": names4,"names5": names5}), 200
 
     elif day == "토":
         application_to_cancel = SatBoard.query.filter_by(user_id=user.id, slot=slot_name).first()
         if application_to_cancel:
             db.session.delete(application_to_cancel)
             db.session.commit()
-            names1 = add_divider([a.user.name for a in SatBoard.query.filter_by(slot="토1012").all()])
-            names2 = add_divider([a.user.name for a in SatBoard.query.filter_by(slot="토122").all()])
-            names3 = add_divider([a.user.name for a in SatBoard.query.filter_by(slot="토13_호별_").all()])
-            names4 = add_divider([a.user.name for a in SatBoard.query.filter_by(slot="토24").all()])
-            return jsonify({"message": "신청이 취소되었습니다.","names1": names1,"names2": names2,"names3": names3,"names4": names4}), 200
+            names1 = add_divider([a.user.name for a in SatBoard.query.filter_by(slot="토810").all()])
+            names2 = add_divider([a.user.name for a in SatBoard.query.filter_by(slot="토1012").all()])
+            names3 = add_divider([a.user.name for a in SatBoard.query.filter_by(slot="토122").all()])
+            names4 = add_divider([a.user.name for a in SatBoard.query.filter_by(slot="토13_호별_").all()])
+            names5 = add_divider([a.user.name for a in SatBoard.query.filter_by(slot="토24").all()])
+            return jsonify({"message": "신청이 취소되었습니다.","names1": names1,"names2": names2,"names3": names3,"names4": names4,"names5": names5}), 200
 
     elif day == "일":
         application_to_cancel = SunBoard.query.filter_by(user_id=user.id, slot=slot_name).first()
@@ -281,9 +298,11 @@ def cancel():
             db.session.delete(application_to_cancel)
             db.session.commit()
             names1 = add_divider([a.user.name for a in SunBoard.query.filter_by(slot="일1012").all()])
-            names2 = add_divider([a.user.name for a in SunBoard.query.filter_by(slot="일13").all()])
-            names3 = add_divider([a.user.name for a in SunBoard.query.filter_by(slot="일1반3시반").all()])
-            return jsonify({"message": "신청이 취소되었습니다.", "names1": names1,"names2": names2,"names3": names3}), 200
+            names2 = add_divider([a.user.name for a in SunBoard.query.filter_by(slot="일122").all()])
+            names3 = add_divider([a.user.name for a in SunBoard.query.filter_by(slot="일24").all()])
+            names4 = add_divider([a.user.name for a in SunBoard.query.filter_by(slot="일1반3시반").all()])
+            names5 = add_divider([a.user.name for a in SunBoard.query.filter_by(slot="일3반5시반").all()])
+            return jsonify({"message": "신청이 취소되었습니다.", "names1": names1,"names2": names2,"names3": names3,"names4": names4,"names5": names5}), 200
 
 #슬롯비활성화업데이트
 @bp.route('/update_disabled_slot', methods=['POST'])
