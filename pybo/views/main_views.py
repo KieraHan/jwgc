@@ -110,8 +110,7 @@ def apply():
         names2 = insert_divider(FriBoard.query.filter_by(slot="금122").all())
         names3 = insert_divider(FriBoard.query.filter_by(slot="금13_호별_").all())
         names4 = insert_divider(FriBoard.query.filter_by(slot="금24").all())
-        names3 = insert_divider(FriBoard.query.filter_by(slot="금79").all())
-
+        names5 = insert_divider(FriBoard.query.filter_by(slot="금79").all())
         return jsonify({"message": "신청이 완료되었습니다.", "names1": names1, "names2": names2, "names3": names3,"names4": names4,"names5": names5}), 200
 
     elif day == '토':
@@ -178,8 +177,8 @@ def update():
         names1 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목1012_호별").all()])
         names2 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목122").all()])
         names3 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목13_호별_").all()])
-        names2 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목24").all()])
-        names3 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목79").all()])
+        names4 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목24").all()])
+        names5 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목79").all()])
         return jsonify({"message": "목요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3,"names4": names4, "names5": names5}), 200
 
     elif day == '금':
