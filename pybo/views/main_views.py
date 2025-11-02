@@ -174,7 +174,7 @@ def update():
         return jsonify({"message": "수요일 신청자명단 업데이트", "names1": names1, "names2": names2,"names3": names3}), 200
 
     elif day == '목':
-        names1 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목1012_호별").all()])
+        names1 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목1012_호별_").all()])
         names2 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목122").all()])
         names3 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목13_호별_").all()])
         names4 = add_divider([applicant.user.name for applicant in ThuBoard.query.filter_by(slot="목24").all()])
