@@ -1,5 +1,5 @@
 
-from flask import Blueprint_
+from flask import Blueprint
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 import json
 from pybo import db
