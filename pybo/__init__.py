@@ -15,7 +15,6 @@ def clear_mon_board(app):
         Notice.query.filter_by(slot="월24").delete()
         db.session.commit()
         MonBoard.query.delete()
-        DayNotice.query.delete()
         DisabledSlot.query.update({DisabledSlot.is_disabled: False})
         db.session.commit()
 
@@ -27,7 +26,6 @@ def clear_tue_board(app):
         Notice.query.filter_by(slot="화79").delete()
         db.session.commit()
         TueBoard.query.delete()
-        DayNotice.query.delete()
         DisabledSlot.query.update({DisabledSlot.is_disabled: False})
         db.session.commit()
 
@@ -38,7 +36,6 @@ def clear_wed_board(app):
         Notice.query.filter_by(slot="수24").delete()
         db.session.commit()
         WedBoard.query.delete()
-        DayNotice.query.delete()
         DisabledSlot.query.update({DisabledSlot.is_disabled: False})
         db.session.commit()
 
@@ -51,7 +48,6 @@ def clear_thu_board(app):
         Notice.query.filter_by(slot="목79").delete()
         db.session.commit()
         ThuBoard.query.delete()
-        DayNotice.query.delete()
         DisabledSlot.query.update({DisabledSlot.is_disabled: False})
         db.session.commit()
 
@@ -64,7 +60,6 @@ def clear_fri_board(app):
         Notice.query.filter_by(slot="금79").delete()
         db.session.commit()
         FriBoard.query.delete()
-        DayNotice.query.delete()
         DisabledSlot.query.update({DisabledSlot.is_disabled: False})
         db.session.commit()
 
@@ -80,7 +75,6 @@ def clear_sat_board(app):
         Notice.query.filter_by(slot="토24_웨돔_").delete()
         db.session.commit()
         SatBoard.query.delete()
-        DayNotice.query.delete()
         DisabledSlot.query.update({DisabledSlot.is_disabled: False})
         db.session.commit()
 
@@ -98,7 +92,6 @@ def clear_sun_board(app):
         Notice.query.filter_by(slot="일24_웨돔_").delete()
         db.session.commit()
         SunBoard.query.delete()
-        DayNotice.query.delete()
         DisabledSlot.query.update({DisabledSlot.is_disabled: False})
         db.session.commit()
 
