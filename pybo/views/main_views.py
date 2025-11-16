@@ -1,4 +1,3 @@
-
 from flask import Blueprint
 from flask import Flask, render_template, request, jsonify, redirect, url_for,Response
 import json
@@ -209,16 +208,16 @@ def update():
         return jsonify({"message": "토요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3, "names4": names4, "names5": names5,"names6": names6, "names7": names7,"names8": names8}), 200
 
     elif day == '일':
-        names1 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일1012_마두_").all()])
-        names2 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일1012_웨돔_").all()])
-        names3 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일122_마두_").all()])
-        names4 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일122_웨돔_").all()])
-        names5 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일24_마두_").all()])
-        names6 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일24_웨돔_").all()])
-        names7 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일1반3시반_마두_").all()])
-        names8 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일1반3시반_웨돔_").all()])
-        names9 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일3반5시반_마두_").all()])
-        names10 = add_divider([applicant.user.name for applicant in SunBoard.query.filter_by(slot="일3반5시반_웨돔_").all()])
+        names1 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일1012_마두_").all()])
+        names2 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일1012_웨돔_").all()])
+        names3 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일122_마두_").all()])
+        names4 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일122_웨돔_").all()])
+        names5 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일24_마두_").all()])
+        names6 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일24_웨돔_").all()])
+        names7 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일1반3시반_마두_").all()])
+        names8 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일1반3시반_웨돔_").all()])
+        names9 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일3반5시반_마두_").all()])
+        names10 = add_divider([applicant.user.name for applicant in SatBoard.query.filter_by(slot="일3반5시반_웨돔_").all()])
         return jsonify({"message": "토요일 신청자명단 업데이트", "names1": names1, "names2": names2, "names3": names3, "names4": names4,"names5": names5,"names6": names6, "names7": names7,"names8": names8,"names9": names9,"names10": names10}), 200
 
 
