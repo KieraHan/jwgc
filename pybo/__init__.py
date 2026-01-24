@@ -88,6 +88,7 @@ def clear_sun_board(app):
         Notice.query.filter_by(slot="일1012_웨돔_").delete()
         Notice.query.filter_by(slot="일122_마두_").delete()
         Notice.query.filter_by(slot="일122_웨돔_").delete()
+        Notice.query.filter_by(slot="일13_호별_").delete()
         Notice.query.filter_by(slot="일24_마두_").delete()
         Notice.query.filter_by(slot="일24_웨돔_").delete()
         db.session.commit()
